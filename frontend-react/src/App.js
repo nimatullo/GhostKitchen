@@ -5,10 +5,11 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { UserContext } from "./components/UserContext";
 
 function App() {
+  const [user, setUser] = useState({});
   const [isAuthenticated, setAuthentication] = useState(false);
-  const [account, setAccount] = useState({ firstName: "", lastName: "" });
   return (
     <Router>
       <nav>
@@ -29,17 +30,12 @@ function App() {
           exact
           path="/"
           authenticated={isAuthenticated}
-          component={() => <Home user={account} />}
+          component={() => <Home />}
         />
         <Route exact path="/login">
-          <Login setAuth={setAuthentication} currentUser={setAccount} />
+          <Login setAuth={setAuthentication} />
         </Route>
-        <ProtectedRoute
-          exact
-          path="/register"
-          authenticated={isAuthenticated}
-          component={() => <Register />}
-        />
+        <Route exact path="/register" component={() => <Register />} />
       </Switch>
     </Router>
   );

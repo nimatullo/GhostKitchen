@@ -3,6 +3,9 @@ package com.example.ghostkitchen.service;
 import com.example.ghostkitchen.model.Account;
 import com.example.ghostkitchen.repo.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountService {
+public class AccountService implements UserDetailsService {
     @Autowired
     AccountRepo repository;
 
@@ -46,5 +49,16 @@ public class AccountService {
 
     public void delete (Long id) {
         repository.delete(repository.findById(id).get());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Account foundAccount = findByEmail(s);
+        if (foundAccount == null) {
+            throw new UsernameNotFoundException(s);
+        }
+        else {
+            return new MyUserPrincipal(foundAccount);
+        }
     }
 }

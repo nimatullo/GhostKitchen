@@ -5,7 +5,7 @@ import validate from "./validateLogin";
 import useForm from "./useForm";
 import { useHistory } from "react-router-dom";
 
-export default function Login({ setAuth, currentUser }) {
+export default function Login({ setAuth }) {
   const { handleChange, handleSubmit, values, errors } = useForm(
     logIn,
     validate
@@ -35,10 +35,6 @@ export default function Login({ setAuth, currentUser }) {
         }
       })
       .then(data => {
-        currentUser({
-          firstName: data.firstName,
-          lastName: data.lastName
-        });
         history.push("/");
       });
   }

@@ -6,9 +6,13 @@ import com.example.ghostkitchen.model.Name;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
@@ -22,6 +26,14 @@ public class UserController {
 
     @Autowired
     private AccountService service;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test (HttpServletRequest request) {
+        return new ResponseEntity<>(request.getAuthType(), HttpStatus.ACCEPTED);
+    }
 
     @GetMapping("/currentUser")
     public Account currentUser() {
@@ -65,7 +77,6 @@ public class UserController {
     @PutMapping("/login")
     public ResponseEntity<Account> logIn(@RequestBody Credentials credentials) {
         Account foundAccount = service.findByEmail(credentials.getEmail());
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         if (encoder.matches(credentials.getPassword(),foundAccount.getPassword())) {
             currentUser = foundAccount;
             return new ResponseEntity<>(currentUser ,HttpStatus.ACCEPTED);

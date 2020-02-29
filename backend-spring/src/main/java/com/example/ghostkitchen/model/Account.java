@@ -2,6 +2,9 @@ package com.example.ghostkitchen.model;
 
 
 import com.example.ghostkitchen.model.Name;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
