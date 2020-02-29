@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.error {
+  margin: 1%;
+  width: 20%;
+  border-radius: 5px;
+  background-color: rgb(250, 116, 116);
+  padding: 1em;
+  color: red;
+}
+
+.registerForm {
+  margin: 1em;
+  padding: 1em;
+  background-color: rgb(181, 181, 181);
+  border-radius: 5px;
+  max-width: 20%;
+}
+
+.registerForm div {
+  width: 100%;
+}
+
+.MuiFormHelperText-root {
+  color: red !important;
+}
