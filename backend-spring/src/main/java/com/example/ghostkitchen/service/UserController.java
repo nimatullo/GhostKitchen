@@ -1,88 +1,81 @@
 package com.example.ghostkitchen.service;
 
-import com.example.ghostkitchen.model.Account;
-import com.example.ghostkitchen.model.Credentials;
-import com.example.ghostkitchen.model.Name;
+import com.example.ghostkitchen.jwt.JwtTokenProvider;
+import com.example.ghostkitchen.model.*;
+import com.example.ghostkitchen.payload.ApiResponse;
+import com.example.ghostkitchen.payload.JwtAuthResponse;
+import com.example.ghostkitchen.payload.LoginRequest;
+import com.example.ghostkitchen.payload.RegisterRequest;
+import com.example.ghostkitchen.repo.RoleRepo;
+import com.example.ghostkitchen.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.net.URI;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 @RestController
 public class UserController {
-    static Account currentUser;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Autowired
-    private AccountService service;
+    UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder encoder;
+    RoleRepo roleRepo;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test (HttpServletRequest request) {
-        return new ResponseEntity<>(request.getAuthType(), HttpStatus.ACCEPTED);
-    }
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
-    @GetMapping("/currentUser")
-    public Account currentUser() {
-        return currentUser;
-    }
-
-    @GetMapping("/account/list")
-    public List<Account> getAll() {
-        return service.getAll();
-    }
+    @Autowired
+    JwtTokenProvider tokenProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<String> createAccount(@RequestBody Account account) {
-        try {
-            service.create(account);
-            return new ResponseEntity<>("Account created!",HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            Throwable cause = e.getCause().getCause();
-            if (cause instanceof ConstraintViolationException) {
-                final StringBuilder message = new StringBuilder();
-                Set<ConstraintViolation<?>> constraintViolations = ((ConstraintViolationException)cause).getConstraintViolations();
-                constraintViolations.forEach(error -> message.append(" ").append(error.getMessage()));
-                return new ResponseEntity<>(message.toString(),HttpStatus.FORBIDDEN);
-            }
-            else if (cause instanceof SQLException) {
-                String errorMessage = ((SQLException)cause).getMessage();
-                String messageToClient = "";
-                if (errorMessage.contains("(email)=")) {
-                    messageToClient = "Email address already exists.";
-                }
-                else if (errorMessage.contains("(username)=")) {
-                    messageToClient = "Username is already in use.";
-                }
-                return new ResponseEntity<>(messageToClient, HttpStatus.FORBIDDEN);
-            }
-            else
-                return new ResponseEntity<>("Server side error. Please try again", HttpStatus.FORBIDDEN);
+    public ResponseEntity<?> authenticateUser(@RequestBody RegisterRequest request) {
+        if (userRepository.existsAccountByEmail(request.getEmail())) {
+            return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"), HttpStatus.BAD_REQUEST);
         }
+
+        User user = new User(request.getName(), request.getEmail(), request.getPassword());
+
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        Role userRole = roleRepo.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role not set"));
+        user.setRoles(Collections.singleton(userRole));
+
+        User result = userRepository.save(user);
+
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true, "User created"), HttpStatus.CREATED);
     }
 
     @PutMapping("/login")
-    public ResponseEntity<Account> logIn(@RequestBody Credentials credentials) {
-        Account foundAccount = service.findByEmail(credentials.getEmail());
-        if (encoder.matches(credentials.getPassword(),foundAccount.getPassword())) {
-            currentUser = foundAccount;
-            return new ResponseEntity<>(currentUser ,HttpStatus.ACCEPTED);
-        }
-        else {
-            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
-        }
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.generateToken(authentication);
+        return ResponseEntity.ok(new JwtAuthResponse(jwt));
     }
+
 }

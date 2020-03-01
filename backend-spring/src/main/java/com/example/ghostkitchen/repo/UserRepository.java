@@ -1,15 +1,15 @@
 package com.example.ghostkitchen.repo;
 
-import com.example.ghostkitchen.model.Account;
+import com.example.ghostkitchen.model.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AccountRepo extends CrudRepository<Account, Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
-    Optional<Account> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     boolean existsAccountByEmail(String email);
 
