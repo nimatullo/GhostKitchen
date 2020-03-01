@@ -4,6 +4,7 @@ import { TextField, Button } from "@material-ui/core";
 import useForm from "./useForm";
 import validate from "./validateRegister";
 import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
   const history = useHistory();
@@ -14,27 +15,20 @@ const Register = () => {
   const [serverError, setServerError] = useState("");
 
   function register() {
-    const data = {
-      email: values.email,
-      password: values.password,
-      name: {
-        firstName: values.firstName,
-        lastName: values.lastName
-      }
-    };
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    };
-    fetch("/register", options)
-      .then(response => {
-        if (response.ok) {
+    axios
+      .post("/register", {
+        email: values.email,
+        password: values.password,
+        name: {
+          firstName: values.firstName,
+          lastName: values.lastName
+        }
+      })
+      .then(res => {
+        if (res.status === 201) {
           history.push("/");
         } else {
-          return response.text();
+          return res.statusText;
         }
       })
       .then(responseMessage => {

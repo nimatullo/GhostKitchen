@@ -1,20 +1,40 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { Component } from "react";
+import axios from "axios";
 
-export default function Home() {
-  const [currentUser, setCurrentUser] = useState("");
-  useEffect(() => {
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-    fetch("/currentUser", options)
-      .then(response => response.json())
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { firstName: "", lastName: "" };
+  }
+
+  componentDidMount() {
+    axios
+      .get("/currentUser", {
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      })
+      .then(res => res.data.name)
       .then(data => {
-        setCurrentUser(data.name);
+        this.setState({
+          firstName: data.firstName,
+          lastName: data.lastName
+        });
       });
-  }, []);
-  return <h1>Hello {currentUser.firstName}</h1>;
+  }
+
+  logOut() {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("auth");
+    this.props.history.push("/");
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.logOut}>Log Out</button>
+        <div>Hello {this.state.firstName}!</div>
+      </div>
+    );
+  }
 }
+
+export default Home;

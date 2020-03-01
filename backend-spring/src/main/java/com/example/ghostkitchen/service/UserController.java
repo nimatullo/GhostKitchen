@@ -1,11 +1,11 @@
 package com.example.ghostkitchen.service;
 
+import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.jwt.JwtTokenProvider;
 import com.example.ghostkitchen.model.*;
-import com.example.ghostkitchen.payload.ApiResponse;
-import com.example.ghostkitchen.payload.JwtAuthResponse;
-import com.example.ghostkitchen.payload.LoginRequest;
-import com.example.ghostkitchen.payload.RegisterRequest;
+import com.example.ghostkitchen.payload.*;
+import com.example.ghostkitchen.repo.MenuItemRepo;
+import com.example.ghostkitchen.repo.RestaurantRepo;
 import com.example.ghostkitchen.repo.RoleRepo;
 import com.example.ghostkitchen.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.websocket.server.PathParam;
 import java.net.URI;
+import java.security.Principal;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +36,13 @@ public class UserController {
     AuthenticationManager authenticationManager;
 
     @Autowired
+    MenuItemRepo menuItemRepo;
+
+    @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    RestaurantRepo restaurantRepo;
 
     @Autowired
     RoleRepo roleRepo;
@@ -44,6 +52,32 @@ public class UserController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+
+
+    @PostMapping("/restaurants/add")
+    public ResponseEntity<?> addRestaurant(@RequestBody RestaurantRequest request,
+                                           @CurrentUser UserPrincipal owner) {
+        Restaurant restaurant = new Restaurant(request.getRestaurantName(), request.getAddress(), request.getOwner());
+        request.getMenuItems().forEach(item -> {
+            restaurant.addMenuItem(new MenuItem(item.getItemName(), item.getItemPrice(), item.getItemDesc()));
+        });
+        restaurantRepo.save(restaurant);
+        return ResponseEntity.ok(new ApiResponse(true, "Restaurant has been added to the database."));
+    }
+
+    @GetMapping("/restaurants/{name}")
+    public ResponseEntity<?> getRestaurants(@PathVariable String name) {
+        Restaurant foundRestaurant = restaurantRepo.findByRestaurantName(name).get();
+
+        RestaurantResponse response = new RestaurantResponse(foundRestaurant.getName(), foundRestaurant.getOwner(),
+                foundRestaurant.getAddress(), foundRestaurant.getMenuItems());
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/restaurants/{name}/menu/add")
+    public ResponseEntity<?> addMenuItem(@PathParam String name, @RequestBody MenuItemRequest menuItem) {
+
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> authenticateUser(@RequestBody RegisterRequest request) {
@@ -76,6 +110,12 @@ public class UserController {
 
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthResponse(jwt));
+    }
+
+    @GetMapping("/currentUser")
+    @ResponseBody
+    public UserPrincipal currentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
+        return userPrincipal;
     }
 
 }

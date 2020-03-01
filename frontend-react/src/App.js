@@ -9,7 +9,14 @@ import { UserContext } from "./components/UserContext";
 
 function App() {
   const [user, setUser] = useState({});
-  const [isAuthenticated, setAuthentication] = useState(false);
+  const [isAuthenticated, setAuthentication] = useState(() => {
+    const auth = localStorage.getItem("auth");
+    if (auth) {
+      return true;
+    } else {
+      return false;
+    }
+  });
   return (
     <Router>
       <nav>
