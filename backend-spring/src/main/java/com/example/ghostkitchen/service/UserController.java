@@ -4,7 +4,6 @@ import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.jwt.JwtTokenProvider;
 import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.*;
-import com.example.ghostkitchen.repo.MenuItemRepo;
 import com.example.ghostkitchen.repo.RestaurantRepo;
 import com.example.ghostkitchen.repo.RoleRepo;
 import com.example.ghostkitchen.repo.UserRepository;
@@ -17,26 +16,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.websocket.server.PathParam;
-import java.net.URI;
-import java.security.Principal;
-import java.sql.SQLException;
 import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @RestController
 public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
-
-    @Autowired
-    MenuItemRepo menuItemRepo;
 
     @Autowired
     UserRepository userRepository;
@@ -67,7 +54,14 @@ public class UserController {
 
     @GetMapping("/restaurants/{name}")
     public ResponseEntity<?> getRestaurants(@PathVariable String name) {
-        Restaurant foundRestaurant = restaurantRepo.findByRestaurantName(name).get();
+        Optional<Restaurant> restaurantFind = restaurantRepo.findByRestaurantName(name);
+        Restaurant foundRestaurant = null;
+        if (restaurantFind.isPresent()) {
+            foundRestaurant = restaurantFind.get();
+        }
+        else {
+            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Restaurant doesn't exist"), HttpStatus.NOT_FOUND);
+        }
 
         RestaurantResponse response = new RestaurantResponse(foundRestaurant.getName(), foundRestaurant.getOwner(),
                 foundRestaurant.getAddress(), foundRestaurant.getMenuItems());
@@ -75,8 +69,18 @@ public class UserController {
     }
 
     @PostMapping("/restaurants/{name}/menu/add")
-    public ResponseEntity<?> addMenuItem(@PathParam String name, @RequestBody MenuItemRequest menuItem) {
-
+    public ResponseEntity<?> addMenuItem(@PathVariable String name, @RequestBody MenuItemRequest item) {
+        Optional<Restaurant> restaurantOptional = restaurantRepo.findByRestaurantName(name);
+        Restaurant foundRestaurant = null;
+        if (restaurantOptional.isPresent()) {
+            foundRestaurant = restaurantOptional.get();
+        }
+        else {
+            return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Restaurant doesn't exist"), HttpStatus.NOT_FOUND);
+        }
+        foundRestaurant.addMenuItem(new MenuItem(item.getItemName(), item.getItemPrice(), item.getItemDesc()));
+        restaurantRepo.save(foundRestaurant);
+        return ResponseEntity.ok(new ApiResponse(true, "Created"));
     }
 
     @PostMapping("/register")
