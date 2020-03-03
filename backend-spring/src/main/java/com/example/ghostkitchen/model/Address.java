@@ -16,7 +16,6 @@ public class Address {
     private String city;
 
     @Enumerated(EnumType.STRING)
-    @NaturalId
     private State state;
 
     private int zip;

@@ -21,6 +21,26 @@ public class RestaurantRequest {
     @NotBlank
     List <MenuItemRequest> menuItems;
 
+    double rating;
+
+    int numberOfReviews;
+
+    public int getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews(int numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
     public List<MenuItemRequest> getMenuItems() {
         return menuItems;
     }

@@ -1,8 +1,8 @@
 package com.example.ghostkitchen.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 
 @Entity
 public class Restaurant {
@@ -19,21 +19,51 @@ public class Restaurant {
     @JoinColumn(name = "name_id", referencedColumnName = "id")
     private Name owner;
 
-    @OneToMany(
-            mappedBy = "restaurant",
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<MenuItem> menuItems = new ArrayList<>();
+    @DecimalMin("0.0")
+    @DecimalMax("5.0")
+    private double rating;
+
+    private int numberOfReviews;
 
     public Restaurant() {
 
     }
 
-    public Restaurant(String name, Address address, Name owner) {
-        this.restaurantName= name;
+    public Restaurant(String name,Address address,Name owner,double rating,int numberOfReviews) {
+        this.restaurantName = name;
         this.address = address;
         this.owner = owner;
+        this.rating = rating;
+        this.numberOfReviews = numberOfReviews;
+    }
+
+    public void addReview(double review) {
+        this.numberOfReviews++;
+        this.rating = (this.rating + review) / numberOfReviews;
+    }
+
+    public int getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public void setNumberOfReviews(int numberOfReviews) {
+        this.numberOfReviews = numberOfReviews;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public Long getId() {
@@ -42,7 +72,7 @@ public class Restaurant {
 
     public void setId(Long id) {
         this.id = id;
-}
+    }
 
     public String getName() {
         return restaurantName;
@@ -66,18 +96,5 @@ public class Restaurant {
 
     public void setOwner(Name owner) {
         this.owner = owner;
-    }
-
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
-    }
-
-    public void setMenuItems(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
-    }
-
-    public void addMenuItem(MenuItem menuItem) {
-        menuItems.add(menuItem);
-        menuItem.setRestaurant(this);
     }
 }

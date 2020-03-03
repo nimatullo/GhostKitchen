@@ -2,8 +2,10 @@ package com.example.ghostkitchen.model;
 
 
 import com.example.ghostkitchen.model.Name;
+import com.example.ghostkitchen.payload.UpdateUserRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -86,6 +88,9 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void updateInformation(UpdateUserRequest request) {
     }
 
     @Override
