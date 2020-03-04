@@ -24,7 +24,7 @@ class RestaurantList extends Component {
   }
 
   handleClick(restaurantId) {
-    console.log(restaurantId);
+    this.props.history.push(`/restaurants/${restaurantId}`);
   }
 
   render() {

@@ -1,8 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { TextField, Button } from "@material-ui/core";
-import useForm from "./useForm";
-import validate from "./validateRegister";
+import useForm from "../useForm";
+import validate from "../validateRegister";
 import { useState } from "react";
 import axios from "axios";
 

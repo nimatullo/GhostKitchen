@@ -27,6 +27,15 @@ public class RestaurantResponse {
         this.numberOfReviews = numberOfReviews;
     }
 
+    public RestaurantResponse(String restaurantName,Name owner,Address address,List<MenuItem> menuItems,
+                              double rating, int numberOfReviews) {
+        this.restaurantName = restaurantName;
+        this.owner = owner;
+        this.address = address;
+        this.menuItems = menuItems;
+        this.rating = rating;
+        this.numberOfReviews = numberOfReviews;
+    }
     public int getNumberOfReviews() {
         return numberOfReviews;
     }

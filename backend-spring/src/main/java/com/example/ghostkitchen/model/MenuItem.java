@@ -14,11 +14,11 @@ public class MenuItem {
     @Id
     private Long id;
 
-    private String itemName;
+    private String name;
 
-    private BigDecimal itemPrice;
+    private BigDecimal price;
 
-    private String itemDescription;
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -44,9 +44,9 @@ public class MenuItem {
     }
 
     public MenuItem(String itemName,BigDecimal itemPrice,String itemDescription) {
-        this.itemDescription = itemDescription;
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
+        this.description = itemDescription;
+        this.name = itemName;
+        this.price = itemPrice;
     }
 
     public Order getOrder() {
@@ -65,27 +65,27 @@ public class MenuItem {
         this.id = id;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getName() {
+        return name;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public BigDecimal getItemPrice() {
-        return itemPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setItemPrice(BigDecimal itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setPrice(BigDecimal itemPrice) {
+        this.price = itemPrice;
     }
 
-    public String getItemDescription() {
-        return itemDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
+    public void setDescription(String itemDescription) {
+        this.description = itemDescription;
     }
 }

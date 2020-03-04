@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/user/Login";
+import Register from "./components/user/Register";
 import Home from "./components/Home";
-import RestaurantList from "./components/RestaurantList";
+import RestaurantList from "./components/restaurant/RestaurantList";
+import Restaurant from "./components/restaurant/Restaurant";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -47,6 +48,7 @@ function App() {
         </Route>
         <Route exact path="/register" component={() => <Register />} />
         <Route exact path="/restaurants" component={RestaurantList} />
+        <Route path="/restaurants/:id" component={Restaurant} />
       </Switch>
     </Router>
   );

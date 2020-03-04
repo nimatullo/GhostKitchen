@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { TextField, Button, CircularProgress } from "@material-ui/core";
-import validate from "./validateLogin";
-import useForm from "./useForm";
+import validate from "../validateLogin";
+import useForm from "../useForm";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 

@@ -3,7 +3,6 @@ package com.example.ghostkitchen.controller;
 import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.model.CurrentUser;
 import com.example.ghostkitchen.model.MenuItem;
-import com.example.ghostkitchen.model.Order;
 import com.example.ghostkitchen.model.Restaurant;
 import com.example.ghostkitchen.payload.ApiResponse;
 import com.example.ghostkitchen.payload.MenuItemRequest;
@@ -50,7 +49,7 @@ public class RestaurantController {
         Restaurant restaurant = new Restaurant(request.getRestaurantName(),request.getAddress(),request.getOwner(),
                 request.getRating(),request.getNumberOfReviews());
         request.getMenuItems().forEach(item -> {
-            MenuItem createdItem = new MenuItem(item.getItemName(),item.getItemPrice(),item.getItemDesc());
+            MenuItem createdItem = new MenuItem(item.getName(),item.getPrice(),item.getDescription());
             createdItem.setRestaurant(restaurant);
             menuItemRepo.save(createdItem);
         });
@@ -61,12 +60,12 @@ public class RestaurantController {
     /**
      * Get the details of the Restaurant with the matching String name.
      *
-     * @param name Path Variable for the restaurant name to be fetched.
+     * @param id Path Variable for the restaurant id to be fetched.
      * @return RestaurantResponse encapsulated in ResponseEntity.
      */
-    @GetMapping("/restaurants/{name}")
-    public ResponseEntity<?> getRestaurants(@PathVariable String name) {
-        Optional<Restaurant> restaurantFind = restaurantRepo.findByRestaurantName(name);
+    @GetMapping("/restaurants/{id}/menu")
+    public ResponseEntity<?> getRestaurants(@PathVariable Long id) {
+        Optional<Restaurant> restaurantFind = restaurantRepo.findById(id);
         Restaurant foundRestaurant = null;
         if (restaurantFind.isPresent()) {
             foundRestaurant = restaurantFind.get();
@@ -76,11 +75,9 @@ public class RestaurantController {
         }
 
         List<MenuItem> menu = menuItemRepo.findByRestaurantId(foundRestaurant.getId());
-        List<Order> orders = orderRepo.findByRestaurantId(foundRestaurant.getId());
-
         RestaurantResponse response = new RestaurantResponse(foundRestaurant.getName(),foundRestaurant.getOwner(),
                 foundRestaurant.getAddress(),menu,foundRestaurant.getRating(),
-                foundRestaurant.getNumberOfReviews(),orders);
+                foundRestaurant.getNumberOfReviews());
         return ResponseEntity.ok(response);
     }
 
@@ -94,7 +91,7 @@ public class RestaurantController {
         else {
             return new ResponseEntity<>(new ApiResponse(false,"Restaurant doesn't exist"),HttpStatus.NOT_FOUND);
         }
-        MenuItem menuItem = new MenuItem(item.getItemName(),item.getItemPrice(),item.getItemDesc());
+        MenuItem menuItem = new MenuItem(item.getName(),item.getPrice(),item.getDescription());
         menuItem.setRestaurant(foundRestaurant);
         menuItemRepo.save(menuItem);
         return ResponseEntity.ok(new ApiResponse(true,"Created"));

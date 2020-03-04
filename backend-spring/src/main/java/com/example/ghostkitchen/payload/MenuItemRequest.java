@@ -6,13 +6,13 @@ import java.math.BigDecimal;
 public class MenuItemRequest {
     Long id;
     @NotBlank
-    private String itemName;
+    private String name;
 
     @NotBlank
-    private BigDecimal itemPrice;
+    private BigDecimal price;
 
     @NotBlank
-    private String itemDesc;
+    private String description;
 
     public Long getId() {
         return id;
@@ -22,27 +22,27 @@ public class MenuItemRequest {
         this.id = id;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getName() {
+        return name;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setName(String itemName) {
+        this.name = itemName;
     }
 
-    public BigDecimal getItemPrice() {
-        return itemPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setItemPrice(BigDecimal itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public String getItemDesc() {
-        return itemDesc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setItemDesc(String itemDesc) {
-        this.itemDesc = itemDesc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
