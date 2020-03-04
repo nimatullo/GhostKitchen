@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-public class Order implements LineItems{
+public class Order {
 
     @Id
     @GeneratedValue
