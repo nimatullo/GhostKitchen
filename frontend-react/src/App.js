@@ -3,9 +3,9 @@ import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import RestaurantList from "./components/RestaurantList";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { UserContext } from "./components/UserContext";
 
 function App() {
   const [user, setUser] = useState({});
@@ -30,6 +30,9 @@ function App() {
           <li>
             <Link to="/register">Register</Link>
           </li>
+          <li>
+            <Link to="/restaurants">Restaurants</Link>
+          </li>
         </ul>
       </nav>
       <Switch>
@@ -43,6 +46,7 @@ function App() {
           <Login setAuth={setAuthentication} />
         </Route>
         <Route exact path="/register" component={() => <Register />} />
+        <Route exact path="/restaurants" component={RestaurantList} />
       </Switch>
     </Router>
   );

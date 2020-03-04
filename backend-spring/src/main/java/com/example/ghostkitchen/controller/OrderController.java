@@ -76,8 +76,7 @@ public class OrderController {
         orders.forEach(order -> {
             response.setNumberOfItems(order.getNumberOfItems());
             response.setTotal(order.getTotal());
-            List<MenuItem> items = menuItemRepo.findByOrder_OrderNumber(order.getOrderNumber());
-            response.setMenuItems(items);
+            response.setMenuItems(menuItemRepo.findByOrder_OrderNumber(order.getOrderNumber()));
         });
         return ResponseEntity.ok(response);
     }
