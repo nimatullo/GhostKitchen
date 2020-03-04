@@ -32,14 +32,6 @@ public class MenuItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
     public MenuItem() {
     }
 
@@ -47,6 +39,14 @@ public class MenuItem {
         this.description = itemDescription;
         this.name = itemName;
         this.price = itemPrice;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public Order getOrder() {

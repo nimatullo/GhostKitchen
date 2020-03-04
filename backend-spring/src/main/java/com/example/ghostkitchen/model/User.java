@@ -34,6 +34,10 @@ public class User {
     @NotNull(message = "Password must be between 8 and 16 characters.")
     String password;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
+    Cart cart;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="user_roles",
                 joinColumns = @JoinColumn(name="user_id"),
@@ -49,6 +53,13 @@ public class User {
         this.password = password;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public Long getId() {
         return id;
@@ -88,9 +99,6 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public void updateInformation(UpdateUserRequest request) {
     }
 
     @Override

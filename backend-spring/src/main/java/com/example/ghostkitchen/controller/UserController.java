@@ -2,11 +2,9 @@ package com.example.ghostkitchen.controller;
 
 import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.jwt.JwtTokenProvider;
-import com.example.ghostkitchen.model.CurrentUser;
-import com.example.ghostkitchen.model.Role;
-import com.example.ghostkitchen.model.RoleName;
-import com.example.ghostkitchen.model.User;
+import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.*;
+import com.example.ghostkitchen.repo.CartRepo;
 import com.example.ghostkitchen.repo.RoleRepo;
 import com.example.ghostkitchen.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +31,9 @@ public class UserController {
     @Autowired
     RoleRepo roleRepo;
 
+//    @Autowired
+//    CartRepo cartRepo;
+
     @Autowired
     BCryptPasswordEncoder encoder;
 
@@ -47,6 +48,11 @@ public class UserController {
 
         User user = new User(request.getName(),request.getEmail(),request.getPassword());
 
+        Cart cart = new Cart();
+//        cart.setUser(user);
+        user.setCart(cart);
+
+//        cartRepo.save(cart);
         user.setPassword(encoder.encode(user.getPassword()));
 
         Role userRole = roleRepo.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role not set"));
