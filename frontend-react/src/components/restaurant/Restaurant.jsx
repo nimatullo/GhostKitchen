@@ -38,7 +38,7 @@ const Restaurant = ({
   return (
     <div style={{ margin: "1em" }}>
       <ItemContextProvider>
-        <Cart />
+        <Cart restaurantId={id} />
         <h1>{restaurant.name}</h1>
         <h3>{address.streetAddress}</h3>
         <h3>

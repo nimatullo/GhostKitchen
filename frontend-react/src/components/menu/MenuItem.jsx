@@ -12,22 +12,15 @@ import { ItemContext } from "../contexts/ItemContext";
 import Axios from "axios";
 
 const MenuItem = ({ menuItem }) => {
-  const { addToItems, addToTotal } = useContext(ItemContext);
+  const { addToItems, jwtToken } = useContext(ItemContext);
   const handleClick = id => {
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
-    };
-    fetch(`/cart/add/${id}`, options).then(res => {
+    Axios.post(`/cart/add/${id}`, {}, jwtToken).then(res => {
       addToItems(menuItem);
-      addToTotal(menuItem.price);
     });
   };
 
   return (
-    <Card style={{ maxWidth: "500px", margin: "1em" }}>
+    <Card style={{ maxWidth: "500px" }}>
       <CardMedia
         style={{ height: "250px" }}
         image={

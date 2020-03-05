@@ -14,9 +14,14 @@ class ItemContextProvider extends Component {
     },
     addToItems: item => {
       this.setState({ items: [...this.state.items, item] });
+      this.setState({ total: this.state.total + item.price });
     },
-    addToTotal: price => {
-      this.setState({ total: this.state.total + price });
+    removeItem: item => {
+      const newItems = this.state.items.filter(itemFromList => {
+        return itemFromList !== item;
+      });
+      this.setState({ items: [...newItems] });
+      this.setState({ total: this.state.total - item.price });
     }
   };
 

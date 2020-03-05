@@ -55,7 +55,6 @@ public class OrderController {
         request.getMenuItems().forEach(item -> {
             MenuItem newItem = menuItemRepo.findById(item.getId()).get();
             newItem.setOrder(order);
-            menuItemRepo.save(newItem);
         });
         orderRepo.save(order);
         return ResponseEntity.ok(new ApiResponse(true,"Order has been placed"));
