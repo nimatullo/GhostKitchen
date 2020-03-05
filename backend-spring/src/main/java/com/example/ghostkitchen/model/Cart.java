@@ -58,4 +58,10 @@ public class Cart {
         this.numberOfItems++;
         this.setTotal(this.total.add(item.getPrice()));
     }
+
+    public void removeItem(MenuItem item) {
+        this.items.remove(item);
+        this.numberOfItems--;
+        this.setTotal(this.total.subtract(item.getPrice()));
+    }
 }

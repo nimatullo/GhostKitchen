@@ -36,6 +36,20 @@ public class RestaurantController {
     @Autowired
     OrderRepo orderRepo;
 
+    @GetMapping("/restaurants/{id}")
+    public ResponseEntity<?> getRestaurantInfo(@PathVariable Long id) {
+        Optional<Restaurant> findRestaurant = restaurantRepo.findById(id);
+        Restaurant restaurant = null;
+        if (findRestaurant.isPresent()) {
+           restaurant = findRestaurant.get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false, "Cannot find restaurant"),
+                    HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(restaurant);
+    }
+
     /**
      * Add restaurant into the database and RestaurantRepo.
      *

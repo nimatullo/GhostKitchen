@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import RestaurantListing from "./RestaurantListing";
 import {
   Card,
   Typography,
@@ -33,7 +32,7 @@ class RestaurantList extends Component {
         {this.state.restaurantList.map(restaurant => (
           <Card
             key={restaurant.id}
-            style={{ "max-width": "500px", margin: "1em" }}
+            style={{ maxWidth: "500px", margin: "1em" }}
           >
             <CardActionArea onClick={() => this.handleClick(restaurant.id)}>
               <CardContent>

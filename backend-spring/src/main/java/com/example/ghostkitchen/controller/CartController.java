@@ -22,27 +22,58 @@ public class CartController {
     @Autowired
     MenuItemRepo menuItemRepo;
 
-    @PostMapping("cart/add/{id}")
-    public ResponseEntity<?> addItemToCart(@CurrentUser UserPrincipal currentUser, @PathVariable Long id) {
-        Optional<MenuItem> findItem = menuItemRepo.findById(id);
-        Optional<User> findUser = userRepo.findById(currentUser.getId());
+    @PostMapping("/cart/add/{id}")
+    public ResponseEntity<?> addItemToCart(@CurrentUser UserPrincipal currentUser,@PathVariable Long id) {
+        Object[] objects = getItemAndUser(id,currentUser.getId());
         MenuItem item = null;
         User user = null;
-        if (findUser.isPresent() && findItem.isPresent()) {
-            user = findUser.get();
-            item = findItem.get();
+        if (objects != null) {
+            item = (MenuItem)objects[0];
+            user = (User)objects[1];
         }
         else {
-            return new ResponseEntity<>(new ApiResponse(false, "Cart cannot be found"),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new ApiResponse(false,"Cart cannot be found"),HttpStatus.NOT_FOUND);
         }
         user.getCart().addItem(item);
         userRepo.save(user);
-        return ResponseEntity.ok(new ApiResponse(true, "Item added to cart"));
+        return ResponseEntity.ok(new ApiResponse(true,"Item added to cart"));
     }
 
     @GetMapping("/cart")
     public ResponseEntity<?> getCard(@CurrentUser UserPrincipal currentUser) {
         User user = userRepo.findById(currentUser.getId()).get();
         return ResponseEntity.ok(user.getCart());
+    }
+
+    @PutMapping("/cart/remove/{id}")
+    public ResponseEntity<?> removeItemFromCart(@CurrentUser UserPrincipal currentUser,@PathVariable Long id) {
+        Object[] objects = getItemAndUser(id,currentUser.getId());
+        MenuItem item = null;
+        User user = null;
+        if (objects != null) {
+            item = (MenuItem)objects[0];
+            user = (User)objects[1];
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false,"Cart cannot be found"),HttpStatus.NOT_FOUND);
+        }
+        user.getCart().removeItem(item);
+        userRepo.save(user);
+        return ResponseEntity.ok(new ApiResponse(true,"Item removed from cart."));
+    }
+
+    public Object[] getItemAndUser(Long itemId,Long userId) {
+        Optional<MenuItem> findItem = menuItemRepo.findById(itemId);
+        Optional<User> findUser = userRepo.findById(userId);
+        MenuItem item = null;
+        User user = null;
+        if (findUser.isPresent() && findItem.isPresent()) {
+            user = findUser.get();
+            item = findItem.get();
+            return new Object[]{item,user};
+        }
+        else {
+            return null;
+        }
     }
 }
