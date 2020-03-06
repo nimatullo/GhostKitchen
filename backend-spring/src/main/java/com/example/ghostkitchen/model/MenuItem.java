@@ -3,9 +3,13 @@ package com.example.ghostkitchen.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.nio.file.Path;
 
 @Entity
 public class MenuItem {
@@ -26,6 +30,8 @@ public class MenuItem {
     @JsonIgnore
     private Restaurant restaurant;
 
+    String urlPath;
+
     public MenuItem() {
     }
 
@@ -33,6 +39,14 @@ public class MenuItem {
         this.description = itemDescription;
         this.name = itemName;
         this.price = itemPrice;
+    }
+
+    public String getUrlPath() {
+        return urlPath;
+    }
+
+    public void setUrlPath(String urlPath) {
+        this.urlPath = urlPath;
     }
 
     public Restaurant getRestaurant() {

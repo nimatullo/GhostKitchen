@@ -16,7 +16,7 @@ const Register = () => {
 
   function register() {
     axios
-      .post("/register", {
+      .post("user/register", {
         email: values.email,
         password: values.password,
         name: {

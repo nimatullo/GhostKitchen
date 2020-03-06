@@ -26,12 +26,7 @@ const MenuItem = ({ menuItem }) => {
 
   return (
     <Card style={{ maxWidth: "500px" }}>
-      <CardMedia
-        style={{ height: "250px" }}
-        image={
-          "https://pbs.twimg.com/profile_images/911983532964290560/fI7u-fjO_400x400.jpg"
-        }
-      />
+      <CardMedia style={{ height: "250px" }} image={menuItem.urlPath} />
       <CardContent>
         <Typography component="h5" color="primary">
           {menuItem.name}

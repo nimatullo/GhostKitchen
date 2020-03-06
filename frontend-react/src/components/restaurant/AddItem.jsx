@@ -31,6 +31,7 @@ const AddItem = () => {
       <form>
         <div>
           <TextField
+            label="Item Name"
             name="name"
             value={name}
             onChange={e => setName(e.target.value)}
@@ -38,6 +39,7 @@ const AddItem = () => {
         </div>
         <div>
           <TextField
+            label="Item Description"
             name="description"
             value={description}
             onChange={e => setDescription(e.target.value)}
@@ -45,6 +47,7 @@ const AddItem = () => {
         </div>
         <div>
           <TextField
+            label="Price"
             name="price"
             value={price}
             onChange={e => setPrice(e.target.value)}
