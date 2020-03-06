@@ -4,10 +4,7 @@ import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.model.CurrentUser;
 import com.example.ghostkitchen.model.MenuItem;
 import com.example.ghostkitchen.model.Restaurant;
-import com.example.ghostkitchen.payload.ApiResponse;
-import com.example.ghostkitchen.payload.MenuItemRequest;
-import com.example.ghostkitchen.payload.RestaurantRequest;
-import com.example.ghostkitchen.payload.RestaurantResponse;
+import com.example.ghostkitchen.payload.*;
 import com.example.ghostkitchen.repo.MenuItemRepo;
 import com.example.ghostkitchen.repo.OrderRepo;
 import com.example.ghostkitchen.repo.RestaurantRepo;
@@ -95,9 +92,9 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/restaurants/{name}/menu/add")
-    public ResponseEntity<?> addMenuItem(@PathVariable String name,@RequestBody MenuItemRequest item) {
-        Optional<Restaurant> restaurantOptional = restaurantRepo.findByRestaurantName(name);
+    @PostMapping("/restaurants/{id}/menu/add")
+    public ResponseEntity<?> addMenuItem(@PathVariable Long id,@RequestBody AddItemRequest item) {
+        Optional<Restaurant> restaurantOptional = restaurantRepo.findById(id);
         Restaurant foundRestaurant = null;
         if (restaurantOptional.isPresent()) {
             foundRestaurant = restaurantOptional.get();

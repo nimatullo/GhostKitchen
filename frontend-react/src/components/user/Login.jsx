@@ -18,7 +18,7 @@ export default function Login({ setAuth }) {
   function logIn() {
     setLoading(true);
     axios
-      .put("/login", {
+      .put("/user/login", {
         email: values.email,
         password: values.password
       })
@@ -34,6 +34,10 @@ export default function Login({ setAuth }) {
       });
   }
 
+  // Redirect to Home Page if user is already logged in.
+  if (localStorage.getItem("auth") === "true") {
+    history.push("/");
+  }
   if (isLoading) {
     return (
       <div>

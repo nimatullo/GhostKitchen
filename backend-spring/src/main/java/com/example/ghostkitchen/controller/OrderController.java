@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 public class OrderController {
@@ -52,10 +53,12 @@ public class OrderController {
         order.setUser(userRepository.findById(principal.getId()).get());
         order.setRestaurant(restaurant);
         order.setOrderNumber(UUID.randomUUID());
-        request.getMenuItems().forEach(item -> {
-            MenuItem newItem = menuItemRepo.findById(item.getId()).get();
-            newItem.setOrder(order);
-        });
+        order.setItems(request
+                .getMenuItems()
+                .stream()
+                .map(item -> menuItemRepo.findById(item.getId()).get())
+                .collect(Collectors.toList())
+        );
         orderRepo.save(order);
         return ResponseEntity.ok(new ApiResponse(true,"Order has been placed"));
     }
@@ -75,7 +78,7 @@ public class OrderController {
         orders.forEach(order -> {
             response.setNumberOfItems(order.getNumberOfItems());
             response.setTotal(order.getTotal());
-            response.setMenuItems(menuItemRepo.findByOrder_OrderNumber(order.getOrderNumber()));
+            response.setMenuItems(order.getItems());
         });
         return ResponseEntity.ok(response);
     }

@@ -4,6 +4,8 @@ import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.jwt.JwtTokenProvider;
 import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.*;
+import com.example.ghostkitchen.repo.MenuItemRepo;
+import com.example.ghostkitchen.repo.RestaurantRepo;
 import com.example.ghostkitchen.repo.RoleRepo;
 import com.example.ghostkitchen.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @RestController
-@RequestMapping("/user/")
-public class UserController {
+@RequestMapping("/owner/")
+public class OwnerController {
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -31,6 +32,12 @@ public class UserController {
 
     @Autowired
     RoleRepo roleRepo;
+
+    @Autowired
+    RestaurantRepo restaurantRepo;
+
+    @Autowired
+    MenuItemRepo menuItemRepo;
 
     @Autowired
     BCryptPasswordEncoder encoder;
@@ -46,17 +53,14 @@ public class UserController {
 
         User user = new User(request.getName(),request.getEmail(),request.getPassword());
 
-        Cart cart = new Cart();
-        user.setCart(cart);
-
         user.setPassword(encoder.encode(user.getPassword()));
 
-        Role userRole = roleRepo.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role not set"));
+        Role userRole = roleRepo.findByName(RoleName.ROLE_OWNER).orElseThrow(() -> new RuntimeException("Role not set"));
         user.setRoles(Collections.singleton(userRole));
 
         userRepository.save(user);
 
-        return new ResponseEntity<>(new ApiResponse(true,"User created"),HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse(true,"Owner created"),HttpStatus.CREATED);
     }
 
     @PutMapping("/login")
@@ -72,12 +76,6 @@ public class UserController {
 
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthResponse(jwt));
-    }
-
-    @GetMapping("/currentUser")
-    @ResponseBody
-    public UserPrincipal currentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
-        return userPrincipal;
     }
 
     @PutMapping("/update")

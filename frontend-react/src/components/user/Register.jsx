@@ -35,6 +35,9 @@ const Register = () => {
         setServerError(responseMessage);
       });
   }
+  if (localStorage.getItem("auth") === "true") {
+    history.push("/");
+  }
   return (
     <div className="registerForm">
       <form>

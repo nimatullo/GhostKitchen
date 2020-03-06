@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import {
   Card,
@@ -6,16 +6,21 @@ import {
   Typography,
   CardActions,
   Button,
-  CardMedia
+  CardMedia,
+  Snackbar
 } from "@material-ui/core";
 import { ItemContext } from "../contexts/ItemContext";
+import Alert from "../Alert";
 import Axios from "axios";
 
 const MenuItem = ({ menuItem }) => {
   const { addToItems, jwtToken } = useContext(ItemContext);
+  const [open, setOpen] = useState(false);
   const handleClick = id => {
     Axios.post(`/cart/add/${id}`, {}, jwtToken).then(res => {
       addToItems(menuItem);
+      setOpen(true);
+      setTimeout(() => setOpen(false), 2000);
     });
   };
 
@@ -48,6 +53,9 @@ const MenuItem = ({ menuItem }) => {
           Add To Cart
         </Button>
       </CardActions>
+      <Snackbar open={open}>
+        <Alert severity="success">Item added</Alert>
+      </Snackbar>
     </Card>
   );
 };

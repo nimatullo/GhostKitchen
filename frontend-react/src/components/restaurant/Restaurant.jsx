@@ -47,8 +47,8 @@ const Restaurant = ({
         <h3>{address.zip}</h3>
         <Grid container spacing={2}>
           {menu.map(menuItemInfo => (
-            <Grid item xs={3}>
-              <MenuItem menuItem={menuItemInfo} />
+            <Grid key={menuItemInfo.id} item xs={3}>
+              <MenuItem key={menuItemInfo.id} menuItem={menuItemInfo} />
             </Grid>
           ))}
         </Grid>

@@ -7,6 +7,7 @@ import RestaurantList from "./components/restaurant/RestaurantList";
 import Restaurant from "./components/restaurant/Restaurant";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AddItem from "./components/restaurant/AddItem";
 
 function App() {
   const [user, setUser] = useState({});
@@ -34,6 +35,9 @@ function App() {
           <li>
             <Link to="/restaurants">Restaurants</Link>
           </li>
+          <li>
+            <Link to="/restaurants/menu/add">Add Item</Link>
+          </li>
         </ul>
       </nav>
       <Switch>
@@ -48,7 +52,8 @@ function App() {
         </Route>
         <Route exact path="/register" component={() => <Register />} />
         <Route exact path="/restaurants" component={RestaurantList} />
-        <Route path="/restaurants/:id" component={Restaurant} />
+        <Route exact path="/restaurants/:id" component={Restaurant} />
+        <Route exact path="/restaurants/menu/add" component={AddItem} />
       </Switch>
     </Router>
   );
