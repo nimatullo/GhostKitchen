@@ -6,6 +6,8 @@ import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
 import { Grid } from "@material-ui/core";
 import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import { Route, Switch } from "react-router-dom";
+import SubmitOrder from "../cart/SubmitOrder";
 
 const Restaurant = ({
   match: {

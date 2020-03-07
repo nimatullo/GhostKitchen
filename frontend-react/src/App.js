@@ -14,6 +14,8 @@ import OwnerLogin from "./components/owner/OwnerLogin";
 import RegisterRestaurant from "./components/owner/RegisterRestaurant";
 import RestaurantCreationProvider from "./components/contexts/RestaurantCreationContext";
 import { GlobalContext } from "./components/contexts/GlobalContext";
+import AddExtraInfo from "./components/cart/AddExtraInfo";
+import SubmitOrder from "./components/cart/SubmitOrder";
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -30,7 +32,7 @@ function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
           </li>
           <li>
             <Link to="/login">Log In</Link>
@@ -45,7 +47,7 @@ function App() {
       </nav>
       <Switch>
         <GlobalContext.Provider value={value}>
-          <ProtectedRoute exact path="/" component={Home} />
+          <ProtectedRoute exact path="/home" component={Home} />
           <Route exact path="/login">
             <Login />
           </Route>
@@ -58,12 +60,14 @@ function App() {
             <Route exact path="/owner/login">
               <OwnerLogin />
             </Route>
+            <Route exact path="/order/submit" component={SubmitOrder} />
             <Route
               exact
               path="/owner/register/restaurants"
               component={RegisterRestaurant}
             />
           </RestaurantCreationProvider>
+          <Route exact path="/addExtraInfo" component={AddExtraInfo} />
         </GlobalContext.Provider>
       </Switch>
     </Router>

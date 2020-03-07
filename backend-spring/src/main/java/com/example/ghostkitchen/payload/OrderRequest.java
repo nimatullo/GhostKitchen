@@ -1,5 +1,7 @@
 package com.example.ghostkitchen.payload;
 
+import com.example.ghostkitchen.model.PaymentDetails;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -7,6 +9,19 @@ public class OrderRequest {
     List<MenuItemRequest> items;
     int numberOfItems;
     BigDecimal total;
+    PaymentDetails formOfPayment;
+
+    public List<MenuItemRequest> getItems() {
+        return items;
+    }
+
+    public PaymentDetails getFormOfPayment() {
+        return formOfPayment;
+    }
+
+    public void setFormOfPayment(PaymentDetails formOfPayment) {
+        this.formOfPayment = formOfPayment;
+    }
 
     public List<MenuItemRequest> getMenuItems() {
         return items;

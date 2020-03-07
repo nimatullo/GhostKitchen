@@ -22,6 +22,10 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     User user;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "paymentinfo_id", nullable = false)
+    PaymentDetails paymentInfo;
+
     UUID orderNumber;
 
     BigDecimal total;
@@ -39,6 +43,18 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_item_id"))
     List<MenuItem> items = new ArrayList<>();
+
+    public Order() {
+    }
+
+    public Order(User user,PaymentDetails paymentInfo,UUID orderNumber,BigDecimal total,int numberOfItems,Restaurant restaurant) {
+        this.user = user;
+        this.paymentInfo = paymentInfo;
+        this.orderNumber = orderNumber;
+        this.total = total;
+        this.numberOfItems = numberOfItems;
+        this.restaurant = restaurant;
+    }
 
     public List<MenuItem> getItems() {
         return items;
@@ -90,6 +106,14 @@ public class Order {
 
     public Restaurant getRestaurant() {
         return restaurant;
+    }
+
+    public PaymentDetails getPaymentInfo() {
+        return paymentInfo;
+    }
+
+    public void setPaymentInfo(PaymentDetails paymentInfo) {
+        this.paymentInfo = paymentInfo;
     }
 
     public void setRestaurant(Restaurant restaurant) {

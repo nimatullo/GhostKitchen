@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @RestController
 @RequestMapping("/user/")
@@ -98,5 +97,35 @@ public class UserController {
         else {
             return new ResponseEntity<>(new ApiResponse(false,"Please log in"),HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/addInfo")
+    public ResponseEntity<?> addInfo(@CurrentUser UserPrincipal principal,
+                                     @RequestBody AddPaymentAndAddressInfoRequest request) {
+        Optional<User> foundUser = userRepository.findById(principal.getId());
+        User currentUser = null;
+        if (foundUser.isPresent()) {
+            currentUser = foundUser.get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
+        }
+        currentUser.setPayment(request.getDetails());
+        currentUser.setAddress(request.getUserAddress());
+        userRepository.save(currentUser);
+        return ResponseEntity.ok(new ApiResponse(true, "Information added."));
+    }
+
+    @GetMapping("/paymentInfo")
+    public ResponseEntity<?> getPaymentInfo(@CurrentUser UserPrincipal principal) {
+        Optional<User> foundUser = userRepository.findById(principal.getId());
+        User currentUser = null;
+        if (foundUser.isPresent()) {
+            currentUser = foundUser.get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(currentUser.getPayment());
     }
 }

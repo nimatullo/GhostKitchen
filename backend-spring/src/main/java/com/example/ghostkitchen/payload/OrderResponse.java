@@ -4,11 +4,23 @@ import com.example.ghostkitchen.model.MenuItem;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 public class OrderResponse {
+    private UUID orderNumber;
     private int numberOfItems;
     private BigDecimal total;
     private List<MenuItem> menuItems;
+
+    public OrderResponse() {
+    }
+
+    public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems) {
+        this.orderNumber = orderNumber;
+        this.numberOfItems = numberOfItems;
+        this.total = total;
+        this.menuItems = menuItems;
+    }
 
     public int getNumberOfItems() {
         return numberOfItems;

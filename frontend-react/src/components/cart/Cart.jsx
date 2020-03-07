@@ -3,10 +3,19 @@ import { List, Button, Typography, MenuItem } from "@material-ui/core";
 import CartItem from "./CartItem";
 import { ItemContext } from "../contexts/ItemContext";
 import Axios from "axios";
-import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import {
+  useHistory,
+  Redirect,
+  Route,
+  BrowserRouter,
+  Switch,
+  Link
+} from "react-router-dom";
+import SubmitOrder from "./SubmitOrder";
 
 const Cart = ({ restaurantId }) => {
   const { items, total } = useContext(ItemContext);
+  const history = useHistory();
 
   const submitOrder = () => {
     const data = {
@@ -14,11 +23,12 @@ const Cart = ({ restaurantId }) => {
       numberOfItems: items.length,
       total: total
     };
-    Axios.post(
-      `${BASE_URL}/restaurants/${restaurantId}/submitOrder`,
-      data,
-      JWT_TOKEN
-    );
+    history.push({
+      pathname: "/order/submit",
+      items: { items },
+      total: { total },
+      restaurantId: { restaurantId }
+    });
   };
 
   if (items.length === 0) {

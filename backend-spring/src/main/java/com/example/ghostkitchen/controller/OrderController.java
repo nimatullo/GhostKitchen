@@ -2,9 +2,9 @@ package com.example.ghostkitchen.controller;
 
 import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.model.CurrentUser;
-import com.example.ghostkitchen.model.MenuItem;
 import com.example.ghostkitchen.model.Order;
 import com.example.ghostkitchen.model.Restaurant;
+import com.example.ghostkitchen.model.User;
 import com.example.ghostkitchen.payload.ApiResponse;
 import com.example.ghostkitchen.payload.OrderRequest;
 import com.example.ghostkitchen.payload.OrderResponse;
@@ -40,19 +40,18 @@ public class OrderController {
     public ResponseEntity<?> submitOrder(@CurrentUser UserPrincipal principal,@PathVariable Long id,
                                          @RequestBody OrderRequest request) {
         Optional<Restaurant> foundRestaurant = restaurantRepo.findById(id);
+        Optional<User> foundUser = userRepository.findById(principal.getId());
         Restaurant restaurant = null;
-        if (foundRestaurant.isPresent()) {
+        User currentUser = null;
+        if (foundRestaurant.isPresent() && foundUser.isPresent()) {
             restaurant = foundRestaurant.get();
+            currentUser = foundUser.get();
         }
         else {
             return new ResponseEntity<>(new ApiResponse(false,"Restaurant doesn't exist"),HttpStatus.NOT_FOUND);
         }
-        Order order = new Order();
-        order.setNumberOfItems(request.getNumberOfItems());
-        order.setTotal(request.getTotal());
-        order.setUser(userRepository.findById(principal.getId()).get());
-        order.setRestaurant(restaurant);
-        order.setOrderNumber(UUID.randomUUID());
+        Order order = new Order(currentUser,currentUser.getPayment(),UUID.randomUUID(),request.getTotal(),
+                request.getNumberOfItems(),restaurant);
         order.setItems(request
                 .getMenuItems()
                 .stream()
@@ -63,6 +62,23 @@ public class OrderController {
         return ResponseEntity.ok(new ApiResponse(true,"Order has been placed"));
     }
 
+    @GetMapping("/orderConfirmation/{orderNumber}")
+    public ResponseEntity<?> getOrderConfirmation(@PathVariable UUID orderNumber) {
+        Optional<Order> foundOrder = orderRepo.findByOrderNumber(orderNumber);
+        Order order = null;
+        if (foundOrder.isPresent()) {
+            order = foundOrder.get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false,"Order cannot be found"),HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
+                ,order.getItems()));
+    }
+
+    /*
+     * TODO: Change this method so it grabs the restaurant ID by using the owner's restaurant ID.
+     */
     @GetMapping("/restaurants/{id}/pastOrders")
     public ResponseEntity<?> getPastOrders(@PathVariable Long id) {
         Optional<Restaurant> foundRestaurant = restaurantRepo.findById(id);

@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     Long id;
 
@@ -35,9 +35,18 @@ public class User {
     String password;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_id")
+    @JoinColumn(name = "cart_id")
     Cart cart;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="address_id")
+    Address address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="payment_id")
+    PaymentDetails payment;
+
+    // For User's with ROLE_OWNER
     @OneToOne(cascade = CascadeType.ALL)
     private Restaurant restaurant;
 
@@ -54,6 +63,22 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public PaymentDetails getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentDetails payment) {
+        this.payment = payment;
     }
 
     public Restaurant getRestaurant() {
