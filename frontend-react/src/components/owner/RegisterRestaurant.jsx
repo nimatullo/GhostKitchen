@@ -3,13 +3,12 @@ import { TextField, Select, MenuItem, Button } from "@material-ui/core";
 import { RestaurantContext } from "../contexts/RestaurantCreationContext";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "../contexts/GlobalContext";
+import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 
 const RegisterRestaurant = () => {
   const { restaurantName, setRestaurantName, setAddress } = useContext(
     RestaurantContext
   );
-  const { jwtToken, baseUrl } = useContext(GlobalContext);
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -29,7 +28,7 @@ const RegisterRestaurant = () => {
       address: address,
       menuItems: []
     };
-    Axios.post(`${baseUrl}/owner/restaurants/add`, data, jwtToken).then(
+    Axios.post(`${BASE_URL}/owner/restaurants/add`, data, JWT_TOKEN).then(
       history.push("/restaurants/menu/add")
     );
   };

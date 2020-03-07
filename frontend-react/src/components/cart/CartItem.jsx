@@ -12,12 +12,13 @@ import { ItemContext } from "../contexts/ItemContext";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Axios from "axios";
 import Alert from "../Alert";
+import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 
 const CartItem = ({ itemInfo }) => {
-  const { removeItem, jwtToken } = useContext(ItemContext);
+  const { removeItem } = useContext(ItemContext);
   const [open, setOpen] = useState(false);
   const handleClick = item => {
-    Axios.put(`/cart/remove/${item.id}`, {}, jwtToken);
+    Axios.put(`${BASE_URL}/users/cart/remove/${item.id}`, {}, JWT_TOKEN);
     removeItem(item);
     setOpen(true);
     setTimeout(() => setOpen(false), 2000);

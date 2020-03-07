@@ -16,13 +16,6 @@ import RestaurantCreationProvider from "./components/contexts/RestaurantCreation
 import { GlobalContext } from "./components/contexts/GlobalContext";
 
 function App() {
-  const [jwtToken] = useState({
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("jwt")
-    }
-  });
-  const [baseUrl] = useState("http://localhost:3000");
-
   const [auth, setAuth] = useState(() => {
     const auth = localStorage.getItem("auth");
     if (auth) {
@@ -31,7 +24,7 @@ function App() {
       return false;
     }
   });
-  const value = { jwtToken, auth, setAuth, baseUrl };
+  const value = { auth, setAuth };
   return (
     <Router>
       <nav>

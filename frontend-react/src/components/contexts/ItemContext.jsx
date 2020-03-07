@@ -1,6 +1,6 @@
-import React, { createContext, Component, useContext } from "react";
-import { GlobalContext } from "../contexts/GlobalContext";
+import React, { createContext, Component, useContext, useState } from "react";
 import Axios from "axios";
+import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 
 export const ItemContext = createContext();
 
@@ -21,18 +21,8 @@ class ItemContextProvider extends Component {
     }
   };
 
-  getJwt() {
-    const { jwtToken } = useContext(GlobalContext);
-    return jwtToken;
-  }
-
-  getBaseUrl() {
-    const { BASE_URL } = useContext(GlobalContext);
-    return BASE_URL;
-  }
-
   componentDidMount() {
-    Axios.get(`${this.getBaseUrl}/cart`, this.getJwt).then(res => {
+    Axios.get(`${BASE_URL}/users/cart`, JWT_TOKEN).then(res => {
       this.setState({ items: res.data.items, total: res.data.total });
     });
   }

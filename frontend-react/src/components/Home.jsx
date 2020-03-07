@@ -1,15 +1,17 @@
 import React, { useContext, useState, useEffect } from "react";
 import { GlobalContext } from "./contexts/GlobalContext";
-
+import { JWT_TOKEN, BASE_URL } from "./constant/constantVariables";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const Home = () => {
-  const { auth, baseUrl, jwtToken } = useContext(GlobalContext);
+  const { auth } = useContext(GlobalContext);
   const [firstName, setFirstName] = useState("");
+  const history = useHistory();
   useEffect(() => {
     if (auth) {
       axios
-        .get(`${baseUrl}/user/currentUser`, jwtToken)
+        .get(`${BASE_URL}/user/currentUser`, JWT_TOKEN)
         .then(res => res.data.name)
         .then(data => {
           setFirstName(data.firstName);
@@ -20,7 +22,7 @@ const Home = () => {
   const logOut = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("auth");
-    this.props.history.push("/");
+    history.push("/login");
   };
 
   return (

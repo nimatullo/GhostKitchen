@@ -2,12 +2,11 @@ import React, { useContext, useState } from "react";
 import { List, Button, Typography, MenuItem } from "@material-ui/core";
 import CartItem from "./CartItem";
 import { ItemContext } from "../contexts/ItemContext";
-import { GlobalContext } from "../contexts/GlobalContext";
 import Axios from "axios";
+import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 
 const Cart = ({ restaurantId }) => {
   const { items, total } = useContext(ItemContext);
-  const { BASE_URL, jwtToken } = useContext(GlobalContext);
 
   const submitOrder = () => {
     const data = {
@@ -18,7 +17,7 @@ const Cart = ({ restaurantId }) => {
     Axios.post(
       `${BASE_URL}/restaurants/${restaurantId}/submitOrder`,
       data,
-      jwtToken
+      JWT_TOKEN
     );
   };
 

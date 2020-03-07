@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import MenuItem from "../menu/MenuItem";
 import Address from "./Address";
 import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
 import { Grid } from "@material-ui/core";
+import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 
 const Restaurant = ({
   match: {
     params: { id }
   }
 }) => {
-  const jwtToken = {
-    headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
-  };
   const [menu, setMenu] = useState([]);
   const [restaurant, setRestaurant] = useState({});
   const [address, setAddress] = useState({});
 
   useEffect(() => {
-    Axios.get(`/restaurants/${id}/menu`, jwtToken)
+    Axios.get(`${BASE_URL}/restaurants/${id}/menu`, JWT_TOKEN)
       .then(res => res.data)
       .then(data => setMenu(data.menuItems));
   }, []);
 
   useEffect(() => {
-    Axios.get(`/restaurants/${id}`, jwtToken)
+    Axios.get(`${BASE_URL}/restaurants/${id}`, JWT_TOKEN)
       .then(res => {
         setRestaurant(res.data);
         return res.data.address;

@@ -12,14 +12,13 @@ import {
 import { ItemContext } from "../contexts/ItemContext";
 import Alert from "../Alert";
 import Axios from "axios";
-import { GlobalContext } from "../contexts/GlobalContext";
+import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 
 const MenuItem = ({ menuItem }) => {
   const { addToItems } = useContext(ItemContext);
-  const { jwtToken, BASE_URL } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const handleClick = id => {
-    Axios.post(`${BASE_URL}/cart/add/${id}`, {}, jwtToken).then(res => {
+    Axios.post(`${BASE_URL}/users/cart/add/${id}`, {}, JWT_TOKEN).then(res => {
       addToItems(menuItem);
       setOpen(true);
       setTimeout(() => setOpen(false), 2000);
