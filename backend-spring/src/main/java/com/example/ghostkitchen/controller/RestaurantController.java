@@ -4,12 +4,14 @@ import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.model.CurrentUser;
 import com.example.ghostkitchen.model.MenuItem;
 import com.example.ghostkitchen.model.Restaurant;
+import com.example.ghostkitchen.model.User;
 import com.example.ghostkitchen.payload.ApiResponse;
 import com.example.ghostkitchen.payload.RestaurantRequest;
 import com.example.ghostkitchen.payload.RestaurantResponse;
 import com.example.ghostkitchen.repo.MenuItemRepo;
 import com.example.ghostkitchen.repo.OrderRepo;
 import com.example.ghostkitchen.repo.RestaurantRepo;
+import com.example.ghostkitchen.repo.UserRepository;
 import com.example.ghostkitchen.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -45,6 +47,9 @@ public class RestaurantController {
     OrderRepo orderRepo;
 
     @Autowired
+    UserRepository userRepo;
+
+    @Autowired
     FileStorageService fileStorageService;
 
     @GetMapping("/restaurants/{id}")
@@ -68,10 +73,11 @@ public class RestaurantController {
      * @param owner   Currently logged in user.
      * @return Success Http Status Code ResponseEntity
      */
-    @PostMapping("/restaurants/add")
+    @PostMapping("/owner/restaurants/add")
     public ResponseEntity<?> addRestaurant(@RequestBody RestaurantRequest request,
                                            @CurrentUser UserPrincipal owner) {
-        Restaurant restaurant = new Restaurant(request.getRestaurantName(),request.getAddress(),request.getOwner(),
+        User restaurantOwner = userRepo.findById(owner.getId()).get();
+        Restaurant restaurant = new Restaurant(request.getRestaurantName(),request.getAddress(),restaurantOwner,
                 request.getRating(),request.getNumberOfReviews());
         request.getMenuItems().forEach(item -> {
             MenuItem createdItem = new MenuItem(item.getName(),item.getPrice(),item.getDescription());
@@ -100,13 +106,12 @@ public class RestaurantController {
         }
 
         List<MenuItem> menu = menuItemRepo.findByRestaurantId(foundRestaurant.getId());
-        RestaurantResponse response = new RestaurantResponse(foundRestaurant.getName(),foundRestaurant.getOwner(),
-                foundRestaurant.getAddress(),menu,foundRestaurant.getRating(),
-                foundRestaurant.getNumberOfReviews());
+        RestaurantResponse response = new RestaurantResponse(foundRestaurant.getName(),foundRestaurant.getAddress(),
+                menu,foundRestaurant.getRating(),foundRestaurant.getNumberOfReviews());
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/restaurants/{id}/menu/add")
+    @PostMapping("/owner/restaurants/{id}/menu/add")
     public ResponseEntity<?> addMenuItem(@PathVariable Long id,
                                          @RequestParam MultipartFile picture,
                                          @RequestParam String name,

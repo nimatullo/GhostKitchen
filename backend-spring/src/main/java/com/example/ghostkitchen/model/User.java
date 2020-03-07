@@ -38,6 +38,9 @@ public class User {
     @JoinColumn(name = "card_id")
     Cart cart;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Restaurant restaurant;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="user_roles",
                 joinColumns = @JoinColumn(name="user_id"),
@@ -51,6 +54,14 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public Cart getCart() {

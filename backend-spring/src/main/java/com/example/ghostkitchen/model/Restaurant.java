@@ -16,8 +16,8 @@ public class Restaurant {
     private Address address;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "name_id", referencedColumnName = "id")
-    private Name owner;
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User owner;
 
     @DecimalMin("0.0")
     @DecimalMax("5.0")
@@ -29,7 +29,7 @@ public class Restaurant {
 
     }
 
-    public Restaurant(String name,Address address,Name owner,double rating,int numberOfReviews) {
+    public Restaurant(String name,Address address,User owner,double rating,int numberOfReviews) {
         this.restaurantName = name;
         this.address = address;
         this.owner = owner;
@@ -86,15 +86,15 @@ public class Restaurant {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Name getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(Name owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

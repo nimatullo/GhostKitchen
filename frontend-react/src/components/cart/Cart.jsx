@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import { List, Button, Typography, MenuItem } from "@material-ui/core";
 import CartItem from "./CartItem";
 import { ItemContext } from "../contexts/ItemContext";
+import { GlobalContext } from "../contexts/GlobalContext";
 import Axios from "axios";
 
 const Cart = ({ restaurantId }) => {
-  const { items, total, jwtToken } = useContext(ItemContext);
+  const { items, total } = useContext(ItemContext);
+  const { BASE_URL, jwtToken } = useContext(GlobalContext);
 
   const submitOrder = () => {
     const data = {
@@ -13,7 +15,11 @@ const Cart = ({ restaurantId }) => {
       numberOfItems: items.length,
       total: total
     };
-    Axios.post(`/restaurants/${restaurantId}/submitOrder`, data, jwtToken);
+    Axios.post(
+      `${BASE_URL}/restaurants/${restaurantId}/submitOrder`,
+      data,
+      jwtToken
+    );
   };
 
   if (items.length === 0) {

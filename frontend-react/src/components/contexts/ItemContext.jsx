@@ -1,4 +1,5 @@
-import React, { createContext, Component } from "react";
+import React, { createContext, Component, useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
 import Axios from "axios";
 
 export const ItemContext = createContext();
@@ -7,11 +8,6 @@ class ItemContextProvider extends Component {
   state = {
     items: [],
     total: 0,
-    jwtToken: {
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
-    },
     addToItems: item => {
       this.setState({ items: [...this.state.items, item] });
       this.setState({ total: this.state.total + item.price });
@@ -25,8 +21,18 @@ class ItemContextProvider extends Component {
     }
   };
 
+  getJwt() {
+    const { jwtToken } = useContext(GlobalContext);
+    return jwtToken;
+  }
+
+  getBaseUrl() {
+    const { BASE_URL } = useContext(GlobalContext);
+    return BASE_URL;
+  }
+
   componentDidMount() {
-    Axios.get("/cart/", this.state.jwtToken).then(res => {
+    Axios.get(`${this.getBaseUrl}/cart`, this.getJwt).then(res => {
       this.setState({ items: res.data.items, total: res.data.total });
     });
   }

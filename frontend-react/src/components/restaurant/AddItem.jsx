@@ -1,21 +1,30 @@
-import React, { useState } from "react";
-import { TextField, Button } from "@material-ui/core";
+import React, { useState, useContext } from "react";
+import { TextField, Button, List } from "@material-ui/core";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
+import { RestaurantContext } from "../contexts/RestaurantCreationContext";
+import RegisterRestaurantItem from "../owner/RegisterRestaurantItem";
 
 const AddItem = () => {
+  const { items, addToItems } = useContext(RestaurantContext);
   const [price, setPrice] = useState();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [picture, setPicture] = useState(null);
 
   const addToMenu = () => {
+    addToItems({
+      picture: picture,
+      name: name,
+      description: description,
+      price: price
+    });
     const data = new FormData();
     data.append("picture", picture);
     data.append("name", name);
     data.append("price", price);
     data.append("description", description);
-    Axios.post(`/restaurants/1/menu/add`, data, {
+    Axios.post(`http://localhost:3000/owner/restaurants/1/menu/add`, data, {
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       body: data
     });
@@ -28,6 +37,12 @@ const AddItem = () => {
 
   return (
     <div>
+      <List>
+        {items.map(menuItem => (
+          <RegisterRestaurantItem item={menuItem} />
+        ))}
+      </List>
+
       <form>
         <div>
           <TextField

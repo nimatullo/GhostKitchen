@@ -1,12 +1,14 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { TextField, Button, CircularProgress } from "@material-ui/core";
 import validate from "../validateLogin";
 import useForm from "../useForm";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { GlobalContext } from "../contexts/GlobalContext";
 
-export default function Login({ setAuth }) {
+export default function Login() {
+  const { setAuth } = useContext(GlobalContext);
   const [isLoading, setLoading] = useState(false);
   const { handleChange, handleSubmit, values, errors } = useForm(
     logIn,
