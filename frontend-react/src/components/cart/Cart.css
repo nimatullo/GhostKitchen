@@ -1,3 +1,61 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
 .cart-component {
-  width: 100%;
+  height: 100vh;
+  padding: 2em;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.07);
+  border: 1px solid #ebebeb;
+  margin-right: 1em;
+  border-radius: 10px;
+  animation: fadein 0.3s;
+}
+
+.subtotal {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.buttonContainer {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button.submitOrder {
+  background-color: #13aa37;
+  color: white;
+  border: 1px solid #12a234;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 90%;
+  height: 40px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: ease all 0.3s;
+}
+
+button.submitOrder:hover {
+  background-color: #11912f;
+  transition: ease all 0.3s;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.07);
+}
+
+.emptyIndicator {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

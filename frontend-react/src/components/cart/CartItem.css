@@ -1,0 +1,23 @@
+.cart-item-container {
+  display: flex;
+  flex-direction: column;
+  animation: fadein 0.3s;
+}
+
+.cart-item-content {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: space-between;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.cart-item-content h5.itemPrice {
+  text-align: right;
+}
+
+.cart-item-content button.removeItem {
+  width: 50px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

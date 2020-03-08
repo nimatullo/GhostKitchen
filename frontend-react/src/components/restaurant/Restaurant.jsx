@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import MenuItem from "../menu/MenuItem";
-import Address from "./Address";
 import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
-import { Grid, List, ListItem } from "@material-ui/core";
 import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
-import { Route, Switch } from "react-router-dom";
-import SubmitOrder from "../cart/SubmitOrder";
-import LocalMallIcon from "@material-ui/icons/LocalMall";
 import "./Restaurant.css";
+import Ratings from "react-ratings-declarative";
+import { Divider } from "@material-ui/core";
 
 const Restaurant = ({
   match: {
@@ -42,13 +39,26 @@ const Restaurant = ({
       <ItemContextProvider>
         <div className="restaurant-main">
           <div className="restaurantInfo">
-            <h1>{restaurant.name}</h1>
-            <h3>{address.streetAddress}</h3>
-            <h3>
-              {address.city}, {address.state}
-            </h3>
-            <h3>{address.zip}</h3>
+            <div className="address">
+              <div className="name">{restaurant.name}</div>
+              <div className="streetAddress">{address.streetAddress}</div>
+            </div>
+            <div className="rating">
+              <Ratings
+                rating={restaurant.rating}
+                widgetDimensions="20px"
+                widgetRatedColors="gold"
+              >
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+              </Ratings>
+              <div className="number">{restaurant.numberOfReviews} Ratings</div>
+            </div>
           </div>
+          <Divider />
           <div className="menu">
             {menu.map(menuItemInfo => (
               <MenuItem

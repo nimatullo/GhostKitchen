@@ -1,16 +1,8 @@
-import React, { useContext, useState } from "react";
-import { List, Button, Typography, MenuItem } from "@material-ui/core";
+import React, { useContext } from "react";
+import { Typography, Divider } from "@material-ui/core";
 import CartItem from "./CartItem";
 import { ItemContext } from "../contexts/ItemContext";
-import Axios from "axios";
-import {
-  useHistory,
-  Redirect,
-  Route,
-  BrowserRouter,
-  Switch,
-  Link
-} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./Cart.css";
 
 const Cart = ({ restaurantId }) => {
@@ -31,27 +23,39 @@ const Cart = ({ restaurantId }) => {
     });
   };
 
-  if (items.length === 0) {
-    return (
-      <div>
-        <Typography color="textSecondary">Your cart is empty.</Typography>
-      </div>
-    );
-  }
+  const content = () => {
+    if (items.length === 0) {
+      return (
+        <div className="emptyIndicator">
+          <Typography color="textSecondary">
+            Click on any item to add it to your bag.
+          </Typography>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <h2>Your Order</h2>
+          {items.map(item => (
+            <CartItem key={item.id} itemInfo={item} />
+          ))}
 
-  return (
-    <div className="cart-component">
-      <List>
-        {items.map(item => (
-          <CartItem key={item.id} itemInfo={item} />
-        ))}
-      </List>
-      <p>${total.toFixed(2)}</p>
-      <Button onClick={submitOrder} variant="contained" color="primary">
-        Submit Order
-      </Button>
-    </div>
-  );
+          <div className="subtotal">
+            <div>Order subtotal:</div>
+            <div>${total.toFixed(2)}</div>
+          </div>
+          <Divider />
+          <div className="buttonContainer">
+            <button className="submitOrder" onClick={submitOrder}>
+              Continue To Checkout
+            </button>
+          </div>
+        </div>
+      );
+    }
+  };
+
+  return <div className="cart-component">{content()}</div>;
 };
 
 export default Cart;

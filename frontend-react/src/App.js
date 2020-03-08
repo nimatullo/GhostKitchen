@@ -16,6 +16,7 @@ import RestaurantCreationProvider from "./components/contexts/RestaurantCreation
 import { GlobalContext } from "./components/contexts/GlobalContext";
 import AddExtraInfo from "./components/cart/AddExtraInfo";
 import SubmitOrder from "./components/cart/SubmitOrder";
+import logo from "./vectors/logo.svg";
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -31,6 +32,9 @@ function App() {
     <Router>
       <nav>
         <ul>
+          <li>
+            <img src={logo} alt="Ghost Kitchen" />
+          </li>
           <li>
             <Link to="/home">Home</Link>
           </li>

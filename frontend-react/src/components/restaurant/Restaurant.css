@@ -1,20 +1,46 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+* {
+  font-family: "Open Sans", sans-serif;
+}
 main {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 80% 20%;
   justify-content: space-evenly;
 }
 
 .cart {
-  width: 50%;
   margin-left: 1em;
-  border: 1px solid red;
 }
 
 .menu {
-  border: 1px solid red;
-  margin-right: 50%;
+  padding: 1em;
   display: grid;
   grid-template-columns: auto auto;
   row-gap: 1em;
   column-gap: 1em;
-  width: 100%;
+}
+
+.rating > div {
+  width: fit-content;
+  margin: 1em;
+}
+
+.rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.rating .number {
+  color: gray;
+}
+
+.address {
+  height: fit-content;
+  padding-left: 1em;
+}
+
+.address .name {
+  font-size: 2rem;
 }
