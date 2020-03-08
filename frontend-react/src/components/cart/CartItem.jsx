@@ -40,7 +40,7 @@ const CartItem = ({ itemInfo }) => {
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
-      <Divider variant="inset" component="li" />
+      <Divider />
       <Snackbar open={open}>
         <Alert severity="success">Item removed</Alert>
       </Snackbar>

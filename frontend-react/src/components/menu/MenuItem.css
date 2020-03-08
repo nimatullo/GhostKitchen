@@ -1,0 +1,15 @@
+.menuItem {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 3fr 1fr;
+  border: 1px solid #dadada;
+  border-radius: 5px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.07);
+  row-gap: 1em;
+  column-gap: 1em;
+  width: 100%;
+}
+
+.itemImg {
+  width: 100%;
+}

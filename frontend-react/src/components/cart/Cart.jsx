@@ -11,7 +11,7 @@ import {
   Switch,
   Link
 } from "react-router-dom";
-import SubmitOrder from "./SubmitOrder";
+import "./Cart.css";
 
 const Cart = ({ restaurantId }) => {
   const { items, total } = useContext(ItemContext);
@@ -40,7 +40,7 @@ const Cart = ({ restaurantId }) => {
   }
 
   return (
-    <div>
+    <div className="cart-component">
       <List>
         {items.map(item => (
           <CartItem key={item.id} itemInfo={item} />

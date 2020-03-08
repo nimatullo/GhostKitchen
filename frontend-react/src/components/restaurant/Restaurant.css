@@ -1,0 +1,20 @@
+main {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.cart {
+  width: 50%;
+  margin-left: 1em;
+  border: 1px solid red;
+}
+
+.menu {
+  border: 1px solid red;
+  margin-right: 50%;
+  display: grid;
+  grid-template-columns: auto auto;
+  row-gap: 1em;
+  column-gap: 1em;
+  width: 100%;
+}

@@ -13,6 +13,7 @@ import { ItemContext } from "../contexts/ItemContext";
 import Alert from "../Alert";
 import Axios from "axios";
 import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import "./MenuItem.css";
 
 const MenuItem = ({ menuItem }) => {
   const { addToItems } = useContext(ItemContext);
@@ -26,8 +27,25 @@ const MenuItem = ({ menuItem }) => {
   };
 
   return (
-    <Card style={{ maxWidth: "500px" }}>
-      <CardMedia style={{ height: "250px" }} image={menuItem.urlPath} />
+    <div className="menuItem">
+      <img className="itemImg" src={menuItem.urlPath} alt={menuItem.name} />
+      <div className="itemInfo">
+        <h2>{menuItem.name}</h2>
+        <p>{menuItem.description}</p>
+      </div>
+      <div className="button_price">
+        <p>${menuItem.price.toFixed(2)}</p>
+        <Button
+          startIcon={<AddShoppingCartIcon />}
+          variant="contained"
+          color="secondary"
+          onClick={() => handleClick(menuItem.id)}
+        >
+          Add To Cart
+        </Button>
+      </div>
+
+      {/* <CardMedia style={{ height: "250px" }} image={menuItem.urlPath} />
       <CardContent>
         <Typography component="h5" color="primary">
           {menuItem.name}
@@ -48,11 +66,11 @@ const MenuItem = ({ menuItem }) => {
         >
           Add To Cart
         </Button>
-      </CardActions>
+      </CardActions> */}
       <Snackbar open={open}>
         <Alert severity="success">Item added</Alert>
       </Snackbar>
-    </Card>
+    </div>
   );
 };
 

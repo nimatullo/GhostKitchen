@@ -4,10 +4,12 @@ import MenuItem from "../menu/MenuItem";
 import Address from "./Address";
 import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
-import { Grid } from "@material-ui/core";
+import { Grid, List, ListItem } from "@material-ui/core";
 import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 import { Route, Switch } from "react-router-dom";
 import SubmitOrder from "../cart/SubmitOrder";
+import LocalMallIcon from "@material-ui/icons/LocalMall";
+import "./Restaurant.css";
 
 const Restaurant = ({
   match: {
@@ -36,24 +38,32 @@ const Restaurant = ({
   }, []);
 
   return (
-    <div style={{ margin: "1em" }}>
+    <main>
       <ItemContextProvider>
-        <Cart restaurantId={id} />
-        <h1>{restaurant.name}</h1>
-        <h3>{address.streetAddress}</h3>
-        <h3>
-          {address.city}, {address.state}
-        </h3>
-        <h3>{address.zip}</h3>
-        <Grid container spacing={2}>
-          {menu.map(menuItemInfo => (
-            <Grid key={menuItemInfo.id} item xs={3}>
-              <MenuItem key={menuItemInfo.id} menuItem={menuItemInfo} />
-            </Grid>
-          ))}
-        </Grid>
+        <div className="restaurant-main">
+          <div className="restaurantInfo">
+            <h1>{restaurant.name}</h1>
+            <h3>{address.streetAddress}</h3>
+            <h3>
+              {address.city}, {address.state}
+            </h3>
+            <h3>{address.zip}</h3>
+          </div>
+          <div className="menu">
+            {menu.map(menuItemInfo => (
+              <MenuItem
+                className="item"
+                key={menuItemInfo.id}
+                menuItem={menuItemInfo}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="cart">
+          <Cart className="cart-component" restaurantId={id} />
+        </div>
       </ItemContextProvider>
-    </div>
+    </main>
   );
 };
 
