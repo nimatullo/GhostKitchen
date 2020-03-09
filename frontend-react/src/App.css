@@ -8,6 +8,8 @@ nav {
   margin-bottom: 2em;
   background-color: #ff2f3b;
   box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.07);
+  font-size: 1.1em;
+  font-weight: 600;
 }
 
 nav ul {
@@ -22,6 +24,10 @@ nav ul li {
   list-style-type: none;
   margin-left: 1em;
   margin-right: 1em;
+}
+
+.nav-link:hover {
+  color: #fde581;
 }
 
 nav ul li:first-child {

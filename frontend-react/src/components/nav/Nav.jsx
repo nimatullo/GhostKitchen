@@ -14,10 +14,14 @@ const Nav = () => {
       return (
         <div>
           <li>
-            <Link to="/login">Log In</Link>
+            <Link className="nav-link" to="/login">
+              Log In
+            </Link>
           </li>
           <li>
-            <Link to="/register">Register</Link>
+            <Link className="nav-link" to="/register">
+              Register
+            </Link>
           </li>
         </div>
       );
@@ -31,10 +35,14 @@ const Nav = () => {
           <img src={logo} alt="Ghost Kitchen" />
         </li>
         <li>
-          <Link to="/home">Home</Link>
+          <Link className="nav-link" to="/home">
+            Home
+          </Link>
         </li>
         <li>
-          <Link to="/restaurants">Restaurants</Link>
+          <Link className="nav-link" to="/restaurants">
+            Restaurants
+          </Link>
         </li>
         {user()}
       </ul>

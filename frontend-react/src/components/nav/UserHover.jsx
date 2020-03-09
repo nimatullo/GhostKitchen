@@ -12,6 +12,7 @@ const UserHover = () => {
   const logOut = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("auth");
+    localStorage.removeItem("name");
     setName("");
     history.push("/login");
   };
@@ -20,11 +21,13 @@ const UserHover = () => {
     if (hovered) {
       return (
         <div className="hoverMenu">
-          <div>User Settings</div>
+          <div className="nav-link">User Settings</div>
           <Divider />
-          <div>Past Orders</div>
+          <div className="nav-link">Past Orders</div>
           <Divider />
-          <div onClick={logOut}>Log Out</div>
+          <div className="nav-link" onClick={logOut}>
+            Log Out
+          </div>
         </div>
       );
     } else {
@@ -39,7 +42,7 @@ const UserHover = () => {
         setTimeout(() => setHovered(false));
       }}
     >
-      <div className="welcome">
+      <div className="welcome nav-link">
         Welcome {name}! <ArrowDropDownIcon />
       </div>
       {menu()}

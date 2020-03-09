@@ -31,6 +31,7 @@ export default function Login() {
           setJwtToken(res.data.accessToken);
           localStorage.setItem("auth", true);
           localStorage.setItem("jwt", res.data.accessToken);
+          localStorage.setItem("name", res.data.firstName);
           history.push("/");
         } else {
           setErrorMsg("Email or password is incorrect.");

@@ -18,6 +18,7 @@
 }
 
 .welcome {
+  cursor: default;
   color: white;
   display: flex;
   align-items: center;

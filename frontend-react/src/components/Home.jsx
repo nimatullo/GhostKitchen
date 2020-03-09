@@ -5,7 +5,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
-  const { auth, setName } = useContext(GlobalContext);
+  const { auth, setName, name } = useContext(GlobalContext);
   const history = useHistory();
   useEffect(() => {
     if (auth) {
@@ -27,6 +27,7 @@ const Home = () => {
 
   return (
     <div>
+      <h3>Hello {name}!</h3>
       <button onClick={logOut}>Log Out</button>
     </div>
   );

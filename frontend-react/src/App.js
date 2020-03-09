@@ -31,7 +31,7 @@ function App() {
       };
     }
   });
-  const [name, setName] = useState("");
+  const [name, setName] = useState(localStorage.getItem("name"));
   const [auth, setAuth] = useState(() => {
     const auth = localStorage.getItem("auth");
     if (auth) {
