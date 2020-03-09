@@ -71,11 +71,12 @@ public class OwnerController {
                         request.getPassword()
                 )
         );
+        UserPrincipal currentUser = (UserPrincipal) authentication.getPrincipal();
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthResponse(jwt, currentUser.getName().getFirstName()));
     }
 
     @PutMapping("/update")

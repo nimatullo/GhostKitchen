@@ -16,9 +16,22 @@ import RestaurantCreationProvider from "./components/contexts/RestaurantCreation
 import { GlobalContext } from "./components/contexts/GlobalContext";
 import AddExtraInfo from "./components/cart/AddExtraInfo";
 import SubmitOrder from "./components/cart/SubmitOrder";
-import logo from "./vectors/logo.svg";
+import Nav from "./components/nav/Nav";
 
 function App() {
+  const [jwtToken, setJwtToken] = useState(() => {
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      return "";
+    } else {
+      return {
+        headers: {
+          Authorization: "Bearer " + { token }
+        }
+      };
+    }
+  });
+  const [name, setName] = useState("");
   const [auth, setAuth] = useState(() => {
     const auth = localStorage.getItem("auth");
     if (auth) {
@@ -27,30 +40,12 @@ function App() {
       return false;
     }
   });
-  const value = { auth, setAuth };
+  const value = { setName, auth, setAuth, name, setJwtToken, jwtToken };
   return (
-    <Router>
-      <nav>
-        <ul>
-          <li>
-            <img src={logo} alt="Ghost Kitchen" />
-          </li>
-          <li>
-            <Link to="/home">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Log In</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/restaurants">Restaurants</Link>
-          </li>
-        </ul>
-      </nav>
-      <Switch>
-        <GlobalContext.Provider value={value}>
+    <GlobalContext.Provider value={value}>
+      <Router>
+        <Nav />
+        <Switch>
           <ProtectedRoute exact path="/home" component={Home} />
           <Route exact path="/login">
             <Login />
@@ -72,9 +67,9 @@ function App() {
             />
           </RestaurantCreationProvider>
           <Route exact path="/addExtraInfo" component={AddExtraInfo} />
-        </GlobalContext.Provider>
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+    </GlobalContext.Provider>
   );
 }
 

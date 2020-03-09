@@ -67,10 +67,12 @@ public class UserController {
                 )
         );
 
+        UserPrincipal currentUser = (UserPrincipal) authentication.getPrincipal();
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthResponse(jwt));
+        return ResponseEntity.ok(new JwtAuthResponse(jwt, currentUser.getName().getFirstName()));
     }
 
     @GetMapping("/currentUser")

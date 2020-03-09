@@ -8,7 +8,7 @@ import axios from "axios";
 import { GlobalContext } from "../contexts/GlobalContext";
 
 export default function Login() {
-  const { setAuth } = useContext(GlobalContext);
+  const { setAuth, setName, setJwtToken } = useContext(GlobalContext);
   const [isLoading, setLoading] = useState(false);
   const { handleChange, handleSubmit, values, errors } = useForm(
     logIn,
@@ -20,13 +20,15 @@ export default function Login() {
   function logIn() {
     setLoading(true);
     axios
-      .put("/user/login", {
+      .put("user/login", {
         email: values.email,
         password: values.password
       })
       .then(res => {
         if (res.status === 200) {
           setAuth(true);
+          setName(res.data.firstName);
+          setJwtToken(res.data.accessToken);
           localStorage.setItem("auth", true);
           localStorage.setItem("jwt", res.data.accessToken);
           history.push("/");

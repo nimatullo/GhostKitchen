@@ -5,8 +5,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 const Home = () => {
-  const { auth } = useContext(GlobalContext);
-  const [firstName, setFirstName] = useState("");
+  const { auth, setName } = useContext(GlobalContext);
   const history = useHistory();
   useEffect(() => {
     if (auth) {
@@ -14,7 +13,7 @@ const Home = () => {
         .get(`${BASE_URL}/user/currentUser`, JWT_TOKEN)
         .then(res => res.data.name)
         .then(data => {
-          setFirstName(data.firstName);
+          setName(data.firstName);
         });
     }
   }, []);
@@ -22,13 +21,13 @@ const Home = () => {
   const logOut = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("auth");
+    setName("");
     history.push("/login");
   };
 
   return (
     <div>
       <button onClick={logOut}>Log Out</button>
-      <div>Hello {firstName}!</div>
     </div>
   );
 };
