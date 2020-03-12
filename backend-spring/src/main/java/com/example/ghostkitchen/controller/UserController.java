@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user/")
 public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -76,12 +75,11 @@ public class UserController {
     }
 
     @GetMapping("/currentUser")
-    @ResponseBody
     public UserPrincipal currentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
         return userPrincipal;
     }
 
-    @PutMapping("/update")
+    @PutMapping("user/update")
     public ResponseEntity<ApiResponse> updateInformation(@CurrentUser UserPrincipal currentUser,
                                                          @RequestBody UpdateUserRequest updateUser) {
         Optional<User> foundUser = userRepository.findById(currentUser.getId());
@@ -101,7 +99,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/addInfo")
+    @PostMapping("user/addInfo")
     public ResponseEntity<?> addInfo(@CurrentUser UserPrincipal principal,
                                      @RequestBody AddPaymentAndAddressInfoRequest request) {
         Optional<User> foundUser = userRepository.findById(principal.getId());
@@ -118,7 +116,7 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse(true, "Information added."));
     }
 
-    @GetMapping("/paymentInfo")
+    @GetMapping("user/paymentInfo")
     public ResponseEntity<?> getPaymentInfo(@CurrentUser UserPrincipal principal) {
         Optional<User> foundUser = userRepository.findById(principal.getId());
         User currentUser = null;

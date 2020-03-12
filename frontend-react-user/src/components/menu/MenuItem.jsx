@@ -10,7 +10,13 @@ const MenuItem = ({ menuItem }) => {
   const { addToItems } = useContext(ItemContext);
   const [open, setOpen] = useState(false);
   const handleClick = id => {
-    Axios.post(`${BASE_URL}/users/cart/add/${id}`, {}, JWT_TOKEN).then(res => {
+    Axios.post(
+      `${BASE_URL}/users/cart/add/${id}`,
+      {},
+      {
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      }
+    ).then(res => {
       addToItems(menuItem);
       setOpen(true);
       setTimeout(() => setOpen(false), 2000);

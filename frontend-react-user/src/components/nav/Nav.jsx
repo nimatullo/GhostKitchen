@@ -1,13 +1,12 @@
-import React, { useState, useContext } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import logo from "./vectors/logo.svg";
 import { GlobalContext } from "../contexts/GlobalContext";
 import UserHover from "./UserHover";
 
 const Nav = () => {
   const { name } = useContext(GlobalContext);
-  const history = useHistory();
-  const user = () => {
+  const loggedIn = () => {
     if (name) {
       return <UserHover />;
     } else {
@@ -44,7 +43,7 @@ const Nav = () => {
             Restaurants
           </Link>
         </li>
-        {user()}
+        {loggedIn()}
       </ul>
     </nav>
   );

@@ -20,7 +20,7 @@ export default function Login() {
   function logIn() {
     setLoading(true);
     axios
-      .put("user/login", {
+      .put("/login", {
         email: values.email,
         password: values.password
       })

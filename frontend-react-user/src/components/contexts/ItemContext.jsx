@@ -1,6 +1,6 @@
 import React, { createContext, Component, useContext, useState } from "react";
 import Axios from "axios";
-import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant/constantVariables";
 
 export const ItemContext = createContext();
 
@@ -22,7 +22,8 @@ class ItemContextProvider extends Component {
   };
 
   componentDidMount() {
-    Axios.get(`${BASE_URL}/users/cart`, JWT_TOKEN).then(res => {
+    console.log(this.props.jwtToken);
+    Axios.get(`${BASE_URL}/users/cart`, this.props.jwtToken).then(res => {
       this.setState({ items: res.data.items, total: res.data.total });
     });
   }

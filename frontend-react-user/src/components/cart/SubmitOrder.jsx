@@ -11,14 +11,18 @@ const SubmitOrder = props => {
   const [paymentInfo, setPaymentInfo] = useState({});
 
   useEffect(() => {
-    Axios.get(`${BASE_URL}/users/cart`, JWT_TOKEN).then(res => {
+    Axios.get(`${BASE_URL}/users/cart`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    }).then(res => {
       setItems(res.data.items);
       setTotal(res.data.total);
     });
   }, []);
 
   useEffect(() => {
-    Axios.get(`${BASE_URL}/user/paymentInfo`, JWT_TOKEN).then(res => {
+    Axios.get(`${BASE_URL}/user/paymentInfo`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    }).then(res => {
       setPaymentInfo(res.data);
     });
   }, []);

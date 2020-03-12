@@ -7,6 +7,7 @@ import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 import "./Restaurant.css";
 import Ratings from "react-ratings-declarative";
 import { Divider } from "@material-ui/core";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 const Restaurant = ({
   match: {
@@ -16,15 +17,18 @@ const Restaurant = ({
   const [menu, setMenu] = useState([]);
   const [restaurant, setRestaurant] = useState({});
   const [address, setAddress] = useState({});
+  const { jwtToken } = useContext(GlobalContext);
 
   useEffect(() => {
-    Axios.get(`${BASE_URL}/restaurants/${id}/menu`, JWT_TOKEN)
+    Axios.get(`${BASE_URL}/restaurants/${id}/menu`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    })
       .then(res => res.data)
       .then(data => setMenu(data.menuItems));
-  }, []);
+  }, [jwtToken]);
 
   useEffect(() => {
-    Axios.get(`${BASE_URL}/restaurants/${id}`, JWT_TOKEN)
+    Axios.get(`${BASE_URL}/restaurants/${id}`, jwtToken)
       .then(res => {
         setRestaurant(res.data);
         return res.data.address;
@@ -32,11 +36,11 @@ const Restaurant = ({
       .then(data => {
         setAddress(data);
       });
-  }, []);
+  }, [jwtToken]);
 
   return (
     <main>
-      <ItemContextProvider>
+      <ItemContextProvider jwt={jwtToken}>
         <div className="restaurant-main">
           <div className="restaurantInfo">
             <div className="address">

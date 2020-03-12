@@ -34,9 +34,9 @@ const AddExtraInfo = () => {
         zip: zip
       }
     };
-    Axios.post(`${BASE_URL}/user/addInfo`, data, JWT_TOKEN).then(res =>
-      console.log(res)
-    );
+    Axios.post(`${BASE_URL}/user/addInfo`, data, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    }).then(res => console.log(res));
   };
 
   return (

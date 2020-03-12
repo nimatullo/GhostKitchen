@@ -167,4 +167,14 @@ public class RestaurantController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
+    @GetMapping("/menuItems")
+    public ResponseEntity<?> getMenuItems(@CurrentUser UserPrincipal principal) {
+        User currentUser = userRepo.findById(principal.getId()).get();
+        Long restaurantId = currentUser.getRestaurant().getId();
+
+        List<MenuItem> menu = menuItemRepo.findByRestaurantId(restaurantId);
+
+        return ResponseEntity.ok(menu);
+    }
 }

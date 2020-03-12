@@ -19,18 +19,7 @@ import SubmitOrder from "./components/cart/SubmitOrder";
 import Nav from "./components/nav/Nav";
 
 function App() {
-  const [jwtToken, setJwtToken] = useState(() => {
-    const token = localStorage.getItem("jwt");
-    if (!token) {
-      return "";
-    } else {
-      return {
-        headers: {
-          Authorization: "Bearer " + { token }
-        }
-      };
-    }
-  });
+  const [jwtToken, setJwtToken] = useState({});
   const [name, setName] = useState(localStorage.getItem("name"));
   const [auth, setAuth] = useState(() => {
     const auth = localStorage.getItem("auth");
@@ -40,6 +29,16 @@ function App() {
       return false;
     }
   });
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      setJwtToken({
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+    }
+  }, []);
   const value = { setName, auth, setAuth, name, setJwtToken, jwtToken };
   return (
     <GlobalContext.Provider value={value}>
