@@ -8,9 +8,14 @@ const Home = () => {
   const { auth, setName, name } = useContext(GlobalContext);
   const history = useHistory();
   useEffect(() => {
+    const token = {
+      headers: {
+        Authentication: "Bearer " + localStorage.getItem("jwt")
+      }
+    };
     if (auth) {
       axios
-        .get(`${BASE_URL}/user/currentUser`, JWT_TOKEN)
+        .get(`${BASE_URL}/currentUser`, JWT_TOKEN)
         .then(res => res.data.name)
         .then(data => {
           setName(data.firstName);

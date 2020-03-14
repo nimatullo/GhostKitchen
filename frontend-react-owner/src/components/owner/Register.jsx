@@ -16,7 +16,7 @@ const Register = () => {
 
   function register() {
     axios
-      .post("/register", {
+      .post("/owner/register", {
         email: values.email,
         password: values.password,
         name: {
@@ -26,7 +26,7 @@ const Register = () => {
       })
       .then(res => {
         if (res.status === 201) {
-          history.push("/");
+          history.push("/owner/register/restaurants");
         } else {
           return res.statusText;
         }

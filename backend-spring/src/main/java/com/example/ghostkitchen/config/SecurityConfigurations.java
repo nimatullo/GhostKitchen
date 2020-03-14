@@ -80,8 +80,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/**/login", "/**/register", "/downloadFile/**")
                         .permitAll()
-//                    .antMatchers("/owner/**").hasRole("OWNER")
-//                    .antMatchers("/user/**").hasRole("USER")
+                    .antMatchers("/owner/**").hasRole("OWNER")
+                    .antMatchers("/user/**").hasRole("USER")
                 .anyRequest()
                 .authenticated();
         http.addFilterBefore(jwtAuthentificationFilter(),UsernamePasswordAuthenticationFilter.class);

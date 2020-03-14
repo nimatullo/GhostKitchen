@@ -1,5 +1,7 @@
 package com.example.ghostkitchen.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -15,6 +17,7 @@ public class Restaurant {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User owner;

@@ -84,8 +84,9 @@ public class RestaurantController {
             createdItem.setRestaurant(restaurant);
             menuItemRepo.save(createdItem);
         });
-        restaurantRepo.save(restaurant);
-        return ResponseEntity.ok(new ApiResponse(true,"Restaurant has been added to the database."));
+        restaurantOwner.setRestaurant(restaurant);
+        Restaurant newRestaurant = restaurantRepo.save(restaurant);
+        return ResponseEntity.ok(newRestaurant);
     }
 
     /**
@@ -168,13 +169,11 @@ public class RestaurantController {
                 .body(resource);
     }
 
-    @GetMapping("/menuItems")
+    @GetMapping("/MyRestaurant")
     public ResponseEntity<?> getMenuItems(@CurrentUser UserPrincipal principal) {
         User currentUser = userRepo.findById(principal.getId()).get();
-        Long restaurantId = currentUser.getRestaurant().getId();
+        Restaurant ownerRestaurant = currentUser.getRestaurant();
 
-        List<MenuItem> menu = menuItemRepo.findByRestaurantId(restaurantId);
-
-        return ResponseEntity.ok(menu);
+        return ResponseEntity.ok(ownerRestaurant);
     }
 }
