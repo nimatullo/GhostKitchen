@@ -1,0 +1,31 @@
+.menuItem {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  padding: 1em;
+}
+
+.itemInfo {
+  padding: 1em;
+  width: 100%;
+}
+.menuItem:hover {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.07);
+}
+
+.itemImg {
+  width: 20%;
+}
+
+.name-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.description-container p {
+  color: grey;
+}

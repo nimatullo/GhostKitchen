@@ -1,12 +1,5 @@
-import React, { useContext, useState, useEffect } from "react";
-import {
-  ListItem,
-  ListItemText,
-  Typography,
-  List,
-  TextField,
-  Button
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { List, TextField, Button } from "@material-ui/core";
 import RegisterRestaurantItem from "./RegisterRestaurantItem";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
