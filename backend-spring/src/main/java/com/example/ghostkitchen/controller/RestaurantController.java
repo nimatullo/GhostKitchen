@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * REST endpoints for Restaurants
@@ -130,7 +131,7 @@ public class RestaurantController {
         menuItem.setRestaurant(foundRestaurant);                  // Set the Restaurant that the menu item belongs to
         Long menuId = menuItemRepo.save(menuItem).getId();        // Save the current instance of MenuItem and
         // extract Id to be used for file name
-        String fileName = fileStorageService.storeFile(picture,foundRestaurant.getId(),menuId); // Store file
+        String fileName = fileStorageService.storeFile(picture,UUID.randomUUID()); // Store file
         menuItem.setUrlPath(                                                                    // Set url of menu item
                 ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/downloadFile/")
@@ -141,6 +142,30 @@ public class RestaurantController {
         return ResponseEntity.ok(new ApiResponse(true,"Created"));
     }
 
+    @PutMapping("/menu/edit/{id}")
+    public ResponseEntity<?> updateItem(@PathVariable Long id,
+                                         @RequestParam(required = false)MultipartFile picture,
+                                         @RequestParam String name,
+                                         @RequestParam String description,
+                                         @RequestParam BigDecimal price) {
+        MenuItem findItem = menuItemRepo.findById(id).get();
+        findItem.setName(name);
+        findItem.setDescription(description);
+        findItem.setPrice(price);
+
+        if(picture != null) {
+            String fileName = fileStorageService.storeFile(picture, UUID.randomUUID());
+            findItem.setUrlPath(                                                                    // Set url of menu item
+                    ServletUriComponentsBuilder.fromCurrentContextPath()
+                            .path("/downloadFile/")
+                            .path(fileName)
+                            .toUriString()
+            );
+        }
+
+        menuItemRepo.save(findItem);                                                           // save the new instance
+        return ResponseEntity.ok(new ApiResponse(true,findItem.getUrlPath()));
+    }
     @GetMapping("/restaurants/all")
     public ResponseEntity<?> allRestaurants() {
         Iterable<Restaurant> allRestaurants = restaurantRepo.findAll();

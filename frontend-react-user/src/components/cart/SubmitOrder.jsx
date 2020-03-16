@@ -37,14 +37,16 @@ const SubmitOrder = props => {
     Axios.post(
       `${BASE_URL}/restaurants/${props.location.restaurantId.restaurantId}/submitOrder`,
       data,
-      JWT_TOKEN
+      {
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      }
     ).then(res => console.log(res));
   };
 
   return (
     <div>
       <pre>{JSON.stringify(items)}</pre>
-      {/* <AddExtraInfo /> */}
+      <AddExtraInfo />
       <pre>{JSON.stringify(paymentInfo, null, 4)}</pre>
       <form>
         <Button onClick={confirmOrder}>Confirm Order</Button>

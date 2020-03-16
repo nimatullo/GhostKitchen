@@ -25,10 +25,12 @@ const Restaurant = ({
     })
       .then(res => res.data)
       .then(data => setMenu(data.menuItems));
-  }, [jwtToken]);
+  }, []);
 
   useEffect(() => {
-    Axios.get(`${BASE_URL}/restaurants/${id}`, jwtToken)
+    Axios.get(`${BASE_URL}/restaurants/${id}`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    })
       .then(res => {
         setRestaurant(res.data);
         return res.data.address;
@@ -36,7 +38,7 @@ const Restaurant = ({
       .then(data => {
         setAddress(data);
       });
-  }, [jwtToken]);
+  }, []);
 
   return (
     <main>

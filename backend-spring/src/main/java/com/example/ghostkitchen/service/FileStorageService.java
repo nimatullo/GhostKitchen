@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 public class FileStorageService {
@@ -31,8 +32,8 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file,Long itemId,Long restaurantId) {
-        String fileName = StringUtils.cleanPath(String.format("%s_%s.png", restaurantId, itemId));
+    public String storeFile(MultipartFile file, UUID uniqueName) {
+        String fileName = StringUtils.cleanPath(String.format("%s.png", uniqueName));
 
         try {
             if (fileName.contains("..")) {

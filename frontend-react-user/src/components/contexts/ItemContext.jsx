@@ -22,8 +22,9 @@ class ItemContextProvider extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props.jwtToken);
-    Axios.get(`${BASE_URL}/users/cart`, this.props.jwtToken).then(res => {
+    Axios.get(`${BASE_URL}/users/cart`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    }).then(res => {
       this.setState({ items: res.data.items, total: res.data.total });
     });
   }

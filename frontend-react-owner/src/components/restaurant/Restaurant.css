@@ -1,0 +1,40 @@
+.extra-info {
+  display: flex;
+}
+
+.extra-info > div {
+  width: 50%;
+  border: 1px solid grey;
+  padding: 1em;
+  margin: 1em;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.07);
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+}
+
+.inventory-table {
+  display: flex;
+  justify-content: center;
+  border: 1px solid #ebebeb;
+  border-radius: 10px;
+  margin: 1em;
+}
+
+.inventory-table table {
+  width: 100vw;
+  overflow: scroll;
+  border-collapse: collapse;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+}
+
+.inventory-table table th {
+  padding: 1em;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.inventory-table table td {
+  text-align: center;
+  border-bottom: 1px solid #ebebeb;
+  padding: 1em;
+}
