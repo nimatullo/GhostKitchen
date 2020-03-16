@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import "./Carousel.css";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 const Carousel = ({ orders }) => {
   const [orderNumber, setOrderNumber] = useState("");
@@ -38,13 +41,19 @@ const Carousel = ({ orders }) => {
   };
 
   return (
-    <div>
-      <p>Order #: {orderNumber.toUpperCase()}</p>
-      <p>Customer: {customer}</p>
-      <p>Total: ${total}</p>
-      <p>Number of items: {numberOfItems}</p>
-      <button onClick={prevOrder}>Prev</button>
-      <button onClick={nextOrder}>Next</button>
+    <div className="pastOrders-container">
+      <button onClick={prevOrder}>
+        <ChevronLeftIcon />
+      </button>
+      <div className="carousel-info">
+        <p>Order #: {orderNumber.toUpperCase()}</p>
+        <p>Customer: {customer}</p>
+        <p>Total: ${total}</p>
+        <p>Number of items: {numberOfItems}</p>
+      </div>
+      <button onClick={nextOrder}>
+        <ChevronRightIcon />
+      </button>
     </div>
   );
 };

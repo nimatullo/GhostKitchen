@@ -1,3 +1,7 @@
+main {
+  position: relative;
+}
+
 .extra-info {
   display: flex;
 }
@@ -37,4 +41,27 @@
   text-align: center;
   border-bottom: 1px solid #ebebeb;
   padding: 1em;
+}
+
+.fab {
+  bottom: 2em;
+  right: 2em;
+  position: fixed;
+  border: 1px solid #dc2730;
+  background-color: #ff2f3b;
+  border-radius: 50%;
+  box-shadow: 0 2.6px 2.7px rgba(0, 0, 0, 0.051),
+    0 6.5px 6.9px rgba(0, 0, 0, 0.058), 0 13.3px 14.2px rgba(0, 0, 0, 0.058),
+    0 27.4px 29.2px rgba(0, 0, 0, 0.058), 0 75px 80px rgba(0, 0, 0, 0.07);
+}
+
+.fab button:hover {
+  cursor: pointer;
+}
+
+.fab button {
+  color: white;
+  padding: 1em;
+  background-color: transparent;
+  border: none;
 }

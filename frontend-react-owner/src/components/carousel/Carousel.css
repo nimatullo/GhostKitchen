@@ -1,0 +1,22 @@
+.pastOrders-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pastOrders-container > button {
+  height: 100%;
+  background-color: transparent;
+  border: none;
+}
+
+.pastOrders-container > button:hover {
+  color: #ff2f3b;
+  cursor: pointer;
+}
+
+.carousel-info {
+  text-align: center;
+  width: 100%;
+}
