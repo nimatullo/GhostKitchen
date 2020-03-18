@@ -8,6 +8,7 @@ import com.example.ghostkitchen.model.Order;
 import java.util.List;
 
 public class RestaurantResponse {
+    Long id;
     String restaurantName;
     Address address;
     List<MenuItem> menuItems;
@@ -15,8 +16,9 @@ public class RestaurantResponse {
     double rating;
     int numberOfReviews;
 
-    public RestaurantResponse(String restaurantName,Address address,List<MenuItem> menuItems,
+    public RestaurantResponse(Long id, String restaurantName,Address address,List<MenuItem> menuItems,
                               double rating, int numberOfReviews, List<Order> pastOrders) {
+        this.id = id;
         this.restaurantName = restaurantName;
         this.address = address;
         this.menuItems = menuItems;
@@ -75,6 +77,14 @@ public class RestaurantResponse {
 
     public List<Order> getPastOrders() {
         return pastOrders;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setPastOrders(List<Order> pastOrders) {
