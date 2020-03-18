@@ -7,6 +7,11 @@
   flex-direction: column;
   padding: 1em;
 }
+
+.dropzone:hover {
+  cursor: pointer;
+}
+
 .addItemForm {
   display: flex;
   justify-content: center;

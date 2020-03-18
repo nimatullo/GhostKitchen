@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import MenuItem from "./MenuItem";
-import { Fab } from "@material-ui/core";
+import { Fab, Tooltip } from "@material-ui/core";
 import "./Restaurant.css";
 import AddIcon from "@material-ui/icons/Add";
 import Carousel from "../carousel/Carousel";
@@ -76,9 +76,11 @@ const Restaurant = () => {
         </table>
       </div>
       <div className="fab">
-        <button onClick={goToAdd}>
-          <AddIcon />
-        </button>
+        <Tooltip title="Add New Item">
+          <button onClick={goToAdd}>
+            <AddIcon />
+          </button>
+        </Tooltip>
       </div>
     </main>
   );
