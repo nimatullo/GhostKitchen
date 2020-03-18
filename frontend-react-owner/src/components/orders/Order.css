@@ -1,0 +1,17 @@
+tr.orderItem {
+  border-bottom: 1px solid #efefef;
+}
+
+tr.orderItem:hover {
+  background-color: #efefef;
+  cursor: pointer;
+}
+
+tr.orderItem td {
+  padding: 1em;
+}
+
+.orderItemsList {
+  display: flex;
+  justify-content: space-between;
+}

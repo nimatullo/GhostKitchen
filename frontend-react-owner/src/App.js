@@ -8,7 +8,7 @@ import { GlobalContext } from "./components/contexts/GlobalContext";
 import Nav from "./components/nav/Nav";
 import Restaurant from "./components/restaurant/Restaurant";
 import RegisterRestaurant from "./components/owner/RegisterRestaurant";
-import Axios from "axios";
+import OrderBeakdown from "./components/orders/OrderBreakdown";
 import AddItem from "./components/owner/AddItem";
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
             component={RegisterRestaurant}
           />
           <Route exact path="/restaurant/additem" component={AddItem} />
+          <Route exact path="/orders" component={OrderBeakdown} />
         </Switch>
       </Router>
     </GlobalContext.Provider>

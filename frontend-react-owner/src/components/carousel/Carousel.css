@@ -17,6 +17,7 @@
 }
 
 .carousel-info {
+  cursor: pointer;
   text-align: center;
   width: 100%;
 }

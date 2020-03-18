@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Carousel.css";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import { useHistory } from "react-router-dom";
 
 const Carousel = ({ orders }) => {
   const [orderNumber, setOrderNumber] = useState("");
@@ -9,10 +10,15 @@ const Carousel = ({ orders }) => {
   const [total, setTotal] = useState("");
   const [numberOfItems, setNumberOfItems] = useState("");
   const [index, setIndex] = useState(1);
+  const history = useHistory();
 
   useEffect(() => {
     setDisplay();
   }, [index]);
+
+  const goToOrderBreakdown = () => {
+    history.push("/orders");
+  };
 
   const setDisplay = () => {
     const order = orders[index];
@@ -45,7 +51,7 @@ const Carousel = ({ orders }) => {
       <button onClick={prevOrder}>
         <ChevronLeftIcon />
       </button>
-      <div className="carousel-info">
+      <div onClick={goToOrderBreakdown} className="carousel-info">
         <p>Order #: {orderNumber.toUpperCase()}</p>
         <p>Customer: {customer}</p>
         <p>Total: ${total}</p>

@@ -32,7 +32,7 @@ const Restaurant = () => {
   }, []);
 
   const goToAdd = () => {
-    history.push("/restaurant/additem");
+    history.push({ pathname: "/restaurant/additem", orders: pastOrders });
   };
 
   const getPastOrders = () => {
