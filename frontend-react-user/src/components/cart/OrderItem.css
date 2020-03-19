@@ -1,0 +1,9 @@
+img.order-item-picture {
+  width: 15%;
+}
+
+.order-item-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+}

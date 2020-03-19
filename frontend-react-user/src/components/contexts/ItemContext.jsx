@@ -25,6 +25,7 @@ class ItemContextProvider extends Component {
     Axios.get(`${BASE_URL}/users/cart`, {
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
     }).then(res => {
+      console.log(res.data);
       this.setState({ items: res.data.items, total: res.data.total });
     });
   }

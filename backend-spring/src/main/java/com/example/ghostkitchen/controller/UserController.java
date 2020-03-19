@@ -126,6 +126,6 @@ public class UserController {
         else {
             return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(currentUser.getPayment());
+        return ResponseEntity.ok(currentUser);
     }
 }

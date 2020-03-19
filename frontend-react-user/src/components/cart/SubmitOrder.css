@@ -1,0 +1,83 @@
+.paymentInfo-container {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.deliveryAddress {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.submitOrderInfo {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.items {
+  margin: 1em;
+  padding: 2em;
+  border: 1px solid #efefef;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.07);
+}
+
+.submitOrderScreen {
+  margin: 2em;
+}
+
+button.submitOrder {
+  margin-top: 1em;
+}
+
+.confirmOrderButtonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button.backButton {
+  margin-top: 1em;
+  background-color: #a7a7a7;
+  color: white;
+  border: 1px solid #949494;
+  border-radius: 50%;
+  font-size: 14px;
+  height: 40px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: ease all 0.3s;
+}
+
+button.backButton:hover {
+  background-color: #919090;
+}
+
+.paymentInfo-container,
+.deliveryAddress {
+  width: 40%;
+  height: 20%;
+  margin: 1em;
+  padding: 2em;
+  border: 1px solid #efefef;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.07);
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title > p {
+  color: #ff2f3b;
+}
+
+.title > p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
