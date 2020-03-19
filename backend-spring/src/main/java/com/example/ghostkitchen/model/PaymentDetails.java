@@ -11,21 +11,19 @@ public class PaymentDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "name_id")
-    Name name;
+    String cardHolderName;
 
     String cardNumber;
     int CSV;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="MM-yyyy")
     Date expirationDate;
 
-    public Name getName() {
-        return name;
+    public String getCardHolderName() {
+        return cardHolderName;
     }
 
-    public void setName(Name name) {
-        this.name = name;
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 
     public Long getId() {

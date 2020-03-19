@@ -3,10 +3,13 @@ import { ItemContext } from "../contexts/ItemContext";
 import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
 import Axios from "axios";
 import "./SubmitOrder.css";
-import CartItem from "./CartItem";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import OrderItem from "./OrderItem";
 import NumberFormat from "react-number-format";
+import AddressChange from "./AddressChange";
+import PaymentChange from "./PaymentChange";
+import { TextField } from "@material-ui/core";
+import AddExtraInfo from "./AddExtraInfo";
 
 const SubmitOrder = props => {
   const [items, setItems] = useState();
@@ -34,14 +37,20 @@ const SubmitOrder = props => {
     Axios.get(`${BASE_URL}/user/paymentInfo`, {
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
     }).then(res => {
-      if (res.data.id) {
-        setCardNumber(res.data.payment.cardNumber.replace(/\d(?=\d{4})/g, "*"));
+      console.log(res);
+      if (res.data.payment && res.data.address) {
+        setCardNumber(
+          "**** **** **** " +
+            res.data.payment.cardNumber.substring(
+              res.data.payment.cardNumber.length - 4
+            )
+        );
         setPaymentPresent(true);
         setPaymentInfo(res.data.payment);
         setAddress(res.data.address);
       }
     });
-  }, []);
+  }, [paymentPresent]);
 
   const confirmOrder = () => {
     const data = {
@@ -59,28 +68,37 @@ const SubmitOrder = props => {
     ).then(res => console.log(res));
   };
 
+  const present = () => {
+    if (paymentPresent) {
+      return (
+        <div className="submitOrderInfo">
+          <div className="paymentInfo-container">
+            <PaymentChange
+              cardNumber={cardNumber}
+              setCardNumber={setCardNumber}
+              setPaymentInfo={setPaymentInfo}
+              paymentInfo={paymentInfo}
+            />
+          </div>
+          <div className="deliveryAddress">
+            <AddressChange setAddress={setAddress} address={address} />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="submitOrderInfo">
+          <div className="extraInfoForm">
+            <AddExtraInfo setPaymentPresent={setPaymentPresent} />
+          </div>
+        </div>
+      );
+    }
+  };
+
   return (
     <main className="submitOrderScreen">
-      <div className="submitOrderInfo">
-        <div className="paymentInfo-container">
-          <div className="title">
-            <h3>Payment Information</h3>
-            <p>Change</p>
-          </div>
-          <span>{cardNumber}</span>
-          <span>Exp. Date {paymentInfo.expirationDate}</span>
-        </div>
-        <div className="deliveryAddress">
-          <div className="title">
-            <h3>Delivery Address</h3>
-            <p>Change</p>
-          </div>
-          <span>{address.streetAddress}</span>
-          <span>
-            {address.city}, {address.state} {address.zip}
-          </span>
-        </div>
-      </div>
+      {present()}
       <div className="items">
         <button className="backButton">
           <ArrowBackIcon />
@@ -89,7 +107,9 @@ const SubmitOrder = props => {
         {items && items.map(item => <OrderItem itemInfo={item} />)}
         <p style={{ textAlign: "right", padding: "1em" }}>Total: ${total}</p>
         <div className="confirmOrderButtonContainer">
-          <button className="submitOrder">Submit Order</button>
+          <button onClick={confirmOrder} className="submitOrder">
+            Submit Order
+          </button>
         </div>
       </div>
     </main>

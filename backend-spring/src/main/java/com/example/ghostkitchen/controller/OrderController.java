@@ -59,6 +59,7 @@ public class OrderController {
                 .collect(Collectors.toList())
         );
         orderRepo.save(order);
+        currentUser.getCart().emptyCart();
         return ResponseEntity.ok(new ApiResponse(true,"Order has been placed"));
     }
 

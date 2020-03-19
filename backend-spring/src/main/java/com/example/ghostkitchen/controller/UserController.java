@@ -116,6 +116,32 @@ public class UserController {
         return ResponseEntity.ok(new ApiResponse(true, "Information added."));
     }
 
+    @PutMapping("user/updatePayment")
+    public ResponseEntity<?> updatePayment (@CurrentUser UserPrincipal principal,
+                                            @RequestBody PaymentDetails newPayment) {
+        Optional<User> foundUser = userRepository.findById(principal.getId());
+        User currentUser = null;
+        if (foundUser.isPresent()) {
+            currentUser = foundUser.get();
+        }
+        currentUser.setPayment(newPayment);
+        userRepository.save(currentUser);
+        return ResponseEntity.ok(new ApiResponse(true, "Payment updated"));
+    }
+
+    @PutMapping("user/updateAddress")
+    public ResponseEntity<?> updateAddress (@CurrentUser UserPrincipal principal,
+                                            @RequestBody Address newAddress) {
+        Optional<User> foundUser = userRepository.findById(principal.getId());
+        User currentUser = null;
+        if (foundUser.isPresent()) {
+            currentUser = foundUser.get();
+        }
+        currentUser.setAddress(newAddress);
+        userRepository.save(currentUser);
+        return ResponseEntity.ok(new ApiResponse(true, "Payment updated"));
+    }
+
     @GetMapping("user/paymentInfo")
     public ResponseEntity<?> getPaymentInfo(@CurrentUser UserPrincipal principal) {
         Optional<User> foundUser = userRepository.findById(principal.getId());

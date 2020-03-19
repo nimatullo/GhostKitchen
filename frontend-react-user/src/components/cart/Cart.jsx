@@ -24,6 +24,7 @@ const Cart = ({ restaurantId }) => {
   };
 
   const content = () => {
+    console.log(items);
     if (items.length === 0) {
       return (
         <div className="emptyIndicator">

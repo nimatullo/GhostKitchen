@@ -60,7 +60,6 @@ button.backButton:hover {
 .paymentInfo-container,
 .deliveryAddress {
   width: 40%;
-  height: 20%;
   margin: 1em;
   padding: 2em;
   border: 1px solid #efefef;

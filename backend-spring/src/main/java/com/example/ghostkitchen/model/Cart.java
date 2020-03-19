@@ -64,4 +64,8 @@ public class Cart {
         this.numberOfItems--;
         this.setTotal(this.total.subtract(item.getPrice()));
     }
+
+    public void emptyCart() {
+        items.clear();
+    }
 }

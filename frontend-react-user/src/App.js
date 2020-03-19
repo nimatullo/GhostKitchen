@@ -14,8 +14,8 @@ import OwnerLogin from "./components/owner/OwnerLogin";
 import RegisterRestaurant from "./components/owner/RegisterRestaurant";
 import RestaurantCreationProvider from "./components/contexts/RestaurantCreationContext";
 import { GlobalContext } from "./components/contexts/GlobalContext";
-import AddExtraInfo from "./components/cart/AddExtraInfo";
-import SubmitOrder from "./components/cart/SubmitOrder";
+import AddExtraInfo from "./components/order/AddExtraInfo";
+import SubmitOrder from "./components/order/SubmitOrder";
 import Nav from "./components/nav/Nav";
 
 function App() {
