@@ -44,6 +44,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
         <div className="addressForm">
           <h3>Delivery Address</h3>
           <TextField
+		required={true}
             classes={{ root: "TextField" }}
             label="Street Address"
             value={streetAddress}

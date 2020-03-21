@@ -1,9 +1,6 @@
 package com.example.ghostkitchen.payload;
 
-import com.example.ghostkitchen.model.Address;
-import com.example.ghostkitchen.model.MenuItem;
-import com.example.ghostkitchen.model.Name;
-import com.example.ghostkitchen.model.Order;
+import com.example.ghostkitchen.model.*;
 
 import java.util.List;
 
@@ -86,7 +83,6 @@ public class RestaurantResponse {
     public void setId(Long id) {
         this.id = id;
     }
-
     public void setPastOrders(List<Order> pastOrders) {
         this.pastOrders = pastOrders;
     }

@@ -10,6 +10,7 @@ import Restaurant from "./components/restaurant/Restaurant";
 import RegisterRestaurant from "./components/owner/RegisterRestaurant";
 import OrderBeakdown from "./components/orders/OrderBreakdown";
 import AddItem from "./components/owner/AddItem";
+import RestaurantRatings from "./components/restaurant/RestaurantRatings";
 
 function App() {
   const [name, setName] = useState(localStorage.getItem("name"));
@@ -39,6 +40,11 @@ function App() {
           />
           <Route exact path="/restaurant/additem" component={AddItem} />
           <Route exact path="/orders" component={OrderBeakdown} />
+          <Route
+            exact
+            path="/myrestaurant/ratings"
+            component={RestaurantRatings}
+          />
         </Switch>
       </Router>
     </GlobalContext.Provider>
