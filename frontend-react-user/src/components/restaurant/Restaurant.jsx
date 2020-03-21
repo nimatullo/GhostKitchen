@@ -3,11 +3,13 @@ import Axios from "axios";
 import MenuItem from "../menu/MenuItem";
 import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
-import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant/constantVariables";
 import "./Restaurant.css";
 import Ratings from "react-ratings-declarative";
 import { Divider } from "@material-ui/core";
 import { GlobalContext } from "../contexts/GlobalContext";
+import NumberFormat from "react-number-format";
+import Rating from "./Rating";
 
 const Restaurant = ({
   match: {
@@ -17,6 +19,7 @@ const Restaurant = ({
   const [menu, setMenu] = useState([]);
   const [restaurant, setRestaurant] = useState({});
   const [address, setAddress] = useState({});
+  const [rating, setRating] = useState();
   const { jwtToken } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -33,12 +36,23 @@ const Restaurant = ({
     })
       .then(res => {
         setRestaurant(res.data);
+        setRating(res.data.averageRating);
         return res.data.address;
       })
       .then(data => {
         setAddress(data);
       });
-  }, []);
+  }, [rating]);
+
+  const changeRating = newRating => {
+    Axios.put(
+      `${BASE_URL}/restaurants/${id}/addRating`,
+      { rating: newRating },
+      {
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      }
+    ).then(res => setRating(newRating));
+  };
 
   return (
     <main>
@@ -50,18 +64,22 @@ const Restaurant = ({
               <div className="streetAddress">{address.streetAddress}</div>
             </div>
             <div className="rating">
-              <Ratings
-                rating={restaurant.rating}
-                widgetDimensions="20px"
-                widgetRatedColors="gold"
-              >
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-                <Ratings.Widget />
-              </Ratings>
-              <div className="number">{restaurant.numberOfReviews} Ratings</div>
+              <Rating
+                rating={rating}
+                changeRating={changeRating}
+                restaurantId={id}
+              />
+              <div className="number">
+                {restaurant.numberOfReviews} Ratings (
+                {
+                  <NumberFormat
+                    displayType="text"
+                    format="###"
+                    value={rating}
+                  />
+                }
+                )
+              </div>
             </div>
           </div>
           <Divider />

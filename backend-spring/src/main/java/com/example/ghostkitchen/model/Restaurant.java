@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Restaurant {
@@ -24,25 +26,43 @@ public class Restaurant {
 
     @DecimalMin("0.0")
     @DecimalMax("5.0")
-    private double rating;
+    private double averageRating;
 
     private int numberOfReviews;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name="restaurant_rating",
+            joinColumns = @JoinColumn(name="restaurant_id", nullable = true),
+            inverseJoinColumns = @JoinColumn(name="rating_id"))
+    private List<Rating> listOfRatings = new ArrayList<>();
 
     public Restaurant() {
 
     }
 
-    public Restaurant(String name,Address address,User owner,double rating,int numberOfReviews) {
+    public Restaurant(String name,Address address,User owner) {
         this.restaurantName = name;
         this.address = address;
         this.owner = owner;
-        this.rating = rating;
-        this.numberOfReviews = numberOfReviews;
+        this.averageRating = 0;
+        this.numberOfReviews = 0;
     }
 
-    public void addReview(double review) {
-        this.numberOfReviews++;
-        this.rating = (this.rating + review) / numberOfReviews;
+    public void addRating(Rating newRating) {
+        listOfRatings.add(newRating);
+        averageRating = findAverageRating();
+        numberOfReviews++;
+    }
+
+    public double findAverageRating() {
+        return listOfRatings.stream()
+                .mapToDouble(Rating::getRating)
+                .average()
+                .orElse(Double.NaN);
+    }
+
+    public boolean checkForRating(User user) {
+        return listOfRatings.stream().anyMatch(rating -> user.equals(rating.getUser()));
     }
 
     public int getNumberOfReviews() {
@@ -61,12 +81,12 @@ public class Restaurant {
         this.restaurantName = restaurantName;
     }
 
-    public double getRating() {
-        return rating;
+    public double getAverageRating() {
+        return averageRating;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setAverageRating(double rating) {
+        this.averageRating = rating;
     }
 
     public Long getId() {
@@ -99,5 +119,13 @@ public class Restaurant {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<Rating> getListOfRatings() {
+        return listOfRatings;
+    }
+
+    public void setListOfRatings(List<Rating> listOfRatings) {
+        this.listOfRatings = listOfRatings;
     }
 }

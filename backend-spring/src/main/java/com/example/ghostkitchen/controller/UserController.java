@@ -75,8 +75,8 @@ public class UserController {
     }
 
     @GetMapping("/currentUser")
-    public UserPrincipal currentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
-        return userPrincipal;
+    public User currentUserEmail(@CurrentUser UserPrincipal userPrincipal) {
+        return userRepository.findById(userPrincipal.getId()).get();
     }
 
     @PutMapping("user/update")

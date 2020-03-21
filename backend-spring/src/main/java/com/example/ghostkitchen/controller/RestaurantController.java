@@ -1,10 +1,7 @@
 package com.example.ghostkitchen.controller;
 
 import com.example.ghostkitchen.details.UserPrincipal;
-import com.example.ghostkitchen.model.CurrentUser;
-import com.example.ghostkitchen.model.MenuItem;
-import com.example.ghostkitchen.model.Restaurant;
-import com.example.ghostkitchen.model.User;
+import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.ApiResponse;
 import com.example.ghostkitchen.payload.RestaurantRequest;
 import com.example.ghostkitchen.payload.RestaurantResponse;
@@ -78,8 +75,7 @@ public class RestaurantController {
     public ResponseEntity<?> addRestaurant(@RequestBody RestaurantRequest request,
                                            @CurrentUser UserPrincipal owner) {
         User restaurantOwner = userRepo.findById(owner.getId()).get();
-        Restaurant restaurant = new Restaurant(request.getRestaurantName(),request.getAddress(),restaurantOwner,
-                request.getRating(),request.getNumberOfReviews());
+        Restaurant restaurant = new Restaurant(request.getRestaurantName(),request.getAddress(),restaurantOwner);
         request.getMenuItems().forEach(item -> {
             MenuItem createdItem = new MenuItem(item.getName(),item.getPrice(),item.getDescription());
             createdItem.setRestaurant(restaurant);
@@ -109,7 +105,7 @@ public class RestaurantController {
 
         List<MenuItem> menu = menuItemRepo.findByRestaurantId(foundRestaurant.getId());
         RestaurantResponse response = new RestaurantResponse(foundRestaurant.getName(),foundRestaurant.getAddress(),
-                menu,foundRestaurant.getRating(),foundRestaurant.getNumberOfReviews());
+                menu,foundRestaurant.getAverageRating(),foundRestaurant.getNumberOfReviews());
         return ResponseEntity.ok(response);
     }
 
@@ -200,8 +196,42 @@ public class RestaurantController {
         Restaurant ownerRestaurant = currentUser.getRestaurant();
         RestaurantResponse response = new RestaurantResponse(ownerRestaurant.getId(), ownerRestaurant.getName(),
                 ownerRestaurant.getAddress(),
-                menuItemRepo.findByRestaurantId(ownerRestaurant.getId()), ownerRestaurant.getRating(),
+                menuItemRepo.findByRestaurantId(ownerRestaurant.getId()), ownerRestaurant.getAverageRating(),
                 ownerRestaurant.getNumberOfReviews(), orderRepo.findByRestaurantId(ownerRestaurant.getId()));
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/restaurants/{id}/addRating")
+    public ResponseEntity<?> addRating(@CurrentUser UserPrincipal principal, @RequestBody Rating rating,
+                                       @PathVariable Long id) {
+        Optional<Restaurant> findRestaurant = restaurantRepo.findById(id);
+        Restaurant currentRestaurant = null;
+        User currentUser = null;
+        if (findRestaurant.isPresent()) {
+            currentRestaurant = findRestaurant.get();
+            currentUser = userRepo.findById(principal.getId()).get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false, "Can't find the source"), HttpStatus.NOT_FOUND);
+        }
+        rating.setUser(currentUser);
+        currentRestaurant.addRating(rating);
+        restaurantRepo.save(currentRestaurant);
+        return ResponseEntity.ok(new ApiResponse(true, "Rating added"));
+    }
+
+    @GetMapping("/restaurants/{id}/rated")
+    public ResponseEntity<?> hasRating(@CurrentUser UserPrincipal principal, @PathVariable Long id) {
+        Optional<Restaurant> findRestaurant = restaurantRepo.findById(id);
+        Restaurant currentRestaurant = null;
+        User currentUser = null;
+        if (findRestaurant.isPresent()) {
+            currentRestaurant = findRestaurant.get();
+            currentUser = userRepo.findById(principal.getId()).get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false, "Can't find the source"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new ApiResponse(currentRestaurant.checkForRating(currentUser), "Rating"), HttpStatus.OK);
     }
 }
