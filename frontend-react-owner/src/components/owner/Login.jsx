@@ -32,7 +32,11 @@ export default function Login() {
           localStorage.setItem("jwt", res.data.accessToken);
           localStorage.setItem("name", res.data.firstName);
           history.push("/");
-        } else {
+        }
+      })
+      .catch(err => {
+        if (err.response.status === 401) {
+          setLoading(false);
           setErrorMsg("Email or password is incorrect.");
         }
       });
