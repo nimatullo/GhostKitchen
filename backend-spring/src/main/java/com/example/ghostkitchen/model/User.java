@@ -1,4 +1,6 @@
 package com.example.ghostkitchen.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,7 @@ public class User {
     @Email(message = "Please enter a valid email!")
     String email;
 
+    @JsonIgnore
     @Column(name = "password")
     @NotNull(message = "Password must be between 8 and 16 characters.")
     String password;

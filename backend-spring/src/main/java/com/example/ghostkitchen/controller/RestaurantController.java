@@ -194,12 +194,24 @@ public class RestaurantController {
     public ResponseEntity<?> getMenuItems(@CurrentUser UserPrincipal principal) {
         User currentUser = userRepo.findById(principal.getId()).get();
         Restaurant ownerRestaurant = currentUser.getRestaurant();
+        if (ownerRestaurant == null) {
+            return new ResponseEntity<>(new ApiResponse(false, "Restaurant not yet created"), HttpStatus.NOT_FOUND);
+        }
         RestaurantResponse response = new RestaurantResponse(ownerRestaurant.getId(), ownerRestaurant.getName(),
                 ownerRestaurant.getAddress(),
                 menuItemRepo.findByRestaurantId(ownerRestaurant.getId()), ownerRestaurant.getAverageRating(),
                 ownerRestaurant.getNumberOfReviews(), orderRepo.findByRestaurantId(ownerRestaurant.getId()));
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/MyRestaurant/ratings")
+    public ResponseEntity<?> getRatings(@CurrentUser UserPrincipal principal) {
+        User currentUser = userRepo.findById(principal.getId()).get();
+        Restaurant ownerRestaurant = currentUser.getRestaurant();
+
+        return ResponseEntity.ok(ownerRestaurant.getListOfRatings());
+    }
+
 
     @PutMapping("/restaurants/{id}/addRating")
     public ResponseEntity<?> addRating(@CurrentUser UserPrincipal principal, @RequestBody Rating rating,

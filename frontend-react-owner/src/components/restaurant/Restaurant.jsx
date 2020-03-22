@@ -14,6 +14,7 @@ const Restaurant = () => {
   const [items, setItems] = useState([]);
   const [pastOrders, setPastOrders] = useState([]);
   const [restaurantId, setRestaurantId] = useState("");
+  const [rating, setRating] = useState("");
   useEffect(() => {
     Axios.get("/MyRestaurant", {
       headers: {
@@ -22,12 +23,17 @@ const Restaurant = () => {
     })
       .then(res => res.data)
       .then(data => {
-        console.log(data);
         setAddress(data.address);
         setItems(data.menuItems);
         setPastOrders(data.pastOrders);
         setRestaurantName(data.restaurantName);
         setRestaurantId(data.id);
+        setRating(data.rating);
+      })
+      .catch(err => {
+        if (err.response.status === 404) {
+          history.push("/register/restaurant");
+        }
       });
   }, []);
 
@@ -43,6 +49,12 @@ const Restaurant = () => {
     }
   };
 
+  const goToRatings = () => {
+    history.push({
+      pathname: "/myrestaurant/ratings"
+    });
+  };
+
   return (
     <main>
       <div className="extra-info">
@@ -54,6 +66,7 @@ const Restaurant = () => {
               {address.city}, {address.state}
             </p>
             <p>{address.zip}</p>
+            <p onClick={goToRatings}>Average Rating: {rating}</p>
           </div>
         </div>
         <div className="pastOrders">{getPastOrders()}</div>
