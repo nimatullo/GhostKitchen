@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import MenuItem from "./MenuItem";
-import { Fab, Tooltip } from "@material-ui/core";
+import { Fab, Tooltip, Link } from "@material-ui/core";
 import "./Restaurant.css";
 import AddIcon from "@material-ui/icons/Add";
 import Carousel from "../carousel/Carousel";
@@ -49,12 +49,6 @@ const Restaurant = () => {
     }
   };
 
-  const goToRatings = () => {
-    history.push({
-      pathname: "/myrestaurant/ratings"
-    });
-  };
-
   return (
     <main>
       <div className="extra-info">
@@ -66,7 +60,7 @@ const Restaurant = () => {
               {address.city}, {address.state}
             </p>
             <p>{address.zip}</p>
-            <p onClick={goToRatings}>Average Rating: {rating}</p>
+            <Link href="/myrestaurant/ratings">Average Rating: {rating}</Link>
           </div>
         </div>
         <div className="pastOrders">{getPastOrders()}</div>

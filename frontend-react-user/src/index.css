@@ -21,18 +21,6 @@ code {
   color: red;
 }
 
-.registerForm {
-  margin: 1em;
-  padding: 1em;
-  background-color: rgb(181, 181, 181);
-  border-radius: 5px;
-  max-width: 20%;
-}
-
-.registerForm div {
-  width: 100%;
-}
-
 .MuiFormHelperText-root {
   color: red !important;
 }

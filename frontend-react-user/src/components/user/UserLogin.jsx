@@ -1,11 +1,12 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { TextField, Button, CircularProgress } from "@material-ui/core";
+import { TextField, Button, CircularProgress, Link } from "@material-ui/core";
 import validate from "../validateLogin";
 import useForm from "../useForm";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { GlobalContext } from "../contexts/GlobalContext";
+import "./Login.css";
 
 export default function Login() {
   const { setAuth, setName, setJwtToken } = useContext(GlobalContext);
@@ -51,31 +52,51 @@ export default function Login() {
     );
   } else {
     return (
-      <div>
-        <form>
-          <div>
-            <TextField
-              name="email"
-              type="email"
-              label="Email Address"
-              value={values.email}
-              onChange={handleChange}
-              helperText={errors.email && errors.email}
-            />
-          </div>
-          <div>
-            <TextField
-              name="password"
-              type="password"
-              label="Password"
-              value={values.password}
-              onChange={handleChange}
-              helperText={errors.password && errors.password}
-            />
-          </div>
-          <Button onClick={handleSubmit}>Log In</Button>
-        </form>
+      <div className="loginForm">
         <p>{errorMsg}</p>
+        <form>
+          <div className="loginForm-content">
+            <h3>Sign into your Ghost Kitchen account</h3>
+            <div>
+              <TextField
+                fullWidth
+                variant="outlined"
+                name="email"
+                type="email"
+                label="Email Address"
+                value={values.email}
+                onChange={handleChange}
+                helperText={errors.email && errors.email}
+              />
+            </div>
+            <div>
+              <TextField
+                fullWidth
+                variant="outlined"
+                name="password"
+                type="password"
+                label="Password"
+                value={values.password}
+                onChange={handleChange}
+                helperText={errors.password && errors.password}
+              />
+            </div>
+          </div>
+          <div className="submitButton">
+            <Button
+              classes={{ root: "Button" }}
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+            >
+              Sign In
+            </Button>
+          </div>
+        </form>
+        <p>
+          <Link href="/register">Create an account</Link>
+        </p>
       </div>
     );
   }

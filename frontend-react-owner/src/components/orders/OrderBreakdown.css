@@ -22,3 +22,13 @@
 .orderBreakdown table td {
   text-align: center;
 }
+
+.submitButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MuiFormHelperText-root {
+  color: #ff2f3b !important;
+}
