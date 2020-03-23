@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import "./UserHover.css";
-import { Divider } from "@material-ui/core";
+import { Divider, Link } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 const UserHover = () => {
@@ -23,7 +23,9 @@ const UserHover = () => {
         <div className="hoverMenu">
           <div className="nav-link">User Settings</div>
           <Divider />
-          <div className="nav-link">Past Orders</div>
+          <div className="nav-link">
+            <a href="/pastOrders">Past Orders</a>
+          </div>
           <Divider />
           <div className="nav-link" onClick={logOut}>
             Log Out

@@ -1,0 +1,54 @@
+.orderContent {
+  min-width: 30%;
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.07);
+  padding: 1em;
+}
+
+.orderContent .restaurantInformation {
+  display: flex;
+  flex-direction: column;
+}
+
+.orderContent .restaurantInformation span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderContent .restaurantInformation span.restaurantDetails {
+  font-weight: bolder;
+  font-size: 1.5em;
+}
+
+.orderContent .restaurantInformation .restaurantDetails .restaurantName {
+  color: #ff2f3b;
+}
+
+.orderContent .restaurantInformation .address {
+  color: #6b6b83;
+}
+
+.orderContent .itemInformation {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  width: 50%;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.orderContent .itemInformation > * {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.orderContent .itemInformation #price {
+  text-align: right;
+  color: #6b6b83;
+  font-weight: lighter;
+}
+
+.orderContent .contentActions {
+  display: flex;
+  justify-content: space-between;
+}

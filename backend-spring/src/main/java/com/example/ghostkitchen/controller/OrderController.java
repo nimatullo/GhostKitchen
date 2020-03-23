@@ -61,7 +61,7 @@ public class OrderController {
         orderRepo.save(order);
         currentUser.getCart().emptyCart();
         return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
-                ,order.getItems(), order.getPaymentInfo(), order.getUser()));
+                ,order.getItems(),order.getPaymentInfo(),order.getUser()));
     }
 
     @GetMapping("/orderConfirmation/{orderNumber}")
@@ -75,7 +75,7 @@ public class OrderController {
             return new ResponseEntity<>(new ApiResponse(false,"Order cannot be found"),HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
-                ,order.getItems(), order.getPaymentInfo(), order.getUser()));
+                ,order.getItems(),order.getPaymentInfo(),order.getUser()));
     }
 
     /*
@@ -99,5 +99,24 @@ public class OrderController {
             response.setMenuItems(order.getItems());
         });
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("user/pastOrders")
+    public ResponseEntity<?> getPastOrders(@CurrentUser UserPrincipal principal) {
+        Optional<User> foundUser = userRepository.findById(principal.getId());
+        User currentUser = null;
+        if (foundUser.isPresent()) {
+            currentUser = foundUser.get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false,"User cannot be found"),HttpStatus.NOT_FOUND);
+        }
+        List<OrderResponse> pastOrders =
+                orderRepo.findByUser_Id(principal.getId())
+                        .stream()
+                        .map(order -> new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),
+                                order.getTotal(),order.getItems(),order.getPaymentInfo(),order.getUser(),
+                                order.getRestaurant().getName(),order.getRestaurant().getAddress())).collect(Collectors.toList());
+        return ResponseEntity.ok(pastOrders);
     }
 }

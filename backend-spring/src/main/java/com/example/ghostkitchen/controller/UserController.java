@@ -33,9 +33,6 @@ public class UserController {
     RoleRepo roleRepo;
 
     @Autowired
-    OrderRepo orderRepo;
-
-    @Autowired
     BCryptPasswordEncoder encoder;
 
     @Autowired
@@ -158,19 +155,5 @@ public class UserController {
             return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(currentUser);
-    }
-
-    @GetMapping("user/pastOrder")
-    public ResponseEntity<?> getPastOrders(@CurrentUser UserPrincipal principal) {
-        Optional<User> foundUser = userRepository.findById(principal.getId());
-        User currentUser = null;
-        if (foundUser.isPresent()) {
-            currentUser = foundUser.get();
-        }
-        else {
-            return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
-        }
-        List<Order> pastOrders = orderRepo.findByUser_Id(principal.getId());
-        return ResponseEntity.ok(pastOrders);
     }
 }
