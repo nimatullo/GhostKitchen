@@ -10,11 +10,6 @@ const Cart = ({ restaurantId }) => {
   const history = useHistory();
 
   const submitOrder = () => {
-    const data = {
-      items: items,
-      numberOfItems: items.length,
-      total: total
-    };
     history.push({
       pathname: "/order/submit",
       items: { items },

@@ -10,6 +10,7 @@ import AddressChange from "./AddressChange";
 import PaymentChange from "./PaymentChange";
 import { TextField } from "@material-ui/core";
 import AddExtraInfo from "./AddExtraInfo";
+import { useHistory } from "react-router-dom";
 
 const SubmitOrder = props => {
   const [items, setItems] = useState();
@@ -18,6 +19,7 @@ const SubmitOrder = props => {
   const [paymentPresent, setPaymentPresent] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [address, setAddress] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     Axios.get(`${BASE_URL}/users/cart`, {
@@ -65,7 +67,11 @@ const SubmitOrder = props => {
       {
         headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
       }
-    ).then(res => console.log(res));
+    ).then(res => {
+      if (res.status === 200) {
+        history.push(`/orders/${res.data.orderNumber}`);
+      }
+    });
   };
 
   const present = () => {

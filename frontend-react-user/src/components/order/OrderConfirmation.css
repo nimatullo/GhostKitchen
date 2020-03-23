@@ -1,0 +1,57 @@
+.item {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 2fr 1fr;
+}
+
+.orderItems > .item > p img {
+  width: 100px;
+}
+
+.openingImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.orderInfo {
+  width: 70%;
+}
+
+.openingImg img {
+  width: 25%;
+}
+
+.orderConfirmation {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.orderDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+}
+
+.item .firstCol {
+  display: flex;
+  align-items: center;
+}
+
+.item .firstCol > * {
+  margin: 1em;
+}
+
+.orderTotal {
+  display: flex;
+  justify-content: space-between;
+}
+
+.exitButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

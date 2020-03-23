@@ -1,6 +1,9 @@
 package com.example.ghostkitchen.payload;
 
+import com.example.ghostkitchen.model.Address;
 import com.example.ghostkitchen.model.MenuItem;
+import com.example.ghostkitchen.model.PaymentDetails;
+import com.example.ghostkitchen.model.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,15 +14,44 @@ public class OrderResponse {
     private int numberOfItems;
     private BigDecimal total;
     private List<MenuItem> menuItems;
+    private PaymentDetails paymentMethod;
+    private User customerDetails;
 
     public OrderResponse() {
     }
 
-    public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems) {
+    public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems,
+                         PaymentDetails paymentMethod, User customerDetails) {
         this.orderNumber = orderNumber;
         this.numberOfItems = numberOfItems;
         this.total = total;
         this.menuItems = menuItems;
+        this.paymentMethod = paymentMethod;
+        this.customerDetails = customerDetails;
+    }
+
+    public User getCustomerDetails() {
+        return customerDetails;
+    }
+
+    public void setCustomerDetails(User customerDetails) {
+        this.customerDetails = customerDetails;
+    }
+
+    public PaymentDetails getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentDetails paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public UUID getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(UUID orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public int getNumberOfItems() {
