@@ -12,9 +12,10 @@ const OrderContainer = ({ order }) => {
         </span>
         <div className="address">
           <span>
-            DELIVERED TO {order.restaurantAddress.streetAddress}{" "}
-            {order.restaurantAddress.city}, {order.restaurantAddress.state}{" "}
-            {order.restaurantAddress.zip}
+            DELIVERED TO {order.customerDetails.address.streetAddress}{" "}
+            {order.customerDetails.address.city},{" "}
+            {order.customerDetails.address.state}{" "}
+            {order.customerDetails.address.zip}
           </span>
         </div>
       </div>
