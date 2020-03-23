@@ -1,9 +1,6 @@
 package com.example.ghostkitchen.payload;
 
-import com.example.ghostkitchen.model.Address;
-import com.example.ghostkitchen.model.MenuItem;
-import com.example.ghostkitchen.model.PaymentDetails;
-import com.example.ghostkitchen.model.User;
+import com.example.ghostkitchen.model.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,6 +13,8 @@ public class OrderResponse {
     private List<MenuItem> menuItems;
     private PaymentDetails paymentMethod;
     private User customerDetails;
+    private String restaurantName;
+    private Address restaurantAddress;
 
     public OrderResponse() {
     }
@@ -28,6 +27,33 @@ public class OrderResponse {
         this.menuItems = menuItems;
         this.paymentMethod = paymentMethod;
         this.customerDetails = customerDetails;
+    }
+
+    public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems,PaymentDetails paymentMethod,User customerDetails,String restaurantName,Address restaurantAddress) {
+        this.orderNumber = orderNumber;
+        this.numberOfItems = numberOfItems;
+        this.total = total;
+        this.menuItems = menuItems;
+        this.paymentMethod = paymentMethod;
+        this.customerDetails = customerDetails;
+        this.restaurantName = restaurantName;
+        this.restaurantAddress = restaurantAddress;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public Address getRestaurantAddress() {
+        return restaurantAddress;
+    }
+
+    public void setRestaurantAddress(Address restaurantAddress) {
+        this.restaurantAddress = restaurantAddress;
     }
 
     public User getCustomerDetails() {

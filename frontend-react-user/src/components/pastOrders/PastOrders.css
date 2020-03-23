@@ -1,0 +1,11 @@
+.past-orders {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1em;
+}
+
+.past-orders > * {
+  margin: 1em;
+}

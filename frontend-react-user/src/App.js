@@ -55,6 +55,7 @@ function App() {
           <Route exact path="/restaurants" component={RestaurantList} />
           <Route exact path="/restaurants/:id" component={Restaurant} />
           <Route exact path="/orders/:number" component={OrderConfirmation} />
+          <Route exact path="/pastOrders" component={PastOrders} />
           <Route exact path="/owner/register" component={OwnerRegister} />
           <RestaurantCreationProvider>
             <Route exact path="/restaurants/menu/add" component={AddItem} />
@@ -69,7 +70,6 @@ function App() {
             />
           </RestaurantCreationProvider>
           <Route exact path="/addExtraInfo" component={AddExtraInfo} />
-          <Route exact path="/pastOrders" component={PastOrders} />
         </Switch>
       </Router>
     </GlobalContext.Provider>

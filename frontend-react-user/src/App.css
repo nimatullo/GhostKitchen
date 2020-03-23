@@ -1,4 +1,4 @@
-a {
+nav ul a {
   color: #fff;
   text-decoration: none;
 }
@@ -26,8 +26,9 @@ nav ul li {
   margin-right: 1em;
 }
 
+.nav-link a:hover,
 .nav-link:hover {
-  color: #fde581;
+  color: #fde581 !important;
 }
 
 nav ul li:first-child {
