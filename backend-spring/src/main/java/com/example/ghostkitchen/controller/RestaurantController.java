@@ -219,6 +219,7 @@ public class RestaurantController {
         Optional<Restaurant> findRestaurant = restaurantRepo.findById(id);
         Restaurant currentRestaurant = null;
         User currentUser = null;
+        if (findRestaurant.isPresent()) {
             currentRestaurant = findRestaurant.get();
             currentUser = userRepo.findById(principal.getId()).get();
         }

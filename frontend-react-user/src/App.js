@@ -17,6 +17,7 @@ import { GlobalContext } from "./components/contexts/GlobalContext";
 import AddExtraInfo from "./components/order/AddExtraInfo";
 import SubmitOrder from "./components/order/SubmitOrder";
 import Nav from "./components/nav/Nav";
+import PastOrders from "./components/pastOrders/PastOrders.jsx";
 
 function App() {
   const [jwtToken, setJwtToken] = useState({});
@@ -66,6 +67,7 @@ function App() {
             />
           </RestaurantCreationProvider>
           <Route exact path="/addExtraInfo" component={AddExtraInfo} />
+          <Route exact path="/pastOrders" component={PastOrders} />
         </Switch>
       </Router>
     </GlobalContext.Provider>

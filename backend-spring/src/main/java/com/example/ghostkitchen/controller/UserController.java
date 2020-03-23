@@ -4,6 +4,7 @@ import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.jwt.JwtTokenProvider;
 import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.*;
+import com.example.ghostkitchen.repo.OrderRepo;
 import com.example.ghostkitchen.repo.RoleRepo;
 import com.example.ghostkitchen.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     RoleRepo roleRepo;
+
+    @Autowired
+    OrderRepo orderRepo;
 
     @Autowired
     BCryptPasswordEncoder encoder;
@@ -153,5 +158,19 @@ public class UserController {
             return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(currentUser);
+    }
+
+    @GetMapping("user/pastOrder")
+    public ResponseEntity<?> getPastOrders(@CurrentUser UserPrincipal principal) {
+        Optional<User> foundUser = userRepository.findById(principal.getId());
+        User currentUser = null;
+        if (foundUser.isPresent()) {
+            currentUser = foundUser.get();
+        }
+        else {
+            return new ResponseEntity<>(new ApiResponse(false, "User cannot be found"), HttpStatus.NOT_FOUND);
+        }
+        List<Order> pastOrders = orderRepo.findByUser_Id(principal.getId());
+        return ResponseEntity.ok(pastOrders);
     }
 }
