@@ -18,6 +18,7 @@ import AddExtraInfo from "./components/order/AddExtraInfo";
 import SubmitOrder from "./components/order/SubmitOrder";
 import Nav from "./components/nav/Nav";
 import PastOrders from "./components/pastOrders/PastOrders.jsx";
+import OrderConfirmation from "./components/order/OrderConfirmation";
 
 function App() {
   const [jwtToken, setJwtToken] = useState({});
@@ -53,6 +54,7 @@ function App() {
           <Route exact path="/register" component={() => <Register />} />
           <Route exact path="/restaurants" component={RestaurantList} />
           <Route exact path="/restaurants/:id" component={Restaurant} />
+          <Route exact path="/orders/:number" component={OrderConfirmation} />
           <Route exact path="/owner/register" component={OwnerRegister} />
           <RestaurantCreationProvider>
             <Route exact path="/restaurants/menu/add" component={AddItem} />
