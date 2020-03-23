@@ -60,7 +60,8 @@ public class OrderController {
         );
         orderRepo.save(order);
         currentUser.getCart().emptyCart();
-        return ResponseEntity.ok(new ApiResponse(true,"Order has been placed"));
+        return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
+                ,order.getItems(), order.getPaymentInfo(), order.getUser()));
     }
 
     @GetMapping("/orderConfirmation/{orderNumber}")
@@ -74,7 +75,7 @@ public class OrderController {
             return new ResponseEntity<>(new ApiResponse(false,"Order cannot be found"),HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
-                ,order.getItems()));
+                ,order.getItems(), order.getPaymentInfo(), order.getUser()));
     }
 
     /*

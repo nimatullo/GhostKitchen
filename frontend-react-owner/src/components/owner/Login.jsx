@@ -1,12 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
-import {
-  TextField,
-  Button,
-  CircularProgress,
-  Divider,
-  Link
-} from "@material-ui/core";
+import { TextField, Button, CircularProgress, Link } from "@material-ui/core";
 import validate from "../validateLogin";
 import useForm from "../useForm";
 import { useHistory } from "react-router-dom";
@@ -106,7 +100,6 @@ export default function Login() {
         <p>
           <Link href="/register">Create an account</Link>
         </p>
-        <Divider />
       </div>
     );
   }

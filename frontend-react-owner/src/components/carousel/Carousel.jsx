@@ -9,7 +9,7 @@ const Carousel = ({ orders }) => {
   const [customer, setCustomer] = useState("");
   const [total, setTotal] = useState("");
   const [numberOfItems, setNumberOfItems] = useState("");
-  const [index, setIndex] = useState(1);
+  const [index, setIndex] = useState(0);
   const history = useHistory();
 
   useEffect(() => {
