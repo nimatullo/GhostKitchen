@@ -36,6 +36,10 @@
   grid-auto-flow: column;
 }
 
+.secondaryText {
+  color: #6b6b83;
+}
+
 .item .firstCol {
   display: flex;
   align-items: center;

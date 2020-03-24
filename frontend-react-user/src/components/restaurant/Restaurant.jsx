@@ -61,7 +61,9 @@ const Restaurant = ({
           <div className="restaurantInfo">
             <div className="address">
               <div className="name">{restaurant.name}</div>
-              <div className="streetAddress">{address.streetAddress}</div>
+              <div className="streetAddress secondaryText">
+                {address.streetAddress}
+              </div>
             </div>
             <div className="rating">
               <Rating

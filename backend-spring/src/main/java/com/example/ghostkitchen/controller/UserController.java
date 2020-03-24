@@ -46,9 +46,6 @@ public class UserController {
 
         User user = new User(request.getName(),request.getEmail(),request.getPassword());
 
-        Cart cart = new Cart();
-        user.setCart(cart);
-
         user.setPassword(encoder.encode(user.getPassword()));
 
         Role userRole = roleRepo.findByName(RoleName.ROLE_USER).orElseThrow(() -> new RuntimeException("Role not set"));

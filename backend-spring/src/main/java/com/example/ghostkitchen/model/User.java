@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -53,9 +54,11 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
+        this.cart = new Cart();
     }
 
     public User(Name name, String email, String password) {
+        this();
         this.name = name;
         this.email = email;
         this.password = password;
@@ -131,6 +134,11 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void clearCart() {
+        this.cart.getItems().clear();
+        this.cart.setTotal(new BigDecimal("0.00"));
     }
 
     @Override

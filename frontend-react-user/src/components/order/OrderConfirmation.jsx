@@ -19,6 +19,8 @@ const OrderConfirmation = ({
     expirationDate: "",
     cardHolder: ""
   });
+  const [restaurant, setRestaurant] = useState("");
+  const [orderDate, setOrderDate] = useState("");
 
   useEffect(() => {
     Axios.get(`/orderConfirmation/${number}`, {
@@ -26,10 +28,16 @@ const OrderConfirmation = ({
     })
       .then(res => {
         if (res.status === 200) {
+          console.log(res.data);
           setOrderNumber(res.data.orderNumber);
           setItems(res.data.menuItems);
           setTotal(res.data.total);
           setAddress(res.data.customerDetails.address);
+          setRestaurant({
+            name: res.data.restaurantName,
+            address: res.data.restaurantAddress.streetAddress
+          });
+          setOrderDate(res.data.orderPlacedDate);
           return res.data.paymentMethod;
         }
       })
@@ -52,21 +60,33 @@ const OrderConfirmation = ({
         <div className="orderDetails">
           <div className="orderDetailsPaymentMethod">
             <h2>Payment Method</h2>
-            <img src="https://img.icons8.com/color/48/000000/visa.png" />
-            <p>Card number ending in {paymentDetails.cardNumber}</p>
+            <img
+              src="https://img.icons8.com/color/48/000000/visa.png"
+              alt="Visa"
+            />
+            <p className="secondaryText">
+              Card number ending in {paymentDetails.cardNumber}
+            </p>
           </div>
           <div className="orderDetailsAddress">
             <h2>Delivery Address</h2>
-            <p>{address.streetAddress}</p>
-            <p>
-              {address.city} {address.state}
-            </p>
-            <p>{address.zip}</p>
+            <div className="secondaryText">
+              <p>{address.streetAddress}</p>
+              <p>
+                {address.city} {address.state}
+              </p>
+              <p>{address.zip}</p>
+            </div>
           </div>
         </div>
         <Divider />
         <div className="orderItems">
+          <h4>{restaurant.name}</h4>
+          <h4>{restaurant.address}</h4>
+          <Divider />
           <h3>Order #{orderNumber.toUpperCase()}</h3>
+          <h5 className="secondaryText">{orderDate}</h5>
+          <Divider />
           {items.map(item => (
             <div className="item">
               <p className="firstCol">

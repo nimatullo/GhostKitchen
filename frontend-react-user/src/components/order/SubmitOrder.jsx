@@ -8,17 +8,19 @@ import OrderItem from "./OrderItem";
 import NumberFormat from "react-number-format";
 import AddressChange from "./AddressChange";
 import PaymentChange from "./PaymentChange";
-import { TextField } from "@material-ui/core";
+import { TextField, Divider } from "@material-ui/core";
 import AddExtraInfo from "./AddExtraInfo";
 import { useHistory } from "react-router-dom";
 
 const SubmitOrder = props => {
   const [items, setItems] = useState();
   const [total, setTotal] = useState();
+  const [subtotal, setSubTotal] = useState(0);
   const [paymentInfo, setPaymentInfo] = useState({});
   const [paymentPresent, setPaymentPresent] = useState(false);
   const [cardNumber, setCardNumber] = useState("");
   const [address, setAddress] = useState({});
+  const [tax, setTax] = useState(0);
   const history = useHistory();
 
   useEffect(() => {
@@ -26,11 +28,11 @@ const SubmitOrder = props => {
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
     })
       .then(res => {
-        setTotal(res.data.total);
+        setSubTotal(res.data.total);
+        setTotalCalucaltion(res.data.total);
         return res.data;
       })
       .then(data => {
-        console.log(data.items);
         setItems(data.items);
       });
   }, []);
@@ -53,6 +55,11 @@ const SubmitOrder = props => {
       }
     });
   }, [paymentPresent]);
+
+  const setTotalCalucaltion = subtotal => {
+    setTax((subtotal * 0.08).toFixed(2));
+    setTotal((subtotal * 1.08 + 3.0).toFixed(2));
+  };
 
   const confirmOrder = () => {
     const data = {
@@ -111,7 +118,20 @@ const SubmitOrder = props => {
         </button>
         <h3>Your Bag</h3>
         {items && items.map(item => <OrderItem itemInfo={item} />)}
-        <p style={{ textAlign: "right", padding: "1em" }}>Total: ${total}</p>
+        <div className="totalCalculation">
+          <div className="text">
+            <span>Subtotal</span>
+            <span>Service Fee</span>
+            <span>Tax</span>
+            <span className="total">Total</span>
+          </div>
+          <div className="amount">
+            <span>${subtotal}</span>
+            <span>$3.00</span>
+            <span>${tax}</span>
+            <span className="total">${total}</span>
+          </div>
+        </div>
         <div className="confirmOrderButtonContainer">
           <button onClick={confirmOrder} className="submitOrder">
             Submit Order

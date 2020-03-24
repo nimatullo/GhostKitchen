@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,9 +60,10 @@ public class OrderController {
                 .collect(Collectors.toList())
         );
         orderRepo.save(order);
-        currentUser.getCart().emptyCart();
-        return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
-                ,order.getItems(),order.getPaymentInfo(),order.getUser()));
+        currentUser.clearCart();
+        userRepository.save(currentUser);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
+        return ResponseEntity.ok(new OrderResponse(order));
     }
 
     @GetMapping("/orderConfirmation/{orderNumber}")
@@ -74,8 +76,7 @@ public class OrderController {
         else {
             return new ResponseEntity<>(new ApiResponse(false,"Order cannot be found"),HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),order.getTotal()
-                ,order.getItems(),order.getPaymentInfo(),order.getUser()));
+        return ResponseEntity.ok(new OrderResponse(order));
     }
 
     /*
@@ -114,9 +115,7 @@ public class OrderController {
         List<OrderResponse> pastOrders =
                 orderRepo.findByUser_Id(principal.getId())
                         .stream()
-                        .map(order -> new OrderResponse(order.getOrderNumber(),order.getNumberOfItems(),
-                                order.getTotal(),order.getItems(),order.getPaymentInfo(),order.getUser(),
-                                order.getRestaurant().getName(),order.getRestaurant().getAddress())).collect(Collectors.toList());
+                        .map(OrderResponse::new).collect(Collectors.toList());
         return ResponseEntity.ok(pastOrders);
     }
 }

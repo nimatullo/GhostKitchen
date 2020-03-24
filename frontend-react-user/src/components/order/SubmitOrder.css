@@ -29,6 +29,30 @@
   margin: 2em;
 }
 
+.submitOrderScreen .totalCalculation {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.submitOrderScreen .totalCalculation > div {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+
+.submitOrderScreen .totalCalculation .amount {
+  text-align: right;
+}
+
+.submitOrderScreen .totalCalculation .text span {
+  color: #6b6b83;
+}
+
+.submitOrderScreen .totalCalculation span.total {
+  margin-top: 10px;
+  color: #000;
+}
+
 button.submitOrder {
   margin-top: 1em;
 }

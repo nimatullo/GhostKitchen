@@ -98,8 +98,8 @@ const PaymentChange = ({
               value={dateOfExpiration}
               customInput={TextField}
               label="Date of Expiration"
-              placeholder="MM-YYYY"
-              format="##-####"
+              placeholder="MM/YYYY"
+              format="##/####"
               mask={["M", "M", "Y", "Y", "Y", "Y"]}
               onChange={e => setDateOfExpiration(e.target.value)}
             />

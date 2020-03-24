@@ -1,12 +1,16 @@
 package com.example.ghostkitchen.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +21,10 @@ public class Order {
     @Id
     @GeneratedValue
     Long id;
+
+    @CreationTimestamp
+    @DateTimeFormat(pattern = "MM/dd/yyy hh:mm")
+    LocalDateTime orderPlacedDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -45,6 +53,7 @@ public class Order {
     List<MenuItem> items = new ArrayList<>();
 
     public Order() {
+//        this.orderPlacedDate = LocalDateTime.now();
     }
 
     public Order(User user,PaymentDetails paymentInfo,UUID orderNumber,BigDecimal total,int numberOfItems,Restaurant restaurant) {
@@ -54,6 +63,15 @@ public class Order {
         this.total = total;
         this.numberOfItems = numberOfItems;
         this.restaurant = restaurant;
+//        this.orderPlacedDate = LocalDateTime.now();
+    }
+
+    public LocalDateTime getOrderPlacedDate() {
+        return orderPlacedDate;
+    }
+
+    public void setOrderPlacedDate(LocalDateTime orderPlacedDate) {
+        this.orderPlacedDate = orderPlacedDate;
     }
 
     public List<MenuItem> getItems() {

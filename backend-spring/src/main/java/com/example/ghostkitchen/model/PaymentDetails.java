@@ -15,7 +15,7 @@ public class PaymentDetails {
 
     String cardNumber;
     int CSV;
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="MM-yyyy")
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="MM/YYYY")
     Date expirationDate;
 
     public String getCardHolderName() {

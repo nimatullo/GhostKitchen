@@ -14,7 +14,6 @@ const PastOrders = () => {
         Authorization: "Bearer " + localStorage.getItem("jwt")
       }
     }).then(res => {
-      console.log(res.data);
       setOrders(res.data);
     });
   }, []);

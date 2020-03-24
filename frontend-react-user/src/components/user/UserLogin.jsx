@@ -20,24 +20,26 @@ export default function Login() {
 
   function logIn() {
     setLoading(true);
-    axios
-      .put("/login", {
-        email: values.email,
-        password: values.password
-      })
-      .then(res => {
-        if (res.status === 200) {
-          setAuth(true);
-          setName(res.data.firstName);
-          setJwtToken(res.data.accessToken);
-          localStorage.setItem("auth", true);
-          localStorage.setItem("jwt", res.data.accessToken);
-          localStorage.setItem("name", res.data.firstName);
-          history.push("/");
-        } else {
-          setErrorMsg("Email or password is incorrect.");
-        }
-      });
+    setTimeout(() => {
+      axios
+        .put("/login", {
+          email: values.email,
+          password: values.password
+        })
+        .then(res => {
+          if (res.status === 200) {
+            setAuth(true);
+            setName(res.data.firstName);
+            setJwtToken(res.data.accessToken);
+            localStorage.setItem("auth", true);
+            localStorage.setItem("jwt", res.data.accessToken);
+            localStorage.setItem("name", res.data.firstName);
+            history.push("/");
+          } else {
+            setErrorMsg("Email or password is incorrect.");
+          }
+        });
+    }, 1000);
   }
 
   // Redirect to Home Page if user is already logged in.
@@ -46,7 +48,7 @@ export default function Login() {
   }
   if (isLoading) {
     return (
-      <div>
+      <div className="loginForm">
         <CircularProgress />
       </div>
     );

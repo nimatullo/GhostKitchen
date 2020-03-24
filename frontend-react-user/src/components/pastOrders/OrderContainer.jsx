@@ -11,6 +11,9 @@ const OrderContainer = ({ order }) => {
           <span>${order.total.toFixed(2)}</span>
         </span>
         <div className="address">
+          <div className="dateOfOrder">
+            <span>{order.orderPlacedDate}</span>
+          </div>
           <span>
             DELIVERED TO {order.customerDetails.address.streetAddress}{" "}
             {order.customerDetails.address.city},{" "}

@@ -3,6 +3,7 @@ package com.example.ghostkitchen.payload;
 import com.example.ghostkitchen.model.*;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,29 +16,50 @@ public class OrderResponse {
     private User customerDetails;
     private String restaurantName;
     private Address restaurantAddress;
+    private String orderPlacedDate;
 
     public OrderResponse() {
     }
 
     public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems,
-                         PaymentDetails paymentMethod, User customerDetails) {
+                         PaymentDetails paymentMethod, User customerDetails, String orderPlacedDate) {
         this.orderNumber = orderNumber;
         this.numberOfItems = numberOfItems;
         this.total = total;
         this.menuItems = menuItems;
         this.paymentMethod = paymentMethod;
         this.customerDetails = customerDetails;
+        this.orderPlacedDate = orderPlacedDate;
+
     }
 
-    public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems,PaymentDetails paymentMethod,User customerDetails,String restaurantName,Address restaurantAddress) {
-        this.orderNumber = orderNumber;
-        this.numberOfItems = numberOfItems;
-        this.total = total;
-        this.menuItems = menuItems;
-        this.paymentMethod = paymentMethod;
-        this.customerDetails = customerDetails;
+    public OrderResponse(Order order) {
+        this.orderNumber = order.getOrderNumber();
+        this.numberOfItems = order.getNumberOfItems();
+        this.total = order.getTotal();
+        this.menuItems = order.getItems();
+        this.paymentMethod = order.getPaymentInfo();
+        this.customerDetails = order.getUser();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a");
+        this.orderPlacedDate = formatter.format(order.getOrderPlacedDate());
+        this.restaurantName = order.getRestaurant().getName();
+        this.restaurantAddress = order.getRestaurant().getAddress();
+    }
+
+    public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems,
+                         PaymentDetails paymentMethod,User customerDetails,String restaurantName,
+                         Address restaurantAddress, String orderPlacedDate) {
+        this(orderNumber, numberOfItems, total, menuItems, paymentMethod, customerDetails, orderPlacedDate);
         this.restaurantName = restaurantName;
         this.restaurantAddress = restaurantAddress;
+    }
+
+    public String getOrderPlacedDate() {
+        return orderPlacedDate;
+    }
+
+    public void setOrderPlacedDate(String orderPlacedDate) {
+        this.orderPlacedDate = orderPlacedDate;
     }
 
     public String getRestaurantName() {
