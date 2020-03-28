@@ -1,17 +1,11 @@
 package com.example.ghostkitchen.controller;
 
 import com.example.ghostkitchen.details.UserPrincipal;
-import com.example.ghostkitchen.model.CurrentUser;
-import com.example.ghostkitchen.model.Order;
-import com.example.ghostkitchen.model.Restaurant;
-import com.example.ghostkitchen.model.User;
+import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.ApiResponse;
 import com.example.ghostkitchen.payload.OrderRequest;
 import com.example.ghostkitchen.payload.OrderResponse;
-import com.example.ghostkitchen.repo.MenuItemRepo;
-import com.example.ghostkitchen.repo.OrderRepo;
-import com.example.ghostkitchen.repo.RestaurantRepo;
-import com.example.ghostkitchen.repo.UserRepository;
+import com.example.ghostkitchen.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +31,12 @@ public class OrderController {
     @Autowired
     MenuItemRepo menuItemRepo;
 
+    @Autowired
+    DeliveryRepo deliveryRepo;
+
+    @Autowired
+    DeliveryController deliveryController;
+
     @PostMapping("/restaurants/{id}/submitOrder")
     public ResponseEntity<?> submitOrder(@CurrentUser UserPrincipal principal,@PathVariable Long id,
                                          @RequestBody OrderRequest request) {
@@ -51,8 +51,9 @@ public class OrderController {
         else {
             return new ResponseEntity<>(new ApiResponse(false,"Restaurant doesn't exist"),HttpStatus.NOT_FOUND);
         }
+        Delivery delivery = deliveryRepo.save(new Delivery());
         Order order = new Order(currentUser,currentUser.getPayment(),UUID.randomUUID(),request.getTotal(),
-                request.getNumberOfItems(),restaurant);
+                request.getNumberOfItems(),restaurant, delivery);
         order.setItems(request
                 .getMenuItems()
                 .stream()
@@ -60,6 +61,8 @@ public class OrderController {
                 .collect(Collectors.toList())
         );
         orderRepo.save(order);
+        delivery.setOrder(order);
+        deliveryRepo.save(delivery);
         currentUser.clearCart();
         userRepository.save(currentUser);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");

@@ -21,6 +21,9 @@ import PastOrders from "./components/pastOrders/PastOrders.jsx";
 import OrderConfirmation from "./components/order/OrderConfirmation";
 
 function App() {
+  useEffect(() => {
+    document.title = "Ghost Kitchen";
+  }, []);
   const [jwtToken, setJwtToken] = useState({});
   const [name, setName] = useState(localStorage.getItem("name"));
   const [auth, setAuth] = useState(() => {

@@ -28,7 +28,6 @@ const OrderConfirmation = ({
     })
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data);
           setOrderNumber(res.data.orderNumber);
           setItems(res.data.menuItems);
           setTotal(res.data.total);

@@ -17,6 +17,7 @@ public class OrderResponse {
     private String restaurantName;
     private Address restaurantAddress;
     private String orderPlacedDate;
+    private boolean delivered;
 
     public OrderResponse() {
     }
@@ -44,6 +45,7 @@ public class OrderResponse {
         this.orderPlacedDate = formatter.format(order.getOrderPlacedDate());
         this.restaurantName = order.getRestaurant().getName();
         this.restaurantAddress = order.getRestaurant().getAddress();
+        this.delivered = order.isDelivered();
     }
 
     public OrderResponse(UUID orderNumber,int numberOfItems,BigDecimal total,List<MenuItem> menuItems,
@@ -120,6 +122,14 @@ public class OrderResponse {
 
     public List<MenuItem> getMenuItems() {
         return menuItems;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
+    }
+
+    public void setDelivered(boolean delivered) {
+        this.delivered = delivered;
     }
 
     public void setMenuItems(List<MenuItem> menuItems) {

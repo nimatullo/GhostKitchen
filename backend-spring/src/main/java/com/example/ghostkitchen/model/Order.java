@@ -52,22 +52,45 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "menu_item_id"))
     List<MenuItem> items = new ArrayList<>();
 
+    @OneToOne
+    Delivery delivery;
+
+    boolean delivered = false;
+
     public Order() {
 //        this.orderPlacedDate = LocalDateTime.now();
     }
 
-    public Order(User user,PaymentDetails paymentInfo,UUID orderNumber,BigDecimal total,int numberOfItems,Restaurant restaurant) {
+    public Order(User user,PaymentDetails paymentInfo,UUID orderNumber,BigDecimal total,int numberOfItems,
+                 Restaurant restaurant, Delivery delivery) {
         this.user = user;
         this.paymentInfo = paymentInfo;
         this.orderNumber = orderNumber;
         this.total = total;
         this.numberOfItems = numberOfItems;
         this.restaurant = restaurant;
-//        this.orderPlacedDate = LocalDateTime.now();
+        this.delivery = delivery;
+    }
+
+    public boolean isDelivered() {
+        return delivered;
+    }
+
+    public Order setDelivered(boolean delivered) {
+        this.delivered = delivered;
+        return this;
     }
 
     public LocalDateTime getOrderPlacedDate() {
         return orderPlacedDate;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
     }
 
     public void setOrderPlacedDate(LocalDateTime orderPlacedDate) {

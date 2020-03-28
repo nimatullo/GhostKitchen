@@ -1,0 +1,26 @@
+.hoverMenu {
+  padding: 1em;
+  color: white;
+  position: absolute;
+  background-color: #ff2f3b;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
+  width: 120px;
+  z-index: 10;
+}
+
+.hoverMenu > div {
+  cursor: pointer;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
+}
+
+.welcome {
+  cursor: default;
+  color: white;
+  display: flex;
+  align-items: center;
+}

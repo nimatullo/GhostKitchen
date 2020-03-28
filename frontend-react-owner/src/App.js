@@ -13,6 +13,9 @@ import AddItem from "./components/owner/AddItem";
 import RestaurantRatings from "./components/restaurant/RestaurantRatings";
 
 function App() {
+  useEffect(() => {
+    document.title = "Ghost Kitchen | Owner";
+  }, []);
   const [name, setName] = useState(localStorage.getItem("name"));
   const [auth, setAuth] = useState(() => {
     const auth = localStorage.getItem("auth");

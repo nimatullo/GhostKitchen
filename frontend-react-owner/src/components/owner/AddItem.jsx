@@ -41,6 +41,10 @@ const AddItem = ({ props }) => {
       }
     );
     setItems([...items, item]);
+    setPrice("");
+    setName("");
+    setDescription("");
+    setPicture(null);
   };
 
   const droppedFile = file => {
@@ -63,6 +67,7 @@ const AddItem = ({ props }) => {
       <form>
         <div>
           <TextField
+            variant="outlined"
             fullWidth
             label="Item Name"
             name="name"
@@ -72,6 +77,7 @@ const AddItem = ({ props }) => {
         </div>
         <div>
           <TextField
+            variant="outlined"
             fullWidth
             label="Item Description"
             name="description"
@@ -83,6 +89,7 @@ const AddItem = ({ props }) => {
         </div>
         <div>
           <CurrencyTextField
+            variant="outlined"
             textAlign="left"
             value={price}
             label="Price"

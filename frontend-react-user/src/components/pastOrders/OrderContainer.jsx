@@ -15,7 +15,8 @@ const OrderContainer = ({ order }) => {
             <span>{order.orderPlacedDate}</span>
           </div>
           <span>
-            DELIVERED TO {order.customerDetails.address.streetAddress}{" "}
+            {order.delivered ? "DELIVERED " : "ON THE WAY TO "}TO{" "}
+            {order.customerDetails.address.streetAddress}{" "}
             {order.customerDetails.address.city},{" "}
             {order.customerDetails.address.state}{" "}
             {order.customerDetails.address.zip}

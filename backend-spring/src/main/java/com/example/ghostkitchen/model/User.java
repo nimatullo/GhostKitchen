@@ -53,6 +53,9 @@ public class User {
                 inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Delivery> deliveries;
+
     public User() {
         this.cart = new Cart();
     }
@@ -139,6 +142,14 @@ public class User {
     public void clearCart() {
         this.cart.getItems().clear();
         this.cart.setTotal(new BigDecimal("0.00"));
+    }
+
+    public List<Delivery> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<Delivery> deliveries) {
+        this.deliveries = deliveries;
     }
 
     @Override
