@@ -23,7 +23,11 @@ const Carousel = ({ orders }) => {
   const setDisplay = () => {
     const order = orders[index];
     setOrderNumber(order.orderNumber);
-    setCustomer(order.user.name.firstName + " " + order.user.name.lastName);
+    setCustomer(
+      order.customerDetails.name.firstName +
+        " " +
+        order.customerDetails.name.lastName
+    );
     setTotal(order.total.toFixed(2));
     setNumberOfItems(order.numberOfItems);
   };

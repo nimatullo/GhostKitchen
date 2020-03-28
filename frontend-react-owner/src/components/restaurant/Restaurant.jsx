@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import MenuItem from "./MenuItem";
-import { Fab, Tooltip, Link } from "@material-ui/core";
+import { Tooltip, Link } from "@material-ui/core";
 import "./Restaurant.css";
 import AddIcon from "@material-ui/icons/Add";
 import Carousel from "../carousel/Carousel";

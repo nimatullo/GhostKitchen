@@ -3,6 +3,7 @@ package com.example.ghostkitchen.controller;
 import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.ApiResponse;
+import com.example.ghostkitchen.payload.OrderResponse;
 import com.example.ghostkitchen.payload.RestaurantRequest;
 import com.example.ghostkitchen.payload.RestaurantResponse;
 import com.example.ghostkitchen.repo.MenuItemRepo;
@@ -26,6 +27,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * REST endpoints for Restaurants
@@ -197,10 +199,14 @@ public class RestaurantController {
         if (ownerRestaurant == null) {
             return new ResponseEntity<>(new ApiResponse(false, "Restaurant not yet created"), HttpStatus.NOT_FOUND);
         }
+        List<OrderResponse> restaurantOrders = orderRepo.findByRestaurantId(ownerRestaurant.getId())
+                .stream()
+                .map(OrderResponse::new)
+                .collect(Collectors.toList());
         RestaurantResponse response = new RestaurantResponse(ownerRestaurant.getId(), ownerRestaurant.getName(),
                 ownerRestaurant.getAddress(),
                 menuItemRepo.findByRestaurantId(ownerRestaurant.getId()), ownerRestaurant.getAverageRating(),
-                ownerRestaurant.getNumberOfReviews(), orderRepo.findByRestaurantId(ownerRestaurant.getId()));
+                ownerRestaurant.getNumberOfReviews(), restaurantOrders);
         return ResponseEntity.ok(response);
     }
 

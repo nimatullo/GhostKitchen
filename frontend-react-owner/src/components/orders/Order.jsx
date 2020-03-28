@@ -23,7 +23,8 @@ const Order = ({ order }) => {
         key={order.orderNumber}
       >
         <td>
-          {order.user.name.firstName} {order.user.name.lastName}
+          {order.customerDetails.name.firstName}{" "}
+          {order.customerDetails.name.lastName}
         </td>
         <td>{order.orderNumber.toUpperCase()}</td>
         <td>{order.numberOfItems}</td>
@@ -44,11 +45,12 @@ const Order = ({ order }) => {
         </DialogTitle>
         <DialogContent>
           <h3>
-            Customer: {order.user.name.firstName} {order.user.name.lastName}
+            Customer: {order.customerDetails.name.firstName}{" "}
+            {order.customerDetails.name.lastName}
           </h3>
           <h3>Items</h3>
           <div className="orderItems">
-            {order.items.map(item => (
+            {order.menuItems.map(item => (
               <div className="orderItemsList">
                 <div className="itemName">{item.name}</div>
                 <div className="price">

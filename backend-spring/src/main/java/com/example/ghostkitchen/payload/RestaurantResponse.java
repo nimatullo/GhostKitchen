@@ -9,12 +9,12 @@ public class RestaurantResponse {
     String restaurantName;
     Address address;
     List<MenuItem> menuItems;
-    List<Order> pastOrders;
+    List<OrderResponse> pastOrders;
     double rating;
     int numberOfReviews;
 
     public RestaurantResponse(Long id, String restaurantName,Address address,List<MenuItem> menuItems,
-                              double rating, int numberOfReviews, List<Order> pastOrders) {
+                              double rating, int numberOfReviews, List<OrderResponse> pastOrders) {
         this.id = id;
         this.restaurantName = restaurantName;
         this.address = address;
@@ -72,7 +72,7 @@ public class RestaurantResponse {
         this.menuItems = menuItems;
     }
 
-    public List<Order> getPastOrders() {
+    public List<OrderResponse> getPastOrders() {
         return pastOrders;
     }
 
@@ -83,7 +83,7 @@ public class RestaurantResponse {
     public void setId(Long id) {
         this.id = id;
     }
-    public void setPastOrders(List<Order> pastOrders) {
+    public void setPastOrders(List<OrderResponse> pastOrders) {
         this.pastOrders = pastOrders;
     }
 }

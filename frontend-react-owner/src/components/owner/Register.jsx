@@ -27,7 +27,7 @@ const Register = () => {
       })
       .then(res => {
         if (res.status === 201) {
-          history.push("/owner/register/restaurants");
+          history.push("/login");
         } else {
           return res.statusText;
         }
