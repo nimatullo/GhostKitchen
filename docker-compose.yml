@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+  user:
+    build: ./frontend-react-user
+    expose:
+      - 3001
+    command: npm start
+    ports:
+      - 3001:3001
+    links:
+      - app
+    networks:
+      - ghostkitchen
+  owner:
+    build: ./frontend-react-owner
+    expose:
+      - 3000
+    command: npm start
+    ports:
+      - 3000:3000
+    links:
+      - app
+    networks:
+      - ghostkitchen
+  delivery:
+    build: ./frontend-react-delivery
+    expose:
+      - 3002
+    command: npm start
+    ports:
+      - 3002:3002
+    links:
+      - app
+    networks:
+      - ghostkitchen
+  app:
+    build: ./backend-spring
+    environment:
+      API_HOST: ${API_HOST}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - ghostkitchen
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=ghostkitchen
+    networks:
+      - ghostkitchen
+
+networks:
+  ghostkitchen:
