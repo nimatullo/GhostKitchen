@@ -38,6 +38,7 @@ public class Restaurant {
     private List<Rating> listOfRatings = new ArrayList<>();
 
     @JsonIgnore
+    @OrderBy("number_of_previous_orders desc")
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<RestaurantCustomer> restaurantCustomerList = new ArrayList<>();
 
@@ -140,13 +141,6 @@ public class Restaurant {
 
     public void setRestaurantCustomerList(List<RestaurantCustomer> restaurantCustomerList) {
         this.restaurantCustomerList = restaurantCustomerList;
-    }
-
-    public RestaurantCustomer getBestCustomer() {
-        restaurantCustomerList.sort(Collections.reverseOrder());
-        if (restaurantCustomerList.isEmpty())
-            return null;
-        return restaurantCustomerList.get(0);
     }
 
     public void addCustomer(RestaurantCustomer customer) {

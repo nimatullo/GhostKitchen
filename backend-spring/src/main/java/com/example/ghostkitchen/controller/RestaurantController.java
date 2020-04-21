@@ -6,10 +6,7 @@ import com.example.ghostkitchen.payload.ApiResponse;
 import com.example.ghostkitchen.payload.OrderResponse;
 import com.example.ghostkitchen.payload.RestaurantRequest;
 import com.example.ghostkitchen.payload.RestaurantResponse;
-import com.example.ghostkitchen.repo.MenuItemRepo;
-import com.example.ghostkitchen.repo.OrderRepo;
-import com.example.ghostkitchen.repo.RestaurantRepo;
-import com.example.ghostkitchen.repo.UserRepository;
+import com.example.ghostkitchen.repo.*;
 import com.example.ghostkitchen.service.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -51,6 +48,9 @@ public class RestaurantController {
 
     @Autowired
     FileStorageService fileStorageService;
+
+    @Autowired
+    RestaurantCustomerRepo restaurantCustomerRepo;
 
     @GetMapping("/restaurants/{id}")
     public ResponseEntity<?> getRestaurantInfo(@PathVariable Long id) {
@@ -255,7 +255,8 @@ public class RestaurantController {
 
     @GetMapping("/restaurants/bestCustomer")
     public ResponseEntity<?> bestCustomer(@CurrentUser UserPrincipal principal) {
-        Restaurant myRestaurant = restaurantRepo.findByOwner_Id(principal.getId());
-        return ResponseEntity.ok(myRestaurant.getBestCustomer());
+        final Long MY_RESTAURANT_ID = restaurantRepo.findByOwner_Id(principal.getId()).getId();
+        List<RestaurantCustomer> listOfRestaurantCustomers = restaurantCustomerRepo.findByRestaurantIdOrderByNumberOfPreviousOrdersDesc(MY_RESTAURANT_ID);
+        return ResponseEntity.ok(listOfRestaurantCustomers.get(0));
     }
 }

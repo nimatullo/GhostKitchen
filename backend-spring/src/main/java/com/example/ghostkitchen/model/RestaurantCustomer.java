@@ -1,5 +1,7 @@
 package com.example.ghostkitchen.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,12 +16,25 @@ public class RestaurantCustomer implements Comparable<RestaurantCustomer>{
     @ManyToOne
     User user;
 
+    @JsonIgnore
+    @ManyToOne
+    Restaurant restaurant;
+
     public RestaurantCustomer() {
     }
 
-    public RestaurantCustomer(User user) {
+    public RestaurantCustomer(User user, Restaurant restaurant) {
+        this.restaurant = restaurant;
         this.numberOfPreviousOrders = 1;
         this.user = user;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     public User getUser() {

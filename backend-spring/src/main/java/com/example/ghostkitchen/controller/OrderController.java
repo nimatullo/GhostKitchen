@@ -56,7 +56,7 @@ public class OrderController {
                 .collect(Collectors.toList())
         );
         RestaurantCustomer customer = restaurantCustomerRepo.findByUser_Id(principal.getId());
-        restaurant.addCustomer(Objects.requireNonNullElseGet(customer, () -> new RestaurantCustomer(currentUser)));
+        restaurant.addCustomer(Objects.requireNonNullElseGet(customer, () -> new RestaurantCustomer(currentUser, restaurant)));
         restaurantRepo.save(restaurant);
         orderRepo.save(order);
         delivery.setOrder(order);
