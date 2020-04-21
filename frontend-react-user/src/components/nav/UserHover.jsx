@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { useHistory, NavLink } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import "./UserHover.css";
-import { Divider, Link } from "@material-ui/core";
+import { Divider } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 const UserHover = () => {
@@ -21,10 +21,12 @@ const UserHover = () => {
     if (hovered) {
       return (
         <div className="hoverMenu">
-          <div className="nav-link">User Settings</div>
+          <div className="nav-link">
+            <Link to="/settings">User Settings</Link>
+          </div>
           <Divider />
           <div className="nav-link">
-            <a href="/pastOrders">Past Orders</a>
+            <Link to="/pastOrders">Past Orders</Link>
           </div>
           <Divider />
           <div className="nav-link" onClick={logOut}>

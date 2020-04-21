@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { TextField, Button, CircularProgress, Link } from "@material-ui/core";
+import { TextField, Button, CircularProgress } from "@material-ui/core";
 import validate from "../validateLogin";
 import useForm from "../useForm";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { GlobalContext } from "../contexts/GlobalContext";
 import "./Login.css";
@@ -24,9 +24,9 @@ export default function Login() {
       axios
         .put("/login", {
           email: values.email,
-          password: values.password
+          password: values.password,
         })
-        .then(res => {
+        .then((res) => {
           if (res.status === 200) {
             setAuth(true);
             setName(res.data.firstName);
@@ -97,7 +97,10 @@ export default function Login() {
           </div>
         </form>
         <p>
-          <Link href="/register">Create an account</Link>
+          Don't have an account?{" "}
+          <Link className="link" to="/register">
+            Create an account
+          </Link>
         </p>
       </div>
     );

@@ -3,20 +3,20 @@ import { Snackbar } from "@material-ui/core";
 import { ItemContext } from "../contexts/ItemContext";
 import Alert from "../Alert";
 import Axios from "axios";
-import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant/constantVariables";
 import "./MenuItem.css";
 
 const MenuItem = ({ menuItem }) => {
   const { addToItems } = useContext(ItemContext);
   const [open, setOpen] = useState(false);
-  const handleClick = id => {
+  const handleClick = (id) => {
     Axios.post(
       `${BASE_URL}/users/cart/add/${id}`,
       {},
       {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
-    ).then(res => {
+    ).then((res) => {
       addToItems(menuItem);
       setOpen(true);
       setTimeout(() => setOpen(false), 2000);

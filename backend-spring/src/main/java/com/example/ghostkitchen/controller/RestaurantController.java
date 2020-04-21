@@ -252,4 +252,10 @@ public class RestaurantController {
         }
         return new ResponseEntity<>(new ApiResponse(currentRestaurant.checkForRating(currentUser), "Rating"), HttpStatus.OK);
     }
+
+    @GetMapping("/restaurants/bestCustomer")
+    public ResponseEntity<?> bestCustomer(@CurrentUser UserPrincipal principal) {
+        Restaurant myRestaurant = restaurantRepo.findByOwner_Id(principal.getId());
+        return ResponseEntity.ok(myRestaurant.getBestCustomer());
+    }
 }

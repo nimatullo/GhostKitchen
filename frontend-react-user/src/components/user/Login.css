@@ -21,3 +21,13 @@
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
+.link {
+  text-decoration: none;
+  color: #3f51b5;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: #303f9f;
+}

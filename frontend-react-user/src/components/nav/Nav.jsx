@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "./vectors/logo.svg";
 import { GlobalContext } from "../contexts/GlobalContext";

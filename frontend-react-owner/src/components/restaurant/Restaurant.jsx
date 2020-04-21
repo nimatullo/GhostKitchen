@@ -15,14 +15,16 @@ const Restaurant = () => {
   const [pastOrders, setPastOrders] = useState([]);
   const [restaurantId, setRestaurantId] = useState("");
   const [rating, setRating] = useState("");
+  const [bestCustomer, setBestCustomer] = useState({});
+  const [numberOfPurchases, setNumberOfPurchases] = useState(0);
   useEffect(() => {
     Axios.get("/MyRestaurant", {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
     })
-      .then(res => res.data)
-      .then(data => {
+      .then((res) => res.data)
+      .then((data) => {
         setAddress(data.address);
         setItems(data.menuItems);
         setPastOrders(data.pastOrders);
@@ -30,20 +32,50 @@ const Restaurant = () => {
         setRestaurantId(data.id);
         setRating(data.rating);
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.status === 404) {
           history.push("/register/restaurant");
         }
       });
   }, []);
 
+  useEffect(() => {
+    Axios.get("/restaurants/bestCustomer", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((res) => {
+      setBestCustomer(res.data.user);
+      setNumberOfPurchases(res.data.numberOfPreviousOrders);
+    });
+  }, []);
+
   const goToAdd = () => {
     history.push({ pathname: "/restaurant/additem", orders: pastOrders });
   };
 
+  const renderBestCustomer = () => {
+    if (!bestCustomer) {
+      return <h2>Not Enough Purchase Data</h2>;
+    } else if (bestCustomer.name) {
+      return (
+        <>
+          <p>
+            {bestCustomer.name.firstName} {bestCustomer.name.lastName}
+          </p>
+          <p>Number of purchases: {numberOfPurchases}</p>
+          <p>{bestCustomer.email}</p>
+          <p>
+            <Link to="#">Contact</Link>
+          </p>
+        </>
+      );
+    }
+  };
+
   const getPastOrders = () => {
     if (pastOrders.length === 0) {
-      return <p>No one has yet placed an order.</p>;
+      return <h2>Not Enough Purchase Data</h2>;
     } else {
       return <Carousel orders={pastOrders} />;
     }
@@ -63,6 +95,7 @@ const Restaurant = () => {
             <Link href="/myrestaurant/ratings">Average Rating: {rating}</Link>
           </div>
         </div>
+        <div>{renderBestCustomer()}</div>
         <div className="pastOrders">{getPastOrders()}</div>
       </div>
       <div className="inventory-table">
@@ -76,7 +109,7 @@ const Restaurant = () => {
             </tr>
           </thead>
           <tbody>
-            {items.map(menuItem => (
+            {items.map((menuItem) => (
               <MenuItem restaurantId={restaurantId} menuItem={menuItem} />
             ))}
           </tbody>

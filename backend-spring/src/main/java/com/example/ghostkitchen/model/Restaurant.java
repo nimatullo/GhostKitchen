@@ -1,12 +1,13 @@
 package com.example.ghostkitchen.model;
 
+import com.example.ghostkitchen.repo.RestaurantRepo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Restaurant {
@@ -35,6 +36,10 @@ public class Restaurant {
             joinColumns = @JoinColumn(name="restaurant_id", nullable = true),
             inverseJoinColumns = @JoinColumn(name="rating_id"))
     private List<Rating> listOfRatings = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<RestaurantCustomer> restaurantCustomerList = new ArrayList<>();
 
     public Restaurant() {
 
@@ -127,5 +132,29 @@ public class Restaurant {
 
     public void setListOfRatings(List<Rating> listOfRatings) {
         this.listOfRatings = listOfRatings;
+    }
+
+    public List<RestaurantCustomer> getRestaurantCustomerList() {
+        return restaurantCustomerList;
+    }
+
+    public void setRestaurantCustomerList(List<RestaurantCustomer> restaurantCustomerList) {
+        this.restaurantCustomerList = restaurantCustomerList;
+    }
+
+    public RestaurantCustomer getBestCustomer() {
+        restaurantCustomerList.sort(Collections.reverseOrder());
+        if (restaurantCustomerList.isEmpty())
+            return null;
+        return restaurantCustomerList.get(0);
+    }
+
+    public void addCustomer(RestaurantCustomer customer) {
+        if (restaurantCustomerList.contains(customer)) {
+            restaurantCustomerList.get(restaurantCustomerList.indexOf(customer)).incrementNumberOfPreviousOrders();
+        }
+        else {
+            restaurantCustomerList.add(customer);
+        }
     }
 }

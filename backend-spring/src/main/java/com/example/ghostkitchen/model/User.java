@@ -139,11 +139,6 @@ public class User {
         this.roles = roles;
     }
 
-    public void clearCart() {
-        this.cart.getItems().clear();
-        this.cart.setTotal(new BigDecimal("0.00"));
-    }
-
     public List<Delivery> getDeliveries() {
         return deliveries;
     }

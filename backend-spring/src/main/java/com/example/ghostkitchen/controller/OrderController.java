@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -37,20 +38,14 @@ public class OrderController {
     @Autowired
     DeliveryController deliveryController;
 
+    @Autowired
+    RestaurantCustomerRepo restaurantCustomerRepo;
+
     @PostMapping("/restaurants/{id}/submitOrder")
     public ResponseEntity<?> submitOrder(@CurrentUser UserPrincipal principal,@PathVariable Long id,
                                          @RequestBody OrderRequest request) {
-        Optional<Restaurant> foundRestaurant = restaurantRepo.findById(id);
-        Optional<User> foundUser = userRepository.findById(principal.getId());
-        Restaurant restaurant = null;
-        User currentUser = null;
-        if (foundRestaurant.isPresent() && foundUser.isPresent()) {
-            restaurant = foundRestaurant.get();
-            currentUser = foundUser.get();
-        }
-        else {
-            return new ResponseEntity<>(new ApiResponse(false,"Restaurant doesn't exist"),HttpStatus.NOT_FOUND);
-        }
+        Restaurant restaurant = restaurantRepo.findById(id).get();
+        User currentUser = userRepository.findById(principal.getId()).get();
         Delivery delivery = deliveryRepo.save(new Delivery());
         Order order = new Order(currentUser,currentUser.getPayment(),UUID.randomUUID(),request.getTotal(),
                 request.getNumberOfItems(),restaurant, delivery);
@@ -60,12 +55,14 @@ public class OrderController {
                 .map(item -> menuItemRepo.findById(item.getId()).get())
                 .collect(Collectors.toList())
         );
+        RestaurantCustomer customer = restaurantCustomerRepo.findByUser_Id(principal.getId());
+        restaurant.addCustomer(Objects.requireNonNullElseGet(customer, () -> new RestaurantCustomer(currentUser)));
+        restaurantRepo.save(restaurant);
         orderRepo.save(order);
         delivery.setOrder(order);
         deliveryRepo.save(delivery);
-        currentUser.clearCart();
+        currentUser.getCart().emptyCart();
         userRepository.save(currentUser);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm");
         return ResponseEntity.ok(new OrderResponse(order));
     }
 
@@ -82,9 +79,6 @@ public class OrderController {
         return ResponseEntity.ok(new OrderResponse(order));
     }
 
-    /*
-     * TODO: Change this method so it grabs the restaurant ID by using the owner's restaurant ID.
-     */
     @GetMapping("/restaurants/{id}/pastOrders")
     public ResponseEntity<?> getPastOrders(@PathVariable Long id) {
         Optional<Restaurant> foundRestaurant = restaurantRepo.findById(id);

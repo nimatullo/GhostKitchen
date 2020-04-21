@@ -1,29 +1,48 @@
-import React, { useState, useMemo, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Login from "./components/user/UserLogin";
 import Register from "./components/user/UserRegister";
-import Home from "./components/Home";
 import RestaurantList from "./components/restaurant/RestaurantList";
 import Restaurant from "./components/restaurant/Restaurant";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import ServerError from "./components/ServerError.jsx";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AddItem from "./components/restaurant/AddItem";
-import OwnerRegister from "./components/owner/OwnerRegister";
-import OwnerLogin from "./components/owner/OwnerLogin";
-import RegisterRestaurant from "./components/owner/RegisterRestaurant";
-import RestaurantCreationProvider from "./components/contexts/RestaurantCreationContext";
 import { GlobalContext } from "./components/contexts/GlobalContext";
 import AddExtraInfo from "./components/order/AddExtraInfo";
 import SubmitOrder from "./components/order/SubmitOrder";
 import Nav from "./components/nav/Nav";
 import PastOrders from "./components/pastOrders/PastOrders.jsx";
 import OrderConfirmation from "./components/order/OrderConfirmation";
+import UserSettings from "./components/user/UserSettings";
+import Axios from "axios";
 
 function App() {
   useEffect(() => {
-    document.title = "Ghost Kitchen";
+    Axios.get("/currentUser", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then(() => setServerError(false))
+      .catch((err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem("jwt");
+          localStorage.removeItem("auth");
+          localStorage.removeItem("name");
+          setName("");
+          return <Redirect to="/login" />;
+        } else if (err.response.status === 500) {
+          setServerError(true);
+          return <Redirect to="/server-error" />;
+        }
+      });
   }, []);
+  const [serverError, setServerError] = useState(false);
   const [jwtToken, setJwtToken] = useState({});
   const [name, setName] = useState(localStorage.getItem("name"));
   const [auth, setAuth] = useState(() => {
@@ -39,40 +58,49 @@ function App() {
     if (token) {
       setJwtToken({
         headers: {
-          Authorization: "Bearer " + token
-        }
+          Authorization: "Bearer " + token,
+        },
       });
     }
   }, []);
-  const value = { setName, auth, setAuth, name, setJwtToken, jwtToken };
+  const value = {
+    setName,
+    auth,
+    setAuth,
+    name,
+    setJwtToken,
+    jwtToken,
+    serverError,
+  };
   return (
     <GlobalContext.Provider value={value}>
       <Router>
         <Nav />
         <Switch>
-          <ProtectedRoute exact path="/home" component={Home} />
           <Route exact path="/login">
             <Login />
           </Route>
+          <Route exact path="/server-error" component={ServerError} />
           <Route exact path="/register" component={() => <Register />} />
-          <Route exact path="/restaurants" component={RestaurantList} />
-          <Route exact path="/restaurants/:id" component={Restaurant} />
-          <Route exact path="/orders/:number" component={OrderConfirmation} />
-          <Route exact path="/pastOrders" component={PastOrders} />
-          <Route exact path="/owner/register" component={OwnerRegister} />
-          <RestaurantCreationProvider>
-            <Route exact path="/restaurants/menu/add" component={AddItem} />
-            <Route exact path="/owner/login">
-              <OwnerLogin />
-            </Route>
-            <Route exact path="/order/submit" component={SubmitOrder} />
-            <Route
-              exact
-              path="/owner/register/restaurants"
-              component={RegisterRestaurant}
-            />
-          </RestaurantCreationProvider>
-          <Route exact path="/addExtraInfo" component={AddExtraInfo} />
+          <ProtectedRoute
+            exact
+            path="/restaurants"
+            component={RestaurantList}
+          />
+          <ProtectedRoute
+            exact
+            path="/restaurants/:id"
+            component={Restaurant}
+          />
+          <ProtectedRoute
+            exact
+            path="/orders/:number"
+            component={OrderConfirmation}
+          />
+          <ProtectedRoute exact path="/pastOrders" component={PastOrders} />
+          <ProtectedRoute exact path="/order/submit" component={SubmitOrder} />
+          <ProtectedRoute exact path="/addExtraInfo" component={AddExtraInfo} />
+          <ProtectedRoute exact path="/settings" component={UserSettings} />
         </Switch>
       </Router>
     </GlobalContext.Provider>

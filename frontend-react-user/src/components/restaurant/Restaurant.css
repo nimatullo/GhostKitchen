@@ -13,6 +13,7 @@ main {
   padding: 1em;
   display: grid;
   grid-template-columns: auto auto;
+  grid-template-rows: repeat(auto-fill, minmax(200px, 1fr));
   row-gap: 1em;
   column-gap: 1em;
 }

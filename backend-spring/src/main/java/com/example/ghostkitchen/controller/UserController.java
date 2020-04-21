@@ -4,7 +4,6 @@ import com.example.ghostkitchen.details.UserPrincipal;
 import com.example.ghostkitchen.jwt.JwtTokenProvider;
 import com.example.ghostkitchen.model.*;
 import com.example.ghostkitchen.payload.*;
-import com.example.ghostkitchen.repo.OrderRepo;
 import com.example.ghostkitchen.repo.RoleRepo;
 import com.example.ghostkitchen.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -78,24 +76,34 @@ public class UserController {
         return userRepository.findById(userPrincipal.getId()).get();
     }
 
-    @PutMapping("user/update")
-    public ResponseEntity<ApiResponse> updateInformation(@CurrentUser UserPrincipal currentUser,
-                                                         @RequestBody UpdateUserRequest updateUser) {
-        Optional<User> foundUser = userRepository.findById(currentUser.getId());
-
-        if (foundUser.isPresent()) {
-            User user = foundUser.get();
-            user.setEmail(updateUser.getEmail());
-            user.getName().setFirstName(updateUser.getFirstName());
-            user.getName().setLastName(updateUser.getLastName());
-            user.setPassword(encoder.encode(updateUser.getPassword()));
-
-            userRepository.save(user);
-            return new ResponseEntity<>(new ApiResponse(true,"Information has been updated."),HttpStatus.OK);
+    @PutMapping("/user/change/email")
+    public ResponseEntity<?> changeEmail(@CurrentUser UserPrincipal principal, @RequestBody User user) {
+        if (userRepository.existsAccountByEmail(user.getEmail())) {
+            return new ResponseEntity<>(new ApiResponse(false, "This email is taken!"), HttpStatus.BAD_REQUEST);
         }
-        else {
-            return new ResponseEntity<>(new ApiResponse(false,"Please log in"),HttpStatus.NOT_FOUND);
+        User currentUser = userRepository.findById(principal.getId()).get();
+        currentUser.setEmail(user.getEmail());
+        userRepository.save(currentUser);
+        return ResponseEntity.ok(new ApiResponse(true, "Your email has been updated!"));
+    }
+
+    @PutMapping("/user/change/name")
+    public ResponseEntity<?> changeName(@CurrentUser UserPrincipal principal, @RequestBody Name name) {
+        User currentUser = userRepository.findById(principal.getId()).get();
+        currentUser.setName(name);
+        userRepository.save(currentUser);
+        return ResponseEntity.ok(new ApiResponse(true, "Your name has been updated!"));
+    }
+
+    @PutMapping("/user/change/password")
+    public ResponseEntity<?> changePassword(@CurrentUser UserPrincipal principal, @RequestBody PasswordChangeRequest request) {
+        if (!encoder.matches(request.getCurrentPassword(), principal.getPassword())) {
+            return new ResponseEntity<>(new ApiResponse(false, "Password is incorrect"), HttpStatus.BAD_REQUEST);
         }
+        User currentUser = userRepository.findById(principal.getId()).get();
+        currentUser.setPassword(encoder.encode(request.getNewPassword()));
+        userRepository.save(currentUser);
+        return ResponseEntity.ok(new ApiResponse(true, "Password has been changed!"));
     }
 
     @PostMapping("user/addInfo")

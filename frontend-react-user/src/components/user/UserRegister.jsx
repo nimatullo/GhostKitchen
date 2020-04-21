@@ -1,6 +1,6 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { TextField, Button, Link } from "@material-ui/core";
+import { useHistory, Link } from "react-router-dom";
+import { TextField, Button } from "@material-ui/core";
 import useForm from "../useForm";
 import validate from "../validateRegister";
 import { useState } from "react";
@@ -22,17 +22,17 @@ const Register = () => {
         password: values.password,
         name: {
           firstName: values.firstName,
-          lastName: values.lastName
-        }
+          lastName: values.lastName,
+        },
       })
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           history.push("/login");
         } else {
           return res.statusText;
         }
       })
-      .then(responseMessage => {
+      .then((responseMessage) => {
         setServerError(responseMessage);
       });
   }
@@ -105,7 +105,10 @@ const Register = () => {
         </div>
       </form>
       <p>
-        Have an account? <Link href="/login">Sign in</Link>
+        Have an account?{" "}
+        <Link className="link" to="/login">
+          Sign in
+        </Link>
       </p>
     </div>
   );

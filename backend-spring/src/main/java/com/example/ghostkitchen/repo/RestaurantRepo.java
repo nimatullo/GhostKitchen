@@ -12,4 +12,6 @@ public interface RestaurantRepo extends CrudRepository<Restaurant, Long> {
     Optional<Restaurant> findByRestaurantName(String name);
 
     @NotNull Iterable<Restaurant> findAll();
+
+    Restaurant findByOwner_Id(Long id);
 }

@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Cart {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     BigDecimal total = new BigDecimal("0.00");
@@ -63,5 +63,11 @@ public class Cart {
         this.items.remove(item);
         this.numberOfItems--;
         this.setTotal(this.total.subtract(item.getPrice()));
+    }
+
+    public void emptyCart() {
+        this.numberOfItems = 0;
+        this.items.clear();
+        this.total = new BigDecimal("0.00");
     }
 }

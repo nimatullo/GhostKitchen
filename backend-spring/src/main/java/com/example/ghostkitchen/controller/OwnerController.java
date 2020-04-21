@@ -80,6 +80,9 @@ public class OwnerController {
         return ResponseEntity.ok(new JwtAuthResponse(jwt, currentUser.getName().getFirstName()));
     }
 
+    /*
+        Not implemented in the frontend.
+     */
     @PutMapping("/update")
     public ResponseEntity<ApiResponse> updateInformation(@CurrentUser UserPrincipal currentUser,
                                                          @RequestBody UpdateUserRequest updateUser) {

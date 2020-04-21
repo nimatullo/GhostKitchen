@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @CreationTimestamp
@@ -57,9 +57,7 @@ public class Order {
 
     boolean delivered = false;
 
-    public Order() {
-//        this.orderPlacedDate = LocalDateTime.now();
-    }
+    public Order() {}
 
     public Order(User user,PaymentDetails paymentInfo,UUID orderNumber,BigDecimal total,int numberOfItems,
                  Restaurant restaurant, Delivery delivery) {
