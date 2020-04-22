@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import "./UserHover.css";
 import { Divider } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -23,7 +23,11 @@ const UserHover = () => {
         <div className="hoverMenu">
           <div className="nav-link">User Settings</div>
           <Divider />
-          <div className="nav-link">Past Orders</div>
+          <div className="nav-link">
+            <Link exact className="link" to="/restaurant/additem">
+              Add Menu Item
+            </Link>
+          </div>
           <Divider />
           <div className="nav-link" onClick={logOut}>
             Log Out

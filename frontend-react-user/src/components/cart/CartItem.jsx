@@ -10,12 +10,12 @@ import "./CartItem.css";
 const CartItem = ({ itemInfo }) => {
   const { removeItem } = useContext(ItemContext);
   const [open, setOpen] = useState(false);
-  const handleClick = item => {
+  const handleClick = (item) => {
     Axios.put(
       `${BASE_URL}/users/cart/remove/${item.id}`,
       {},
       {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
     );
     removeItem(item);

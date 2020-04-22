@@ -17,8 +17,8 @@ const AddItem = ({ props }) => {
 
   useEffect(() => {
     Axios.get("/MyRestaurant", {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
-    }).then(res => {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    }).then((res) => {
       setRestaurantId(res.data.id);
     });
   }, []);
@@ -26,7 +26,7 @@ const AddItem = ({ props }) => {
   const addToMenu = () => {
     const item = {
       name: name,
-      price: price
+      price: price,
     };
     const data = new FormData();
     data.append("picture", picture);
@@ -37,7 +37,7 @@ const AddItem = ({ props }) => {
       `http://localhost:3000/owner/restaurants/${restaurantId}/menu/add`,
       data,
       {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
     );
     setItems([...items, item]);
@@ -47,7 +47,7 @@ const AddItem = ({ props }) => {
     setPicture(null);
   };
 
-  const droppedFile = file => {
+  const droppedFile = (file) => {
     const uploadFile = file[0];
     setPicture(uploadFile);
   };
@@ -57,11 +57,11 @@ const AddItem = ({ props }) => {
       <h1>Add New Menu Item</h1>
       <div className="itemList">
         {items.length > 0 && <h3>Added Items</h3>}
-        <List>
-          {items.map(menuItem => (
+        <ul>
+          {items.map((menuItem) => (
             <RegisterRestaurantItem item={menuItem} />
           ))}
-        </List>
+        </ul>
       </div>
 
       <form>
@@ -72,7 +72,7 @@ const AddItem = ({ props }) => {
             label="Item Name"
             name="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div>
@@ -84,7 +84,7 @@ const AddItem = ({ props }) => {
             multiline={true}
             rowsMax={4}
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <div>
@@ -108,7 +108,7 @@ const AddItem = ({ props }) => {
                 </div>
               )}
               {isDragActive && "Let go!"}
-              {acceptedFiles.map(file => (
+              {acceptedFiles.map((file) => (
                 <p>{file.name}</p>
               ))}
             </div>

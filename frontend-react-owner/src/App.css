@@ -30,7 +30,8 @@ nav ul li {
   margin-right: 1em;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.link:hover {
   color: #fde581;
 }
 

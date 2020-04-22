@@ -19,19 +19,19 @@ public class Cart {
         this.numberOfItems = numberOfItems;
     }
 
-    public List<MenuItem> getItems() {
+    public List<CartItem> getItems() {
         return items;
     }
 
-    public void setItems(List<MenuItem> items) {
+    public void setItems(List<CartItem> items) {
         this.items = items;
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "cart_items",
             joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_item_id"))
-    List<MenuItem> items = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "cart_item_id"))
+    List<CartItem> items = new ArrayList<>();
 
     public Long getId() {
         return this.id;
@@ -53,14 +53,24 @@ public class Cart {
         return this.numberOfItems;
     }
 
-    public void addItem(MenuItem item) {
-        this.items.add(item);
+    public void addItem(CartItem item) {
+        if (this.items.contains(item)) {
+            item.increaseQuantity();
+        }
+        else {
+            this.items.add(item);
+        }
         this.numberOfItems++;
         this.setTotal(this.total.add(item.getPrice()));
     }
 
-    public void removeItem(MenuItem item) {
-        this.items.remove(item);
+    public void removeItem(CartItem item) {
+        if (item.getQuantity() == 1) {
+            this.items.remove(item);
+        }
+        else {
+            item.decreaseQuantity();
+        }
         this.numberOfItems--;
         this.setTotal(this.total.subtract(item.getPrice()));
     }

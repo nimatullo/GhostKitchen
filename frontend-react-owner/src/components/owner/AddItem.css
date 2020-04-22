@@ -33,6 +33,18 @@
 .addItemForm form > * {
   margin: 1em;
 }
+
+.addItemForm .itemList ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.addItemForm .itemList ul li {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .uploadPrompt {
   display: flex;
   flex-direction: column;
