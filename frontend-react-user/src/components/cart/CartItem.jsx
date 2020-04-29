@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Divider, Snackbar, NativeSelect } from "@material-ui/core";
+import { Divider, Snackbar } from "@material-ui/core";
 import { ItemContext } from "../contexts/ItemContext";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Axios from "axios";
@@ -8,7 +8,7 @@ import { BASE_URL } from "../constant/constantVariables";
 import "./CartItem.css";
 
 const CartItem = ({ itemInfo }) => {
-  const { removeItem } = useContext(ItemContext);
+  const { updateContext } = useContext(ItemContext);
   const [open, setOpen] = useState(false);
   const handleClick = (item) => {
     Axios.put(
@@ -17,8 +17,9 @@ const CartItem = ({ itemInfo }) => {
       {
         headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
-    );
-    removeItem(item);
+    ).then((res) => {
+      updateContext();
+    });
     setOpen(true);
     setTimeout(() => setOpen(false), 2000);
   };
@@ -30,7 +31,9 @@ const CartItem = ({ itemInfo }) => {
         <button className="removeItem" onClick={() => handleClick(itemInfo)}>
           <DeleteIcon color="action" />
         </button>
-        <h5 className="itemPrice">${itemInfo.price.toFixed(2)}</h5>
+        <h5 className="itemPrice">
+          ${(itemInfo.quantity * itemInfo.price).toFixed(2)}
+        </h5>
       </div>
       <Divider />
       <Snackbar open={open}>

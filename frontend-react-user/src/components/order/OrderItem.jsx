@@ -7,6 +7,7 @@ const OrderItem = ({ itemInfo }) => {
     <div className="order-item-container">
       <div className="order-item-content">
         <img className="order-item-picture" src={itemInfo.urlPath} alt="" />
+        <h5 style={{ color: "#0000008a" }}>{itemInfo.quantity}</h5>
         <h4 className="itemName">{itemInfo.name}</h4>
         <h5 className="itemPrice">${itemInfo.price.toFixed(2)}</h5>
       </div>

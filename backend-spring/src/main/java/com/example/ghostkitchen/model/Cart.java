@@ -60,17 +60,14 @@ public class Cart {
         else {
             this.items.add(item);
         }
-        final BigDecimal ITEM_PRICE = item.getPrice();
-        final BigDecimal ITEM_QUANTITY = new BigDecimal(item.getQuantity());
         this.numberOfItems++;
         addToTotal(item.getPrice());
-        item.setPrice(ITEM_PRICE.multiply(ITEM_QUANTITY));
     }
 
     public void removeItem(CartItem item) {
         this.items.remove(item);
-        this.numberOfItems--;
-        this.setTotal(this.total.subtract(item.getPrice()));
+        this.numberOfItems = this.numberOfItems - item.getQuantity();
+        this.setTotal(this.total.subtract(item.getPrice().multiply(new BigDecimal(item.getQuantity()))));
     }
 
     public void emptyCart() {

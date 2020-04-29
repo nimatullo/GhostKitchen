@@ -7,7 +7,7 @@ import { BASE_URL } from "../constant/constantVariables";
 import "./MenuItem.css";
 
 const MenuItem = ({ menuItem }) => {
-  const { addToItems } = useContext(ItemContext);
+  const { updateContext } = useContext(ItemContext);
   const [open, setOpen] = useState(false);
   const handleClick = (id) => {
     Axios.post(
@@ -17,7 +17,7 @@ const MenuItem = ({ menuItem }) => {
         headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
     ).then((res) => {
-      addToItems(menuItem);
+      updateContext();
       setOpen(true);
       setTimeout(() => setOpen(false), 2000);
     });

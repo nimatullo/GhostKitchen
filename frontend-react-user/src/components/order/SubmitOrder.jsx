@@ -12,7 +12,7 @@ import { TextField, Divider } from "@material-ui/core";
 import AddExtraInfo from "./AddExtraInfo";
 import { useHistory } from "react-router-dom";
 
-const SubmitOrder = props => {
+const SubmitOrder = (props) => {
   const [items, setItems] = useState();
   const [total, setTotal] = useState();
   const [subtotal, setSubTotal] = useState(0);
@@ -25,22 +25,22 @@ const SubmitOrder = props => {
 
   useEffect(() => {
     Axios.get(`${BASE_URL}/users/cart`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     })
-      .then(res => {
+      .then((res) => {
         setSubTotal(res.data.total);
         setTotalCalucaltion(res.data.total);
         return res.data;
       })
-      .then(data => {
+      .then((data) => {
         setItems(data.items);
       });
   }, []);
 
   useEffect(() => {
     Axios.get(`${BASE_URL}/user/paymentInfo`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
-    }).then(res => {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    }).then((res) => {
       console.log(res);
       if (res.data.payment && res.data.address) {
         setCardNumber(
@@ -56,7 +56,7 @@ const SubmitOrder = props => {
     });
   }, [paymentPresent]);
 
-  const setTotalCalucaltion = subtotal => {
+  const setTotalCalucaltion = (subtotal) => {
     setTax((subtotal * 0.08).toFixed(2));
     setTotal((subtotal * 1.08 + 3.0).toFixed(2));
   };
@@ -66,15 +66,15 @@ const SubmitOrder = props => {
       items: items,
       numberOfItems: items.length,
       total: total,
-      formOfPayment: paymentInfo
+      formOfPayment: paymentInfo,
     };
     Axios.post(
       `${BASE_URL}/restaurants/${props.location.restaurantId.restaurantId}/submitOrder`,
       data,
       {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
-    ).then(res => {
+    ).then((res) => {
       if (res.status === 200) {
         history.push(`/orders/${res.data.orderNumber}`);
       }
@@ -113,11 +113,11 @@ const SubmitOrder = props => {
     <main className="submitOrderScreen">
       {present()}
       <div className="items">
-        <button className="backButton">
+        <button className="backButton" onClick={() => history.goBack()}>
           <ArrowBackIcon />
         </button>
         <h3>Your Bag</h3>
-        {items && items.map(item => <OrderItem itemInfo={item} />)}
+        {items && items.map((item) => <OrderItem itemInfo={item} />)}
         <div className="totalCalculation">
           <div className="text">
             <span>Subtotal</span>

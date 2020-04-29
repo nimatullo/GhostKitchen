@@ -5,7 +5,6 @@ import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
 import { BASE_URL } from "../constant/constantVariables";
 import "./Restaurant.css";
-import Ratings from "react-ratings-declarative";
 import { Divider } from "@material-ui/core";
 import { GlobalContext } from "../contexts/GlobalContext";
 import NumberFormat from "react-number-format";
