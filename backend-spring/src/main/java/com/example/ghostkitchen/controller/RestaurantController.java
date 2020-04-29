@@ -21,15 +21,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * REST endpoints for Restaurants
  *
- * @author sherzodnimatullo
+ * @author <a href="https://nimatullo.com">Sherzod Nimatullo</a>
  */
 @RestController
 public class RestaurantController {
@@ -52,6 +50,11 @@ public class RestaurantController {
     @Autowired
     RestaurantCustomerRepo restaurantCustomerRepo;
 
+    /**
+     * This method returns a restaurant using the ID that was passed.
+     * @param id Restaurant ID
+     * @return A 200 status code with restaurant information.
+     */
     @GetMapping("/restaurants/{id}")
     public ResponseEntity<?> getRestaurantInfo(@PathVariable Long id) {
         Optional<Restaurant> findRestaurant = restaurantRepo.findById(id);
@@ -67,7 +70,8 @@ public class RestaurantController {
     }
 
     /**
-     * Add restaurant into the database and RestaurantRepo.
+     * This method adds a restaurant into the database and RestaurantRepo. We get the current user using the ID from
+     * UserPrincipal. A restaurant object is created using the information from the RestaurantRequest.
      *
      * @param request RestaurantRequest object which is the JSON request converted into a Java object.
      * @param owner   Currently logged in user.
@@ -78,18 +82,13 @@ public class RestaurantController {
                                            @CurrentUser UserPrincipal owner) {
         User restaurantOwner = userRepo.findById(owner.getId()).get();
         Restaurant restaurant = new Restaurant(request.getRestaurantName(),request.getAddress(),restaurantOwner);
-        request.getMenuItems().forEach(item -> {
-            MenuItem createdItem = new MenuItem(item.getName(),item.getPrice(),item.getDescription());
-            createdItem.setRestaurant(restaurant);
-            menuItemRepo.save(createdItem);
-        });
         restaurantOwner.setRestaurant(restaurant);
         Restaurant newRestaurant = restaurantRepo.save(restaurant);
         return ResponseEntity.ok(newRestaurant);
     }
 
     /**
-     * Get the details of the Restaurant with the matching String name.
+     * This method returns
      *
      * @param id Path Variable for the restaurant id to be fetched.
      * @return RestaurantResponse encapsulated in ResponseEntity.
@@ -111,12 +110,20 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/restaurants/{id}/categories")
+    public ResponseEntity<?> menuCategories(@PathVariable Long id) {
+        Restaurant restaurant = restaurantRepo.findById(id).orElseThrow();
+        Set<String> categories = restaurant.getCategories();
+        return ResponseEntity.ok(categories);
+    }
+
     @PostMapping("/owner/restaurants/{id}/menu/add")
     public ResponseEntity<?> addMenuItem(@PathVariable Long id,
-                                         @RequestParam MultipartFile picture,
+                                         @RequestParam Optional<MultipartFile> picture,
                                          @RequestParam String name,
                                          @RequestParam String description,
-                                         @RequestParam BigDecimal price) {
+                                         @RequestParam BigDecimal price,
+                                         @RequestParam String category) {
         Optional<Restaurant> restaurantOptional = restaurantRepo.findById(id);
         Restaurant foundRestaurant = null;
         if (restaurantOptional.isPresent()) {
@@ -125,24 +132,25 @@ public class RestaurantController {
         else {
             return new ResponseEntity<>(new ApiResponse(false,"Restaurant doesn't exist"),HttpStatus.NOT_FOUND);
         }
-        MenuItem menuItem = new MenuItem(name,price,description); // Initialize the MenuItem
-        menuItem.setRestaurant(foundRestaurant);                  // Set the Restaurant that the menu item belongs to
-        Long menuId = menuItemRepo.save(menuItem).getId();        // Save the current instance of MenuItem and
-        // extract Id to be used for file name
-        String fileName = fileStorageService.storeFile(picture,UUID.randomUUID()); // Store file
-        menuItem.setUrlPath(                                                                    // Set url of menu item
-                ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/downloadFile/")
-                        .path(fileName)
-                        .toUriString()
-        );
-        menuItemRepo.save(menuItem);                                                           // save the new instance
+        MenuItem menuItem = new MenuItem(name,price,description, foundRestaurant, category);    // Initialize the MenuItem
+        menuItemRepo.save(menuItem);                                                           // Save the current instance of MenuItem
+        if (picture.isPresent()) {
+            String fileName = fileStorageService.storeFile(picture.get(),UUID.randomUUID());    // Store file
+            menuItem.setUrlPath(                                                                // Set url of menu item
+                    ServletUriComponentsBuilder.fromCurrentContextPath()
+                            .path("/downloadFile/")
+                            .path(fileName)
+                            .toUriString()
+            );
+            menuItemRepo.save(menuItem);                                                           // save the new instance
+        }
+        restaurantRepo.save(foundRestaurant);
         return ResponseEntity.ok(new ApiResponse(true,"Created"));
     }
 
     @PutMapping("/menu/edit/{id}")
     public ResponseEntity<?> updateItem(@PathVariable Long id,
-                                         @RequestParam(required = false)MultipartFile picture,
+                                         @RequestParam Optional<MultipartFile> picture,
                                          @RequestParam String name,
                                          @RequestParam String description,
                                          @RequestParam BigDecimal price) {
@@ -151,8 +159,8 @@ public class RestaurantController {
         findItem.setDescription(description);
         findItem.setPrice(price);
 
-        if(picture != null) {
-            String fileName = fileStorageService.storeFile(picture, UUID.randomUUID());
+        if(picture.isPresent()) {
+            String fileName = fileStorageService.storeFile(picture.get(), UUID.randomUUID());
             findItem.setUrlPath(                                                                    // Set url of menu item
                     ServletUriComponentsBuilder.fromCurrentContextPath()
                             .path("/downloadFile/")
@@ -260,5 +268,13 @@ public class RestaurantController {
         if (listOfRestaurantCustomers.isEmpty())
             return new ResponseEntity<>(new ApiResponse(false, "Not enough purchase data."), HttpStatus.NO_CONTENT);
         return ResponseEntity.ok(listOfRestaurantCustomers.get(0));
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<?> test(@CurrentUser UserPrincipal principal) {
+        User currentUser = userRepo.findById(principal.getId()).get();
+        Set<String> items = currentUser.getRestaurant().getCategories();
+
+        return ResponseEntity.ok(items);
     }
 }

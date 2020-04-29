@@ -13,6 +13,7 @@ const AddItem = ({ props }) => {
   const [price, setPrice] = useState();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
   const [picture, setPicture] = useState(null);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const AddItem = ({ props }) => {
     data.append("name", name);
     data.append("price", price);
     data.append("description", description);
+    data.append("category", category);
     Axios.post(
       `http://localhost:3000/owner/restaurants/${restaurantId}/menu/add`,
       data,
@@ -44,6 +46,7 @@ const AddItem = ({ props }) => {
     setPrice("");
     setName("");
     setDescription("");
+    setCategory("");
     setPicture(null);
   };
 
@@ -85,6 +88,16 @@ const AddItem = ({ props }) => {
             rowsMax={4}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            variant="outlined"
+            fullWidth
+            label="Item Category"
+            name="category"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
           />
         </div>
         <div>

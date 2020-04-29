@@ -13,45 +13,50 @@ import Rating from "./Rating";
 
 const Restaurant = ({
   match: {
-    params: { id }
-  }
+    params: { id },
+  },
 }) => {
   const [menu, setMenu] = useState([]);
   const [restaurant, setRestaurant] = useState({});
   const [address, setAddress] = useState({});
   const [rating, setRating] = useState();
+  const [categories, setCategories] = useState([]);
   const { jwtToken } = useContext(GlobalContext);
 
   useEffect(() => {
     Axios.get(`${BASE_URL}/restaurants/${id}/menu`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     })
-      .then(res => res.data)
-      .then(data => setMenu(data.menuItems));
+      .then((res) => res.data)
+      .then((data) => setMenu(data.menuItems));
+
+    Axios.get(`${BASE_URL}/restaurants/${id}/categories`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    }).then((res) => setCategories(res.data));
   }, []);
 
   useEffect(() => {
     Axios.get(`${BASE_URL}/restaurants/${id}`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     })
-      .then(res => {
+      .then((res) => {
         setRestaurant(res.data);
         setRating(res.data.averageRating);
         return res.data.address;
       })
-      .then(data => {
+      .then((data) => {
         setAddress(data);
       });
   }, [rating]);
 
-  const changeRating = newRating => {
+  const changeRating = (newRating) => {
     Axios.put(
       `${BASE_URL}/restaurants/${id}/addRating`,
       { rating: newRating },
       {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
-    ).then(res => setRating(newRating));
+    ).then((res) => setRating(newRating));
   };
 
   return (
@@ -86,13 +91,26 @@ const Restaurant = ({
           </div>
           <Divider />
           <div className="menu">
-            {menu.map(menuItemInfo => (
-              <MenuItem
-                className="item"
-                key={menuItemInfo.id}
-                menuItem={menuItemInfo}
-              />
-            ))}
+            {categories.map((category) => {
+              return (
+                <div className="categoryRow">
+                  <h3>{category}</h3>
+                  <div className="categoryRowContent">
+                    {menu.map((menuItemInfo) => {
+                      if (menuItemInfo.category === category) {
+                        return (
+                          <MenuItem
+                            className="item"
+                            key={menuItemInfo.id}
+                            menuItem={menuItemInfo}
+                          />
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="cart">

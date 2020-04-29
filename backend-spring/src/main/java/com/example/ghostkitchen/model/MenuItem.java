@@ -9,7 +9,7 @@ public class MenuItem extends Item {
     public MenuItem() {
     }
 
-    public MenuItem(String name, BigDecimal price, String description) {
-        super(name, price, description);
+    public MenuItem(String name, BigDecimal price, String description, Restaurant restaurant, String category) {
+        super(name, price, description, restaurant, category);
     }
 }

@@ -42,6 +42,9 @@ public class Restaurant {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<RestaurantCustomer> restaurantCustomerList = new ArrayList<>();
 
+    @ElementCollection
+    Set<String> categories = new HashSet<>();
+
     public Restaurant() {
 
     }
@@ -150,5 +153,17 @@ public class Restaurant {
         else {
             restaurantCustomerList.add(customer);
         }
+    }
+
+    public Set<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<String> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(String category) {
+        this.categories.add(category);
     }
 }
