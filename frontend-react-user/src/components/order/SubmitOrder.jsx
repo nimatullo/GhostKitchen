@@ -133,7 +133,11 @@ const SubmitOrder = (props) => {
           </div>
         </div>
         <div className="confirmOrderButtonContainer">
-          <button onClick={confirmOrder} className="submitOrder">
+          <button
+            onClick={confirmOrder}
+            disabled={!paymentPresent}
+            className="submitOrder"
+          >
             Submit Order
           </button>
         </div>

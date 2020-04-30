@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Button } from "@material-ui/core";
+import { Link } from "@material-ui/core";
 import "./OrderContainer.css";
 
 const OrderContainer = ({ order }) => {
@@ -15,7 +15,7 @@ const OrderContainer = ({ order }) => {
             <span>{order.orderPlacedDate}</span>
           </div>
           <span>
-            {order.delivered ? "DELIVERED " : "ON THE WAY TO "}TO{" "}
+            {order.delivered ? "DELIVERED " : "ON THE WAY "}TO{" "}
             {order.customerDetails.address.streetAddress}{" "}
             {order.customerDetails.address.city},{" "}
             {order.customerDetails.address.state}{" "}
@@ -24,7 +24,7 @@ const OrderContainer = ({ order }) => {
         </div>
       </div>
       <div className="itemInformation">
-        {order.menuItems.map(item => (
+        {order.menuItems.map((item) => (
           <>
             <span>{item.name}</span>
             <span id="price">${item.price.toFixed(2)}</span>

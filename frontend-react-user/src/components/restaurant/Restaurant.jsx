@@ -7,7 +7,6 @@ import { BASE_URL } from "../constant/constantVariables";
 import "./Restaurant.css";
 import { Divider } from "@material-ui/core";
 import { GlobalContext } from "../contexts/GlobalContext";
-import NumberFormat from "react-number-format";
 import Rating from "./Rating";
 
 const Restaurant = ({
@@ -76,15 +75,7 @@ const Restaurant = ({
                 restaurantId={id}
               />
               <div className="number">
-                {restaurant.numberOfReviews} Ratings (
-                {
-                  <NumberFormat
-                    displayType="text"
-                    format="###"
-                    value={rating}
-                  />
-                }
-                )
+                {restaurant.numberOfReviews} Ratings ({rating})
               </div>
             </div>
           </div>

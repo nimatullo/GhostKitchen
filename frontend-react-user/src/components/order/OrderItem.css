@@ -1,9 +1,11 @@
 img.order-item-picture {
-  width: 15%;
+  width: 100%;
 }
 
 .order-item-content {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 2fr 1fr 3fr 1fr;
+  column-gap: 1em;
   padding: 1em;
 }

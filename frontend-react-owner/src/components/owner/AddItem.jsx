@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { List, TextField, Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import RegisterRestaurantItem from "./RegisterRestaurantItem";
 import Dropzone from "react-dropzone";
 import Axios from "axios";
@@ -13,6 +14,7 @@ const AddItem = ({ props }) => {
   const [price, setPrice] = useState();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [listOfCategories, setListOfCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [picture, setPicture] = useState(null);
 
@@ -22,6 +24,9 @@ const AddItem = ({ props }) => {
     }).then((res) => {
       setRestaurantId(res.data.id);
     });
+    Axios.get("/restaurants/categories", {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    }).then((res) => setListOfCategories(res.data));
   }, []);
 
   const addToMenu = () => {
@@ -91,14 +96,34 @@ const AddItem = ({ props }) => {
           />
         </div>
         <div>
-          <TextField
+          <Autocomplete
+            id="combo-box-demo"
+            value={category}
+            onChange={(e, newValue) => {
+              if (newValue) {
+                setCategory(newValue);
+              }
+            }}
+            options={listOfCategories}
+            style={{ width: "100%" }}
+            freeSolo
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Category"
+                onChange={(e) => setCategory(e.target.value)}
+                variant="outlined"
+              />
+            )}
+          />
+          {/* <TextField
             variant="outlined"
             fullWidth
             label="Item Category"
             name="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-          />
+          /> */}
         </div>
         <div>
           <CurrencyTextField

@@ -117,6 +117,13 @@ public class RestaurantController {
         return ResponseEntity.ok(categories);
     }
 
+    @GetMapping("/restaurants/categories")
+    public ResponseEntity<?> getListOfCategories(@CurrentUser UserPrincipal principal) {
+        Restaurant myRestaurant = restaurantRepo.findByOwner_Id(principal.getId());
+        Set<String> categories = myRestaurant.getCategories();
+        return ResponseEntity.ok(categories);
+    }
+
     @PostMapping("/owner/restaurants/{id}/menu/add")
     public ResponseEntity<?> addMenuItem(@PathVariable Long id,
                                          @RequestParam Optional<MultipartFile> picture,

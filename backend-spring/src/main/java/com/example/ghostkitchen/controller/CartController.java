@@ -44,7 +44,7 @@ public class CartController {
     public ResponseEntity<?> addItemToCart(@CurrentUser UserPrincipal principal,@PathVariable Long id) {
         User currentUser = userRepo.findById(principal.getId()).orElseThrow();
         MenuItem item = menuItemRepo.findById(id).orElseThrow();
-        Optional<CartItem> itemInCart = cartItemRepo.findByName(item.getName());
+        Optional<CartItem> itemInCart = currentUser.getCart().findItem(item.getName());
         if (itemInCart.isPresent()) {
             currentUser.getCart().addItem(itemInCart.get());
         }

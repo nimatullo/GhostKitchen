@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/owner/")
@@ -79,6 +80,7 @@ public class OwnerController {
         String jwt = tokenProvider.generateToken(authentication);
         return ResponseEntity.ok(new JwtAuthResponse(jwt, currentUser.getName().getFirstName()));
     }
+
 
     /*
         Not implemented in the frontend.

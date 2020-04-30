@@ -3,7 +3,9 @@ package com.example.ghostkitchen.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 public class Cart {
@@ -74,6 +76,13 @@ public class Cart {
         this.numberOfItems = 0;
         this.items.clear();
         this.total = new BigDecimal("0.00");
+    }
+
+    public Optional<CartItem> findItem(String name) {
+          return items
+                .stream()
+                .filter(item -> item.getName().equals(name))
+                .findFirst();
     }
 
     private void addToTotal(BigDecimal price) {
