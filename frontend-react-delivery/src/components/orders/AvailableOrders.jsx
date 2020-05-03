@@ -10,9 +10,9 @@ const AvailableOrders = () => {
   useEffect(() => {
     Axios.get("/delivery/availableDeliveries", {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
-    }).then(res => {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((res) => {
       console.log(res.data);
       setAvailableOrdersList(res.data);
     });
@@ -36,7 +36,7 @@ const AvailableOrders = () => {
               </tr>
             </thead>
             <tbody>
-              {availableOrdersList.map(delivery => (
+              {availableOrdersList.map((delivery) => (
                 <Delivery
                   reload={reload}
                   setReload={setReload}

@@ -44,25 +44,23 @@ public class OrderController {
     @PostMapping("/restaurants/{id}/submitOrder")
     public ResponseEntity<?> submitOrder(@CurrentUser UserPrincipal principal,@PathVariable Long id,
                                          @RequestBody OrderRequest request) {
-        Restaurant restaurant = restaurantRepo.findById(id).get();
-        User currentUser = userRepository.findById(principal.getId()).get();
-        Delivery delivery = deliveryRepo.save(new Delivery());
-        Order order = new Order(currentUser,currentUser.getPayment(),UUID.randomUUID(),request.getTotal(),
-                request.getNumberOfItems(),restaurant, delivery);
-        order.setItems(request
-                .getMenuItems()
-                .stream()
-                .map(item -> menuItemRepo.findById(item.getId()).get())
-                .collect(Collectors.toList())
-        );
-        RestaurantCustomer customer = restaurantCustomerRepo.findByUser_Id(principal.getId());
-        restaurant.addCustomer(Objects.requireNonNullElseGet(customer, () -> new RestaurantCustomer(currentUser, restaurant)));
-        restaurantRepo.save(restaurant);
+        Restaurant RESTAURANT = restaurantRepo.findById(id).get();
+        User CURRENT_USER = userRepository.findById(principal.getId()).get();
+        Delivery DELIVERY = deliveryRepo.save(new Delivery());
+        Order order = new Order(CURRENT_USER,CURRENT_USER.getPayment(),UUID.randomUUID(),request.getTotal(),
+                request.getNumberOfItems(),RESTAURANT, DELIVERY);
+        order.setItems(CURRENT_USER.getCart().getItems()
+        .stream()
+        .map(cartItem -> menuItemRepo.findById(cartItem.getMenuItemId()).get())
+        .collect(Collectors.toList()));
+        RestaurantCustomer customer = restaurantCustomerRepo.findByUser_Id(CURRENT_USER.getId());
+        RESTAURANT.addCustomer(Objects.requireNonNullElseGet(customer, () -> new RestaurantCustomer(CURRENT_USER, RESTAURANT)));
+        restaurantRepo.save(RESTAURANT);
         orderRepo.save(order);
-        delivery.setOrder(order);
-        deliveryRepo.save(delivery);
-        currentUser.getCart().emptyCart();
-        userRepository.save(currentUser);
+        DELIVERY.setOrder(order);
+        deliveryRepo.save(DELIVERY);
+        CURRENT_USER.getCart().emptyCart();
+        userRepository.save(CURRENT_USER);
         return ResponseEntity.ok(new OrderResponse(order));
     }
 

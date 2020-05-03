@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button
+  Button,
 } from "@material-ui/core";
 import Axios from "axios";
 
@@ -21,10 +21,10 @@ const Delivery = ({ delivery, setReload, reload }) => {
       {},
       {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("jwt")
-        }
+          Authorization: "Bearer " + localStorage.getItem("jwt"),
+        },
       }
-    ).then(res => {
+    ).then((res) => {
       setReload(!reload);
       handleClose();
     });
@@ -75,7 +75,7 @@ const Delivery = ({ delivery, setReload, reload }) => {
           </div>
           <h3>Items</h3>
           <div className="orderItems">
-            {delivery.order.menuItems.map(item => (
+            {delivery.order.menuItems.map((item) => (
               <div className="orderItemsList">
                 <div className="itemName">{item.name}</div>
                 <div className="price">

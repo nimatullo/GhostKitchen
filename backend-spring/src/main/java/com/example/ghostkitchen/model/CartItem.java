@@ -9,6 +9,11 @@ import javax.persistence.InheritanceType;
 public class CartItem extends Item {
     private int quantity;
 
+    /**
+     * The id of the corresponding menu item.
+     */
+    private Long menuItemId;
+
     public CartItem(int quantity) {
         this.quantity = quantity;
     }
@@ -19,6 +24,7 @@ public class CartItem extends Item {
 
     public CartItem(MenuItem item) {
         super(item.getName(), item.getPrice(), item.getDescription(), item.getUrlPath(), item.getRestaurant());
+        this.menuItemId = item.getId();
         this.quantity = 1;
     }
 
@@ -32,6 +38,14 @@ public class CartItem extends Item {
 
     public void increaseQuantity() {
         quantity++;
+    }
+
+    public Long getMenuItemId() {
+        return menuItemId;
+    }
+
+    public void setMenuItemId(Long menuItemId) {
+        this.menuItemId = menuItemId;
     }
 
     public void decreaseQuantity() {quantity--;}
