@@ -18,6 +18,10 @@ main {
   border-radius: 10px;
 }
 
+.extra-info .frequentCustomer:hover {
+  cursor: pointer;
+}
+
 .inventory-table {
   display: flex;
   justify-content: center;

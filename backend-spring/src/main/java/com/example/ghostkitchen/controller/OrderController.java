@@ -53,7 +53,7 @@ public class OrderController {
         .stream()
         .map(cartItem -> menuItemRepo.findById(cartItem.getMenuItemId()).get())
         .collect(Collectors.toList()));
-        RestaurantCustomer customer = restaurantCustomerRepo.findByUser_Id(CURRENT_USER.getId());
+        RestaurantCustomer customer = restaurantCustomerRepo.findByUser_IdAndRestaurantId(CURRENT_USER.getId(), RESTAURANT.getId());
         RESTAURANT.addCustomer(Objects.requireNonNullElseGet(customer, () -> new RestaurantCustomer(CURRENT_USER, RESTAURANT)));
         restaurantRepo.save(RESTAURANT);
         orderRepo.save(order);

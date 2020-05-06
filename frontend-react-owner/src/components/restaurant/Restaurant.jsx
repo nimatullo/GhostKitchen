@@ -60,6 +60,7 @@ const Restaurant = () => {
     } else if (bestCustomer.name) {
       return (
         <>
+          <h2>Frequent Buyer</h2>
           <p>
             {bestCustomer.name.firstName} {bestCustomer.name.lastName}
           </p>
@@ -95,7 +96,12 @@ const Restaurant = () => {
             <Link href="/myrestaurant/ratings">Average Rating: {rating}</Link>
           </div>
         </div>
-        <div>{renderBestCustomer()}</div>
+        <div
+          className="frequentCustomer"
+          onClick={() => history.push("/myrestaurant/customers")}
+        >
+          {renderBestCustomer()}
+        </div>
         <div className="pastOrders">{getPastOrders()}</div>
       </div>
       <div className="inventory-table">

@@ -271,17 +271,20 @@ public class RestaurantController {
     @GetMapping("/restaurants/bestCustomer")
     public ResponseEntity<?> bestCustomer(@CurrentUser UserPrincipal principal) {
         final Long MY_RESTAURANT_ID = restaurantRepo.findByOwner_Id(principal.getId()).getId();
-        List<RestaurantCustomer> listOfRestaurantCustomers = restaurantCustomerRepo.findByRestaurantIdOrderByNumberOfPreviousOrdersDesc(MY_RESTAURANT_ID);
+        List<RestaurantCustomer> listOfRestaurantCustomers = restaurantCustomerRepo.findAllByRestaurantIdOrderByNumberOfPreviousOrdersDesc(MY_RESTAURANT_ID);
         if (listOfRestaurantCustomers.isEmpty())
             return new ResponseEntity<>(new ApiResponse(false, "Not enough purchase data."), HttpStatus.NO_CONTENT);
         return ResponseEntity.ok(listOfRestaurantCustomers.get(0));
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test(@CurrentUser UserPrincipal principal) {
-        User currentUser = userRepo.findById(principal.getId()).get();
-        Set<String> items = currentUser.getRestaurant().getCategories();
+    @GetMapping("/restaurants/getListOfCustomers")
+    public ResponseEntity<?> getOrdersByDate(@CurrentUser UserPrincipal principal) {
+        final Long MY_RESTAURANT_ID = restaurantRepo.findByOwner_Id(principal.getId()).getId();
+        List<RestaurantCustomer> listOfRestaurantCustomers = restaurantCustomerRepo.findAllByRestaurantId(MY_RESTAURANT_ID);
 
-        return ResponseEntity.ok(items);
+        if (listOfRestaurantCustomers.isEmpty()) {
+            return new ResponseEntity<>(new ApiResponse(false, "Not enough purchase data."), HttpStatus.NO_CONTENT);
+        }
+        return ResponseEntity.ok(listOfRestaurantCustomers);
     }
 }
