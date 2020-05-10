@@ -47,6 +47,11 @@ public class OwnerController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
+    /**
+     * This method registers a User with the role of OWNER.
+     * @param request Credentials for user.
+     * @return A ResponseEntity that's either 200 or 400
+     */
     @PostMapping("/register")
     public ResponseEntity<?> authenticateUser(@RequestBody RegisterRequest request) {
         if (userRepository.existsAccountByEmail(request.getEmail())) {
@@ -65,6 +70,11 @@ public class OwnerController {
         return new ResponseEntity<>(new ApiResponse(true,"Owner created"),HttpStatus.CREATED);
     }
 
+    /**
+     * This method logs in a user and returns a JWT Token.
+     * @param request Credentials for the user.
+     * @return JWT Token
+     */
     @PutMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(

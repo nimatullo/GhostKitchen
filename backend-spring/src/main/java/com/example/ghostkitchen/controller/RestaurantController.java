@@ -88,7 +88,8 @@ public class RestaurantController {
     }
 
     /**
-     * This method returns
+     * This method returns the menu for a specified restaurant. We first fetch the restaurant using the ID provided
+     * from the URL. We get the list of menu items and return a RestaurantResponse.
      *
      * @param id Path Variable for the restaurant id to be fetched.
      * @return RestaurantResponse encapsulated in ResponseEntity.
@@ -110,6 +111,11 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * This method returns the list of categories for a specified restaurant offers. Each menu item has a category.
+     * @param id Restaurant ID
+     * @return A 200 status code
+     */
     @GetMapping("/restaurants/{id}/categories")
     public ResponseEntity<?> menuCategories(@PathVariable Long id) {
         Restaurant restaurant = restaurantRepo.findById(id).orElseThrow();
@@ -117,6 +123,11 @@ public class RestaurantController {
         return ResponseEntity.ok(categories);
     }
 
+    /**
+     * This method returns the list of categories for the current logged in owner's restaurant.
+     * @param principal User principal
+     * @return A 200 status code
+     */
     @GetMapping("/restaurants/categories")
     public ResponseEntity<?> getListOfCategories(@CurrentUser UserPrincipal principal) {
         Restaurant myRestaurant = restaurantRepo.findByOwner_Id(principal.getId());
@@ -124,6 +135,18 @@ public class RestaurantController {
         return ResponseEntity.ok(categories);
     }
 
+    /**
+     * This method add a new Menu Item to the logged in user's restaurant. We first create a new MenuItem object with the information
+     * from the JSON. We assign the owner's restaurant to the Menu Item. If a picture is present, then we save the picture as a file
+     * using a UUID as the name in our file system and generate a URL for it using the ServletUriComponentsBuilder.
+     * @param id Restaurant ID
+     * @param picture Image of the item.
+     * @param name Name of the item.
+     * @param description Description for the item.
+     * @param price Price for the item.
+     * @param category Category assigned to the item.
+     * @return A 200 status code
+     */
     @PostMapping("/owner/restaurants/{id}/menu/add")
     public ResponseEntity<?> addMenuItem(@PathVariable Long id,
                                          @RequestParam Optional<MultipartFile> picture,
@@ -155,6 +178,16 @@ public class RestaurantController {
         return ResponseEntity.ok(new ApiResponse(true,"Created"));
     }
 
+    /**
+     * This method allows us to update an existing item. We first find the item using the ID and make the appropriate changes.
+     * After, we save the object.
+     * @param id MenuItem id
+     * @param picture New item picture
+     * @param name New item name
+     * @param description New item description
+     * @param price New item price.
+     * @return A 200 status code
+     */
     @PutMapping("/menu/edit/{id}")
     public ResponseEntity<?> updateItem(@PathVariable Long id,
                                          @RequestParam Optional<MultipartFile> picture,
@@ -179,12 +212,18 @@ public class RestaurantController {
         menuItemRepo.save(findItem);                                                           // save the new instance
         return ResponseEntity.ok(new ApiResponse(true,findItem.getUrlPath()));
     }
+
+    /**
+     * This method returns a list of all the restaurants available on Ghost Kitchens.
+     * @return List of restaurant objects.
+     */
     @GetMapping("/restaurants/all")
     public ResponseEntity<?> allRestaurants() {
         Iterable<Restaurant> allRestaurants = restaurantRepo.findAll();
         return ResponseEntity.ok(allRestaurants);
     }
 
+    @Deprecated
     @GetMapping("/downloadFile/{fileName}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,
                                                  HttpServletRequest request) {
@@ -207,6 +246,11 @@ public class RestaurantController {
                 .body(resource);
     }
 
+    /**
+     * This method returns the restaurant information for the current logged in owner.
+     * @param principal User principal
+     * @return A 200 status code with restaurant info.
+     */
     @GetMapping("/MyRestaurant")
     public ResponseEntity<?> getMenuItems(@CurrentUser UserPrincipal principal) {
         User currentUser = userRepo.findById(principal.getId()).get();
@@ -225,6 +269,11 @@ public class RestaurantController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * This method returns a list of ratings for the current logged in owner's restaurant.
+     * @param principal User principal
+     * @return A 200 status code with list of ratings.
+     */
     @GetMapping("/MyRestaurant/ratings")
     public ResponseEntity<?> getRatings(@CurrentUser UserPrincipal principal) {
         User currentUser = userRepo.findById(principal.getId()).get();
@@ -234,6 +283,14 @@ public class RestaurantController {
     }
 
 
+    /**
+     * This method allows a customer to leave a rating for a restaurant. We find the restaurant using the id passed from the url.
+     * Then we add the rating into the restaurant. The addRating method also calculates the average rating for a restaurant.
+     * @param principal User principal
+     * @param rating Rating for the restaurant
+     * @param id Restaurant id.
+     * @return A 200 status code.
+     */
     @PutMapping("/restaurants/{id}/addRating")
     public ResponseEntity<?> addRating(@CurrentUser UserPrincipal principal, @RequestBody Rating rating,
                                        @PathVariable Long id) {
@@ -253,6 +310,12 @@ public class RestaurantController {
         return ResponseEntity.ok(new ApiResponse(true, "Rating added"));
     }
 
+    /**
+     * This method checks whether or not the current logged in customer has rated a restaurant.
+     * @param principal User principal
+     * @param id Restaurant ID
+     * @return A 200 status code
+     */
     @GetMapping("/restaurants/{id}/rated")
     public ResponseEntity<?> hasRating(@CurrentUser UserPrincipal principal, @PathVariable Long id) {
         Optional<Restaurant> findRestaurant = restaurantRepo.findById(id);
@@ -268,6 +331,11 @@ public class RestaurantController {
         return new ResponseEntity<>(new ApiResponse(currentRestaurant.checkForRating(currentUser), "Rating"), HttpStatus.OK);
     }
 
+    /**
+     * This method finds the most frequent customer for the current logged in owner's restaurant.
+     * @param principal User principal.
+     * @return A 200 status code with the most frequent customer.
+     */
     @GetMapping("/restaurants/bestCustomer")
     public ResponseEntity<?> bestCustomer(@CurrentUser UserPrincipal principal) {
         final Long MY_RESTAURANT_ID = restaurantRepo.findByOwner_Id(principal.getId()).getId();
@@ -277,6 +345,11 @@ public class RestaurantController {
         return ResponseEntity.ok(listOfRestaurantCustomers.get(0));
     }
 
+    /**
+     * This method returns a list of customers for the current logged in owner's restaurant.
+     * @param principal User principal.
+     * @return A 200 status code with the list of customers.
+     */
     @GetMapping("/restaurants/getListOfCustomers")
     public ResponseEntity<?> getOrdersByDate(@CurrentUser UserPrincipal principal) {
         final Long MY_RESTAURANT_ID = restaurantRepo.findByOwner_Id(principal.getId()).getId();
