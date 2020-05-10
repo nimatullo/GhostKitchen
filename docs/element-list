@@ -1,0 +1,9 @@
+com.example.ghostkitchen
+com.example.ghostkitchen.config
+com.example.ghostkitchen.controller
+com.example.ghostkitchen.details
+com.example.ghostkitchen.jwt
+com.example.ghostkitchen.model
+com.example.ghostkitchen.payload
+com.example.ghostkitchen.repo
+com.example.ghostkitchen.service
