@@ -6,11 +6,12 @@ import {
   MenuItem,
   Button,
   InputLabel,
-  FormControl
+  FormControl,
 } from "@material-ui/core";
 import Axios from "axios";
 import "./RegisterRestaurant.css";
 import NumberFormat from "react-number-format";
+import { BASE_URL } from "../constants";
 
 const RegisterRestaurant = () => {
   const [restaurantName, setRestaurantName] = useState("");
@@ -24,26 +25,26 @@ const RegisterRestaurant = () => {
       streetAddress: streetAddress,
       city: city,
       state: state,
-      zip: zip
+      zip: zip,
     };
     const data = {
       restaurantName: restaurantName,
       address: address,
-      menuItems: []
+      menuItems: [],
     };
-    Axios.post(`/owner/restaurants/add`, data, {
+    Axios.post(`${BASE_URL}/owner/restaurants/add`, data, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           return res.data;
         } else {
           console.log("Cannot be created!");
         }
       })
-      .then(data => {
+      .then((data) => {
         history.push("/restaurant/additem");
       });
   };
@@ -56,14 +57,14 @@ const RegisterRestaurant = () => {
           variant="outlined"
           label="Restaurant Name"
           value={restaurantName}
-          onChange={e => setRestaurantName(e.target.value)}
+          onChange={(e) => setRestaurantName(e.target.value)}
         />
         <TextField
           fullWidth
           variant="outlined"
           label="Street Address"
           value={streetAddress}
-          onChange={e => setStreetAddress(e.target.value)}
+          onChange={(e) => setStreetAddress(e.target.value)}
         />
         <div className="group">
           <TextField
@@ -71,14 +72,14 @@ const RegisterRestaurant = () => {
             variant="outlined"
             label="City"
             value={city}
-            onChange={e => setCity(e.target.value)}
+            onChange={(e) => setCity(e.target.value)}
           />
           <FormControl variant="outlined">
             <InputLabel id="stateLabelId">State</InputLabel>
             <Select
               labelId="stateLabelId"
               value={state}
-              onChange={e => setState(e.target.value)}
+              onChange={(e) => setState(e.target.value)}
             >
               <MenuItem value={"NY"}>NY</MenuItem>
               <MenuItem value={"CA"}>CA</MenuItem>
@@ -97,7 +98,7 @@ const RegisterRestaurant = () => {
             variant="outlined"
             label="Zip"
             value={zip}
-            onChange={e => {
+            onChange={(e) => {
               setZip(e.target.value);
             }}
           />

@@ -6,6 +6,7 @@ import validate from "../validateRegister";
 import { useState } from "react";
 import axios from "axios";
 import "./Register.css";
+import { BASE_URL } from "../constants";
 
 const Register = () => {
   const history = useHistory();
@@ -17,22 +18,22 @@ const Register = () => {
 
   function register() {
     axios
-      .post("/owner/register", {
+      .post(`${BASE_URL}/owner/register`, {
         email: values.email,
         password: values.password,
         name: {
           firstName: values.firstName,
-          lastName: values.lastName
-        }
+          lastName: values.lastName,
+        },
       })
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           history.push("/login");
         } else {
           return res.statusText;
         }
       })
-      .then(responseMessage => {
+      .then((responseMessage) => {
         setServerError(responseMessage);
       });
   }

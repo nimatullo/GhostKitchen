@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, InputAdornment } from "@material-ui/core";
-import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import { JWT_TOKEN, BASE_URL } from "../constant";
 import CreditCardIcon from "@material-ui/icons/CreditCard";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -24,18 +24,18 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
         cardHolderName: holderName,
         cardNumber: cardNumber,
         CSV: csv,
-        expirationDate: dateOfExp
+        expirationDate: dateOfExp,
       },
       userAddress: {
         streetAddress: streetAddress,
         city: city,
         state: state,
-        zip: zip
-      }
+        zip: zip,
+      },
     };
     Axios.post(`${BASE_URL}/user/addInfo`, data, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
-    }).then(res => setPaymentPresent(true));
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    }).then((res) => setPaymentPresent(true));
   };
 
   return (
@@ -44,11 +44,11 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
         <div className="addressForm">
           <h3>Delivery Address</h3>
           <TextField
-		required={true}
+            required={true}
             classes={{ root: "TextField" }}
             label="Street Address"
             value={streetAddress}
-            onChange={e => {
+            onChange={(e) => {
               setStreetAddress(e.target.value);
             }}
             fullWidth
@@ -58,7 +58,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
             className="cityField"
             label="City"
             value={city}
-            onChange={e => {
+            onChange={(e) => {
               setCity(e.target.value);
             }}
             fullWidth
@@ -68,7 +68,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
               label="State"
               classes={{ root: "TextField" }}
               value={state}
-              onChange={e => {
+              onChange={(e) => {
                 setState(e.target.value);
               }}
             />
@@ -76,7 +76,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
               label="Zip"
               classes={{ root: "TextField" }}
               value={zip}
-              onChange={e => {
+              onChange={(e) => {
                 setZip(e.target.value);
               }}
             />
@@ -90,7 +90,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
             classes={{ root: "TextField" }}
             label="Enter Credit Card Number"
             value={cardNumber}
-            onChange={e => {
+            onChange={(e) => {
               setCardNumber(e.target.value);
             }}
             fullWidth
@@ -99,7 +99,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
             label="Card Holder"
             classes={{ root: "TextField" }}
             value={holderName}
-            onChange={e => {
+            onChange={(e) => {
               setHolderName(e.target.value);
             }}
             fullWidth
@@ -109,7 +109,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
               classes={{ root: "TextField" }}
               label="CSV"
               value={csv}
-              onChange={e => {
+              onChange={(e) => {
                 setCsv(e.target.value);
               }}
             />
@@ -117,7 +117,7 @@ const AddExtraInfo = ({ setPaymentPresent }) => {
               classes={{ root: "TextField" }}
               label="Expiration Date"
               value={dateOfExp}
-              onChange={e => {
+              onChange={(e) => {
                 setDateOfExp(e.target.value);
               }}
             />

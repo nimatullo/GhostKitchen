@@ -3,7 +3,7 @@ import Axios from "axios";
 import MenuItem from "../menu/MenuItem";
 import Cart from "../cart/Cart";
 import ItemContextProvider from "../contexts/ItemContext";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant";
 import "./Restaurant.css";
 import { Divider } from "@material-ui/core";
 import { GlobalContext } from "../contexts/GlobalContext";

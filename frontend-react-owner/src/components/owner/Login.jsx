@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { GlobalContext } from "../contexts/GlobalContext";
 import "./Login.css";
+import { BASE_URL } from "../constants";
 
 export default function Login() {
   const [isLoading, setLoading] = useState(false);
@@ -21,11 +22,11 @@ export default function Login() {
   function logIn() {
     setLoading(true);
     axios
-      .put("/owner/login", {
+      .put(`${BASE_URL}/owner/login`, {
         email: values.email,
-        password: values.password
+        password: values.password,
       })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           setAuth(true);
           setName(res.data.firstName);
@@ -35,7 +36,7 @@ export default function Login() {
           history.push("/");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.status === 401) {
           setLoading(false);
           setErrorMsg("Email or password is incorrect.");

@@ -9,6 +9,7 @@ import {
 import Address from "./Address";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { useHistory } from "react-router-dom";
+import { BASE_URL } from "../constant";
 
 const RestaurantList = () => {
   const [restaurantList, setRestaurantList] = useState([]);
@@ -16,7 +17,7 @@ const RestaurantList = () => {
   const history = useHistory();
   useEffect(() => {
     axios
-      .get("/restaurants/all", {
+      .get(`${BASE_URL}/restaurants/all`, {
         headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       })
       .then((response) => response.data)

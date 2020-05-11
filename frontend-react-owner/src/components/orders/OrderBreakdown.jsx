@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import Order from "./Order";
 import "./OrderBreakdown.css";
+import { BASE_URL } from "../constants";
 
 const OrderBreakdown = ({ props }) => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
-    Axios.get("/MyRestaurant", {
+    Axios.get(`${BASE_URL}/MyRestaurant`, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
-    }).then(res => setOrders(res.data.pastOrders));
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((res) => setOrders(res.data.pastOrders));
   }, []);
   return (
     <div className="orderBreakdown">
@@ -25,7 +26,7 @@ const OrderBreakdown = ({ props }) => {
           </tr>
         </thead>
         <tbody>
-          {orders.map(order => (
+          {orders.map((order) => (
             <Order order={order} />
           ))}
         </tbody>

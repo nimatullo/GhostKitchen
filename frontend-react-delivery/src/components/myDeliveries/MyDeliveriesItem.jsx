@@ -9,6 +9,7 @@ import {
   Button,
 } from "@material-ui/core";
 import Axios from "axios";
+import { BASE_URL } from "../constant";
 
 const Delivery = ({ delivery, reload, setReload }) => {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ const Delivery = ({ delivery, reload, setReload }) => {
   };
   const changeToDelivered = () => {
     Axios.put(
-      `/delivery/${delivery.id}/delivered`,
+      `${BASE_URL}/delivery/${delivery.id}/delivered`,
       {},
       {
         headers: {

@@ -4,7 +4,7 @@ import { ItemContext } from "../contexts/ItemContext";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Axios from "axios";
 import Alert from "../Alert";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant";
 import "./CartItem.css";
 
 const CartItem = ({ itemInfo }) => {

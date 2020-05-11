@@ -3,7 +3,7 @@ import { Snackbar } from "@material-ui/core";
 import { ItemContext } from "../contexts/ItemContext";
 import Alert from "../Alert";
 import Axios from "axios";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant";
 import "./MenuItem.css";
 
 const MenuItem = ({ menuItem }) => {

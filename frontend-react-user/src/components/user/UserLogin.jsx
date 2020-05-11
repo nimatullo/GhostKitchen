@@ -7,6 +7,7 @@ import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import { GlobalContext } from "../contexts/GlobalContext";
 import "./Login.css";
+import { BASE_URL } from "../constant";
 
 export default function Login() {
   const { setAuth, setName, setJwtToken } = useContext(GlobalContext);
@@ -22,11 +23,12 @@ export default function Login() {
     setLoading(true);
     setTimeout(() => {
       axios
-        .put("/login", {
+        .put(`${BASE_URL}/login`, {
           email: values.email,
           password: values.password,
         })
         .then((res) => {
+          console.log(res);
           if (res.status === 200) {
             setAuth(true);
             setName(res.data.firstName);

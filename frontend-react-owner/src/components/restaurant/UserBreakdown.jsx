@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useState } from "react";
 import { Pie } from "react-chartjs-2";
 import "./UserBreakdown.css";
+import { BASE_URL } from "../constants";
 
 const UserBreakdown = () => {
   const [labels, setLabels] = useState([]);
@@ -12,7 +13,7 @@ const UserBreakdown = () => {
     fetchUrl();
   }, []);
   async function fetchUrl() {
-    Axios.get("/restaurants/getListOfCustomers", {
+    Axios.get(`${BASE_URL}/restaurants/getListOfCustomers`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },

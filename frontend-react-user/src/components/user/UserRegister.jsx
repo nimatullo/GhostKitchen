@@ -6,6 +6,7 @@ import validate from "../validateRegister";
 import { useState } from "react";
 import axios from "axios";
 import "./Register.css";
+import { BASE_URL } from "../constant";
 
 const Register = () => {
   const history = useHistory();
@@ -17,7 +18,7 @@ const Register = () => {
 
   function register() {
     axios
-      .post("/register", {
+      .post(`${BASE_URL}/register`, {
         email: values.email,
         password: values.password,
         name: {

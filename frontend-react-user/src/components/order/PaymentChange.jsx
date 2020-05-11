@@ -5,21 +5,21 @@ import {
   DialogContent,
   TextField,
   DialogActions,
-  Button
+  Button,
 } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import Axios from "axios";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant/";
 
 const PaymentChange = ({
   setPaymentInfo,
   paymentInfo,
   cardNumber,
-  setCardNumber
+  setCardNumber,
 }) => {
   const [cardHolder, setCardHolder] = useState({
     firstName: "",
-    lastName: ""
+    lastName: "",
   });
   const [open, setOpen] = useState(false);
   const [creditCardNumber, setCreditCardNumber] = useState("");
@@ -32,17 +32,17 @@ const PaymentChange = ({
 
   const saveChanges = () => {
     Axios.put(
-      `http://localhost:3001/user/updatePayment`,
+      `${BASE_URL}/user/updatePayment`,
       {
         name: cardHolder,
         cardNumber: creditCardNumber,
         expirationDate: dateOfExpiration,
-        csv: csv
+        csv: csv,
       },
       {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
       }
-    ).then(res => {
+    ).then((res) => {
       if (res.status === 200) {
         setCardNumber(
           "**** **** **** " +
@@ -69,20 +69,20 @@ const PaymentChange = ({
             <TextField
               label="First Name"
               value={cardHolder.firstName}
-              onChange={e =>
+              onChange={(e) =>
                 setCardHolder({
                   firstName: e.target.value,
-                  lastName: cardHolder.lastName
+                  lastName: cardHolder.lastName,
                 })
               }
             />
             <TextField
               label="Last Name"
               value={cardHolder.lastName}
-              onChange={e =>
+              onChange={(e) =>
                 setCardHolder({
                   firstName: cardHolder.firstName,
-                  lastName: e.target.value
+                  lastName: e.target.value,
                 })
               }
             />
@@ -92,7 +92,7 @@ const PaymentChange = ({
               label="Credit Card Number"
               value={creditCardNumber}
               fullWidth
-              onChange={e => setCreditCardNumber(e.target.value)}
+              onChange={(e) => setCreditCardNumber(e.target.value)}
             />
             <NumberFormat
               value={dateOfExpiration}
@@ -101,14 +101,14 @@ const PaymentChange = ({
               placeholder="MM/YYYY"
               format="##/####"
               mask={["M", "M", "Y", "Y", "Y", "Y"]}
-              onChange={e => setDateOfExpiration(e.target.value)}
+              onChange={(e) => setDateOfExpiration(e.target.value)}
             />
             <NumberFormat
               value={csv}
               customInput={TextField}
               label="CSV"
               format="###"
-              onChange={e => setCsv(e.target.value)}
+              onChange={(e) => setCsv(e.target.value)}
             />
           </form>
         </DialogContent>

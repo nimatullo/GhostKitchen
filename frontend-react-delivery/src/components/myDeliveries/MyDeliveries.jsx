@@ -3,12 +3,13 @@ import { useEffect } from "react";
 import Axios from "axios";
 import MyDeliveriesItem from "./MyDeliveriesItem";
 import "../orders/AvailableOrders.css";
+import { BASE_URL } from "../constant";
 
 const AvailableOrders = () => {
   const [availableOrdersList, setAvailableOrdersList] = useState([]);
   const [reload, setReload] = useState(false);
   useEffect(() => {
-    Axios.get("/delivery/myDeliveries", {
+    Axios.get(`${BASE_URL}/delivery/myDeliveries`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },

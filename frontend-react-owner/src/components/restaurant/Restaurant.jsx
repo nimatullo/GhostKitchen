@@ -6,6 +6,7 @@ import "./Restaurant.css";
 import AddIcon from "@material-ui/icons/Add";
 import Carousel from "../carousel/Carousel";
 import { useHistory } from "react-router-dom";
+import { BASE_URL } from "../constants";
 
 const Restaurant = () => {
   const history = useHistory();
@@ -18,7 +19,7 @@ const Restaurant = () => {
   const [bestCustomer, setBestCustomer] = useState({});
   const [numberOfPurchases, setNumberOfPurchases] = useState(0);
   useEffect(() => {
-    Axios.get("/MyRestaurant", {
+    Axios.get(`${BASE_URL}/MyRestaurant`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
@@ -40,7 +41,7 @@ const Restaurant = () => {
   }, []);
 
   useEffect(() => {
-    Axios.get("/restaurants/bestCustomer", {
+    Axios.get(`${BASE_URL}/restaurants/bestCustomer`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },

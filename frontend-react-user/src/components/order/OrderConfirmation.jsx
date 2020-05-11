@@ -4,11 +4,12 @@ import orderConfirm from "./vectors/OrderConfirmation.png";
 import { Divider, Button, Link } from "@material-ui/core";
 import "./OrderConfirmation.css";
 import NumberFormat from "react-number-format";
+import { BASE_URL } from "../constant";
 
 const OrderConfirmation = ({
   match: {
-    params: { number }
-  }
+    params: { number },
+  },
 }) => {
   const [orderNumber, setOrderNumber] = useState("");
   const [items, setItems] = useState([]);
@@ -17,16 +18,16 @@ const OrderConfirmation = ({
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: "",
     expirationDate: "",
-    cardHolder: ""
+    cardHolder: "",
   });
   const [restaurant, setRestaurant] = useState("");
   const [orderDate, setOrderDate] = useState("");
 
   useEffect(() => {
-    Axios.get(`/orderConfirmation/${number}`, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    Axios.get(`${BASE_URL}/orderConfirmation/${number}`, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           setOrderNumber(res.data.orderNumber);
           setItems(res.data.menuItems);
@@ -34,17 +35,17 @@ const OrderConfirmation = ({
           setAddress(res.data.customerDetails.address);
           setRestaurant({
             name: res.data.restaurantName,
-            address: res.data.restaurantAddress.streetAddress
+            address: res.data.restaurantAddress.streetAddress,
           });
           setOrderDate(res.data.orderPlacedDate);
           return res.data.paymentMethod;
         }
       })
-      .then(data => {
+      .then((data) => {
         setPaymentDetails({
           cardHolder: data.cardHolderName,
           cardNumber: data.cardNumber.substring(data.cardNumber.length - 4),
-          expirationDate: data.expirationDate
+          expirationDate: data.expirationDate,
         });
       });
   }, []);
@@ -86,7 +87,7 @@ const OrderConfirmation = ({
           <h3>Order #{orderNumber.toUpperCase()}</h3>
           <h5 className="secondaryText">{orderDate}</h5>
           <Divider />
-          {items.map(item => (
+          {items.map((item) => (
             <div className="item">
               <p className="firstCol">
                 <img src={item.urlPath} alt={item.name} />

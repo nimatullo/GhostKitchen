@@ -7,6 +7,7 @@ import Axios from "axios";
 import "./AddItem.css";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import CurrencyTextField from "@unicef/material-ui-currency-textfield/dist/CurrencyTextField";
+import { BASE_URL } from "../constants";
 
 const AddItem = ({ props }) => {
   const [restaurantId, setRestaurantId] = useState("");
@@ -19,12 +20,12 @@ const AddItem = ({ props }) => {
   const [picture, setPicture] = useState(null);
 
   useEffect(() => {
-    Axios.get("/MyRestaurant", {
+    Axios.get(`${BASE_URL}/MyRestaurant`, {
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     }).then((res) => {
       setRestaurantId(res.data.id);
     });
-    Axios.get("/restaurants/categories", {
+    Axios.get(`${BASE_URL}/restaurants/categories`, {
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     }).then((res) => setListOfCategories(res.data));
   }, []);
@@ -40,13 +41,9 @@ const AddItem = ({ props }) => {
     data.append("price", price);
     data.append("description", description);
     data.append("category", category);
-    Axios.post(
-      `http://localhost:3000/owner/restaurants/${restaurantId}/menu/add`,
-      data,
-      {
-        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
-      }
-    );
+    Axios.post(`${BASE_URL}/owner/restaurants/${restaurantId}/menu/add`, data, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    });
     setItems([...items, item]);
     setPrice("");
     setName("");
@@ -116,14 +113,6 @@ const AddItem = ({ props }) => {
               />
             )}
           />
-          {/* <TextField
-            variant="outlined"
-            fullWidth
-            label="Item Category"
-            name="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          /> */}
         </div>
         <div>
           <CurrencyTextField

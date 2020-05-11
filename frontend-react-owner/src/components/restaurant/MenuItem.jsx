@@ -8,12 +8,10 @@ import {
   TextField,
   DialogActions,
   Button,
-  TableRow,
-  TableCell
 } from "@material-ui/core";
 import Axios from "axios";
 import "./MenuItem.css";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { BASE_URL } from "../constants";
 
 const MenuItem = ({ menuItem, restaurantId }) => {
   const [open, setOpen] = useState(false);
@@ -30,7 +28,7 @@ const MenuItem = ({ menuItem, restaurantId }) => {
     setOpen(false);
   };
 
-  const getPicture = event => {
+  const getPicture = (event) => {
     setPicture(event.target.files[0]);
   };
 
@@ -41,10 +39,10 @@ const MenuItem = ({ menuItem, restaurantId }) => {
     data.append("name", itemName);
     data.append("price", price);
     data.append("description", itemDescription);
-    Axios.put(`/menu/edit/${menuItem.id}`, data, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+    Axios.put(`${BASE_URL}/menu/edit/${menuItem.id}`, data, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
     })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           console.log(res.data);
           return res.data;
@@ -52,7 +50,7 @@ const MenuItem = ({ menuItem, restaurantId }) => {
           console.log("Item cannot be updated");
         }
       })
-      .then(data => {
+      .then((data) => {
         setPictureURL(data.message);
         setOpen(false);
       });
@@ -96,14 +94,14 @@ const MenuItem = ({ menuItem, restaurantId }) => {
               margin="dense"
               value={itemName}
               label="Item Name"
-              onChange={e => setItemName(e.target.value)}
+              onChange={(e) => setItemName(e.target.value)}
             />
             <TextField
               fullWidth
               margin="dense"
               value={itemDescription}
               label="Description"
-              onChange={e => setItemDescription(e.target.value)}
+              onChange={(e) => setItemDescription(e.target.value)}
             />
             <CurrencyTextField
               textAlign="left"

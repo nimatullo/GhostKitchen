@@ -4,15 +4,16 @@ import { useState } from "react";
 import Axios from "axios";
 import "./RestaurantRatings.css";
 import Ratings from "react-ratings-declarative";
+import { BASE_URL } from "../constants";
 
 const RestaurantRatings = ({ props }) => {
   const [listOfRatings, setListOfRatings] = useState([]);
   useEffect(() => {
-    Axios.get(`http://localhost:3000/MyRestaurant/ratings`, {
+    Axios.get(`${BASE_URL}/MyRestaurant/ratings`, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwt")
-      }
-    }).then(res => setListOfRatings(res.data));
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    }).then((res) => setListOfRatings(res.data));
   }, []);
   return (
     <div className="rating">
@@ -24,7 +25,7 @@ const RestaurantRatings = ({ props }) => {
           </tr>
         </thead>
         <tbody>
-          {listOfRatings.map(rating => (
+          {listOfRatings.map((rating) => (
             <tr>
               <td>
                 {rating.user.name.firstName} {rating.user.name.lastName}

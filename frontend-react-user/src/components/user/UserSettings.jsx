@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant";
 import Axios from "axios";
 import "./UserSettings.css";
 import ChangeName from "./ChangeName";

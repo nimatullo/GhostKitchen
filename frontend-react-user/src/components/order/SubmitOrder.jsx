@@ -1,16 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
-import { ItemContext } from "../contexts/ItemContext";
-import { JWT_TOKEN, BASE_URL } from "../constant/constantVariables";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import "./SubmitOrder.css";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import OrderItem from "./OrderItem";
-import NumberFormat from "react-number-format";
 import AddressChange from "./AddressChange";
 import PaymentChange from "./PaymentChange";
-import { TextField, Divider } from "@material-ui/core";
 import AddExtraInfo from "./AddExtraInfo";
 import { useHistory } from "react-router-dom";
+import { BASE_URL } from "../constant";
 
 const SubmitOrder = (props) => {
   const [items, setItems] = useState();

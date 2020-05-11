@@ -5,10 +5,11 @@ import {
   DialogContent,
   TextField,
   DialogActions,
-  Button
+  Button,
 } from "@material-ui/core";
 import NumberFormat from "react-number-format";
 import Axios from "axios";
+import { BASE_URL } from "../constant";
 
 const AddressChange = ({ address, setAddress }) => {
   const [open, setOpen] = useState(false);
@@ -26,11 +27,11 @@ const AddressChange = ({ address, setAddress }) => {
       streetAddress: streetAddress,
       city: city,
       state: state,
-      zip: zip
+      zip: zip,
     };
-    Axios.put("http://localhost:3001/user/updateAddress", data, {
-      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
-    }).then(res => {
+    Axios.put(`${BASE_URL}/user/updateAddress`, data, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
+    }).then((res) => {
       if (res.status === 200) {
         setOpen(false);
         setAddress(data);
@@ -41,7 +42,7 @@ const AddressChange = ({ address, setAddress }) => {
     <>
       <div className="title">
         <h3>Delivery Address</h3>
-        <p onClick={e => setOpen(true)}>Change</p>
+        <p onClick={(e) => setOpen(true)}>Change</p>
       </div>
       <span>{address.streetAddress}</span>
       <span>
@@ -53,26 +54,26 @@ const AddressChange = ({ address, setAddress }) => {
           <form>
             <TextField
               value={streetAddress}
-              onChange={e => setStreetAddress(e.target.value)}
+              onChange={(e) => setStreetAddress(e.target.value)}
               label="Street Address"
               fullWidth
             />
             <TextField
               value={city}
-              onChange={e => setCity(e.target.value)}
+              onChange={(e) => setCity(e.target.value)}
               label="City"
               fullWidth
             />
             <TextField
               value={state}
-              onChange={e => setState(e.target.value)}
+              onChange={(e) => setState(e.target.value)}
               label="State"
             />
             <NumberFormat
               customInput={TextField}
               format="#####"
               value={zip}
-              onChange={e => setZip(e.target.value)}
+              onChange={(e) => setZip(e.target.value)}
               label="Zip Code"
             />
           </form>

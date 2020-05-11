@@ -1,6 +1,6 @@
 import React, { createContext, Component } from "react";
 import Axios from "axios";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant";
 
 export const ItemContext = createContext();
 

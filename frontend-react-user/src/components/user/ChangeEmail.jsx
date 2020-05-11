@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, TextField, Button } from "@material-ui/core";
 import { useState } from "react";
-import { BASE_URL } from "../constant/constantVariables";
+import { BASE_URL } from "../constant";
 import Axios from "axios";
 
 const ChangeEmail = ({ email, setEmail }) => {
