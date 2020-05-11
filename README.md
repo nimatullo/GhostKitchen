@@ -13,4 +13,6 @@ My tech stack includes Spring, React and Postgresql. My Spring application has e
 5. Checkout
 6. Accepting and completing deliveries
 
-## Deployment coming soon!
+## Todo & things I'd do differently
+1. Deploy application using Docker
+2. Format the React so coding API requests would easier
