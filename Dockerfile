@@ -6,7 +6,8 @@ RUN npm run build --prefix /app/user/
 
 COPY /frontend-react-owner /app/owner
 RUN npm install --silent --prefix /app/owner
-RUn npm run build --prefix /app/owner
+RUN npm run build --prefix /app/owner
+
 
 ## NGINX ##
 FROM nginx:1.16.0-alpine

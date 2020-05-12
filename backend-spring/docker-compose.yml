@@ -1,16 +1,21 @@
 version: "3"
 services:
   app:
-    image: ghostkitchen-backend
-    ports:
-      - "8080:8080"
+    build: .
     depends_on:
       - db
+    networks:
+      - container_network
   db:
+    container_name: db
     image: postgres
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=ghostkitchen
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: ghostkitchen
+    networks:
+      - container_network
+networks:
+  container_network:
