@@ -81,6 +81,11 @@ public class UserController {
         return ResponseEntity.ok(new JwtAuthResponse(jwt, currentUser.getName().getFirstName()));
     }
 
+    @GetMapping("/test/login")
+    public ResponseEntity<?> testingMethodForNginx() {
+	    return ResponseEntity.ok("we're in boys");
+    }
+
     /**
      * This method returns the current logged in user using the ID from the User Principal
      * @param userPrincipal User principal

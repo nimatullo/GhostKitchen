@@ -4,4 +4,4 @@ export const JWT_TOKEN = {
   },
 };
 
-export const BASE_URL = "http://localhost:8080";
+export const BASE_URL = "http://api.ghostkitchen.site";
