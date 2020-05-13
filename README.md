@@ -3,10 +3,7 @@
 [Javadocs](https://nimatullo.github.io/GhostKitchen/docs/)
 
 ## Project breakdown
-My tech stack includes Spring, React and Postgresql. My Spring application has REST endpoints that are exposed which my frontend can leverage. The frontend also consists of 3 different React apps that work as a pseudo-micro frontend. 
-
-## Input for next year
-I believe the easiest way to do this project is just to utilize the Thymeleaf templating engine. Although React is a very powerful library, it requires that you have preexisting knowledge of HTML, CSS, and JavaScript. So to be efficient in using React, you need to be comfortable using those languages. However, if you use Thymeleaf, you can just focus on HTML, CSS and maybe JavaScript and have Spring handle all the requests and user tracking.
+My tech stack includes Spring, React and Postgresql. My Spring application has REST endpoints that are exposed which my frontend can leverage. The frontend also consists of 3 different React apps that work as a micro frontend.
 
 ## Features
 1. User creation and authentication using JSON Web Tokens
