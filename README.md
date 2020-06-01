@@ -1,6 +1,7 @@
 # GhostKitchen
 
 [Docs](https://nimatullo.github.io/GhostKitchen/docs/)
+
 [Live Demo](http://ghostkitchen.site)
 
 ## Project breakdown
